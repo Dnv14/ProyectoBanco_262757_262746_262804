@@ -6,11 +6,11 @@ package com.mycompany.proyectobanco_262757_262746_262804;
 
 /**
  *
- * @author Diego
+ * @author 
  */
 public class ProyectoBanco_262757_262746_262804 {
 
     public static void main(String[] args) {
-        System.out.println("El diego es crack!");
+        System.out.println("El Julain es crack!");
     }
 }
