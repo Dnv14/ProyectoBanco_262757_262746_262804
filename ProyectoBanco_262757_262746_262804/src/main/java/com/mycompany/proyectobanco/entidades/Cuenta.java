@@ -69,6 +69,11 @@ public class Cuenta {
     public void setIdCliente(String idCliente) {
         this.idCliente = idCliente;
     }
+
+    @Override
+    public String toString() {
+        return numeroCuenta;
+    }
     
     
 }
