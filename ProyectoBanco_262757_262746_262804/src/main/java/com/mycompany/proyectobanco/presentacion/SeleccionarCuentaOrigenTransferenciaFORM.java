@@ -39,9 +39,9 @@ public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame
         initComponents();
         this.llenarCuentasCliente();
         
-        if (comboCuentasCliente.getItemCount() > 0) {
-            comboCuentasCliente.setSelectedIndex(0);
-        }
+//        if (comboCuentasCliente.getItemCount() > 0) {
+//            comboCuentasCliente.setSelectedIndex(0);
+//        }
     }
 
     /**
@@ -182,7 +182,7 @@ public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame
 
     private void btnTransferirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransferirActionPerformed
         this.realizarTransferencia();
-        this.dispose();
+        
     }//GEN-LAST:event_btnTransferirActionPerformed
 
     private void comboCuentasClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboCuentasClienteActionPerformed
@@ -191,9 +191,7 @@ public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame
 
     private void comboCuentasClienteItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboCuentasClienteItemStateChanged
         if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
-
             Cuenta cuenta = (Cuenta) comboCuentasCliente.getSelectedItem();
-
             if (cuenta != null) {
                 lblMostrarSaldoDisponible.setText("Saldo Disponible: $" + cuenta.getSaldo());
             }
@@ -212,6 +210,7 @@ public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame
             
             NuevaTransferenciaDTO transferenciaDTO = new NuevaTransferenciaDTO(operacion.getIdOperacion(),cuentaDestino);
             transferenciaBO.crearTransferencia(transferenciaDTO);
+            operacionBO.actualizarSaldoCuentaOrigen(operacionDTO);
             
             JOptionPane.showMessageDialog(
                 this, 
@@ -219,6 +218,9 @@ public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame
                 "Información", 
                 JOptionPane.INFORMATION_MESSAGE
             );
+            
+            llenarCuentasCliente();
+            comboCuentasCliente.setSelectedIndex(0);
             
         } catch (NegocioException ex) {
             

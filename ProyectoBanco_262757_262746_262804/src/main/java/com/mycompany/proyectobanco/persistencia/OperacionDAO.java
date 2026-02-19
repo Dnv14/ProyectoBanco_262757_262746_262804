@@ -75,18 +75,22 @@ public class OperacionDAO implements IOperacionDAO {
                 }
             }
             
-            Long saldoNuevo = 12l;
+            Long saldoNuevo = cuentaOrigen.getSaldo() - operacionDTO.getMonto();
             String codigoSQL = """
                                 UPDATE cuenta
                                 SET saldo = ?
-                                WHERE idCliente = ?;
+                                WHERE idCliente = ? AND numeroCuenta = ?;
                               """;
             Connection conexion = ConexionBD.crearConexion();
             PreparedStatement comando = conexion.prepareStatement(codigoSQL);
             
             comando.setLong(1, saldoNuevo);
             comando.setString(2, cuentaOrigen.getIdCliente());
+            comando.setString(3, cuentaOrigen.getNumeroCuenta());
             
+            comando.execute();
+            comando.close();
+            conexion.close();
         } catch (SQLException ex) {
             //TODO
         }

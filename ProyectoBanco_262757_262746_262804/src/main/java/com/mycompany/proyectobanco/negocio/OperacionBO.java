@@ -5,9 +5,13 @@
 package com.mycompany.proyectobanco.negocio;
 
 import com.mycompany.proyectobanco.dtos.NuevaOperacionDTO;
+import com.mycompany.proyectobanco.entidades.Cuenta;
 import com.mycompany.proyectobanco.entidades.Operacion;
+import com.mycompany.proyectobanco.persistencia.CuentasDAO;
+import com.mycompany.proyectobanco.persistencia.ICuentasDAO;
 import com.mycompany.proyectobanco.persistencia.IOperacionDAO;
 import com.mycompany.proyectobanco.persistencia.PersistenciaException;
+import java.util.List;
 
 /**
  *
@@ -35,7 +39,7 @@ public class OperacionBO implements IOperacionBO {
         }
         
         if(nuevaOperacionDTO.getMonto()>50000){
-            throw new NegocioException("Cantidad demasiado grande, ingrese una cantidad mucho más pequeña.", null);
+            throw new NegocioException("El limite maximo por transferencia es de: $50,000.00 ", null);
         }
              
         try {
@@ -44,6 +48,30 @@ public class OperacionBO implements IOperacionBO {
             
         } catch (PersistenciaException ex) {
             throw new NegocioException("Error al crear la operacion", ex);
+        }
+    }
+
+    @Override
+    public void actualizarSaldoCuentaOrigen(NuevaOperacionDTO operacionDTO) throws NegocioException {
+        try {
+            ICuentasDAO cuentasDAO = new CuentasDAO();
+            Cuenta cuentaOrigen = null;
+            List<Cuenta> cuentasBanco = cuentasDAO.consultarCuentasActivas();
+            for(Cuenta cuenta: cuentasBanco){
+                if(cuenta.getNumeroCuenta().equalsIgnoreCase(operacionDTO.getNumeroCuenta())){
+                    cuentaOrigen = cuenta;
+                }
+            }
+            if(cuentaOrigen == null){
+                throw new NegocioException("No se encontro ninguna cuenta asociada a la operacion.",null);
+            }
+            Long nuevoSaldo = cuentaOrigen.getSaldo() - operacionDTO.getMonto();
+            if(nuevoSaldo < 0){
+                throw new NegocioException("No puede transferir mas de su saldo disponible.",null);
+            }
+            this.operacionDAO.actualizarSaldoCuentaOrigen(operacionDTO);
+        } catch (PersistenciaException ex) {
+            //TODO
         }
     }
 
