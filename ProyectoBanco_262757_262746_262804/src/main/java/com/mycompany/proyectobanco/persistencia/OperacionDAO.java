@@ -91,6 +91,7 @@ public class OperacionDAO implements IOperacionDAO {
             comando.execute();
             comando.close();
             conexion.close();
+            
         } catch (SQLException ex) {
             LOGGER.severe(ex.getMessage());
             throw new PersistenciaException("No fue posible actualizar el saldo de la cuenta origen.", ex);
