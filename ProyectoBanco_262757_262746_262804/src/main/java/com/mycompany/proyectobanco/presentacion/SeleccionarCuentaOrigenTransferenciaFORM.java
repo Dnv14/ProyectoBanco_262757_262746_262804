@@ -213,12 +213,15 @@ public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame
             operacionBO.actualizarSaldoCuentaOrigen(operacionDTO);
             
             
-            JOptionPane.showMessageDialog(
-                this, 
-                "Transferencia realizada correctamente.", 
-                "Información", 
-                JOptionPane.INFORMATION_MESSAGE
-            );
+            String mensaje = 
+                "Número Cuenta Origen: " + cuentaOrigen.getNumeroCuenta() + "\n" +
+                "Número Cuenta Destino: " + cuentaDestino + "\n" +
+                "Monto: $" + montoTransferencia + "\n" +
+                "Fecha: " + fechaHora;
+
+            JOptionPane.showMessageDialog(this, mensaje, 
+                "Comprobante de Transferencia", 
+                JOptionPane.INFORMATION_MESSAGE);
             
             llenarCuentasCliente();
             comboCuentasCliente.setSelectedIndex(0);
