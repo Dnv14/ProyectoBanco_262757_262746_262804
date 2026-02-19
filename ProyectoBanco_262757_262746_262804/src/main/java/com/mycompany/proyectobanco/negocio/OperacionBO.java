@@ -24,8 +24,13 @@ public class OperacionBO implements IOperacionBO {
     @Override
     public Operacion realizarOperacion(NuevaOperacionDTO nuevaOperacionDTO) throws NegocioException {
         if (nuevaOperacionDTO.getNumeroCuenta()== null) {
-            throw new NegocioException("El nombre es obligatorio", null);
+            throw new NegocioException("El numero de cuenta es obligatorio", null);
         }
+        
+        if (nuevaOperacionDTO.getMonto() <= 0) {
+            throw new NegocioException("parametros de monto invalidos ", null);
+        }
+        
         
         try {
             Operacion operacion = this.operacionDAO.realizarOperacion(nuevaOperacionDTO);
