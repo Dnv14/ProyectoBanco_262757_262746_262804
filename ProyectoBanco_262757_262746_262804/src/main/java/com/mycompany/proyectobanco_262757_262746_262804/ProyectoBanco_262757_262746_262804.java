@@ -4,6 +4,9 @@
 
 package com.mycompany.proyectobanco_262757_262746_262804;
 
+import com.mycompany.proyectobanco.dtos.NuevaOperacionDTO;
+import com.mycompany.proyectobanco.entidades.Operacion;
+
 /**
  *
  * @author 
@@ -11,6 +14,6 @@ package com.mycompany.proyectobanco_262757_262746_262804;
 public class ProyectoBanco_262757_262746_262804 {
 
     public static void main(String[] args) {
-        System.out.println("El Gibran es crack!");
+        NuevaOperacionDTO nuevaOperacionDTO = new NuevaOperacionDTO(500, ,);
     }
 }

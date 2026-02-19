@@ -4,7 +4,7 @@
  */
 package com.mycompany.proyectobanco.dtos;
 
-import java.util.GregorianCalendar;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -12,11 +12,11 @@ import java.util.GregorianCalendar;
  */
 public class NuevaOperacionDTO {
     private Integer monto;
-    private GregorianCalendar fechaHora;
+    private LocalDateTime fechaHora;
     private String tipoOperacion;
     private String numeroCuenta;
 
-    public NuevaOperacionDTO(Integer monto, GregorianCalendar fechaHora, String tipoOperacion, String numeroCuenta) {
+    public NuevaOperacionDTO(Integer monto, LocalDateTime fechaHora, String tipoOperacion, String numeroCuenta) {
         this.monto = monto;
         this.fechaHora = fechaHora;
         this.tipoOperacion = tipoOperacion;
@@ -27,7 +27,7 @@ public class NuevaOperacionDTO {
         return monto;
     }
 
-    public GregorianCalendar getFechaHora() {
+    public LocalDateTime getFechaHora() {
         return fechaHora;
     }
 

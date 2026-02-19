@@ -4,6 +4,7 @@
  */
 package com.mycompany.proyectobanco.entidades;
 
+import java.time.LocalDateTime;
 import java.util.GregorianCalendar;
 
 /**
@@ -13,14 +14,14 @@ import java.util.GregorianCalendar;
 public class Operacion {
     private int idOperacion;
     private Integer monto;
-    private GregorianCalendar fechaHora;
+    private LocalDateTime fechaHora;
     private String tipoOperacion;
     private String numeroCuenta;
 
     public Operacion() {
     }
 
-    public Operacion(int idOperacion, Integer monto, GregorianCalendar fechaHora, String tipoOperacion, String numeroCuenta) {
+    public Operacion(int idOperacion, Integer monto, LocalDateTime fechaHora, String tipoOperacion, String numeroCuenta) {
         this.idOperacion = idOperacion;
         this.monto = monto;
         this.fechaHora = fechaHora;
@@ -44,11 +45,11 @@ public class Operacion {
         this.monto = monto;
     }
 
-    public GregorianCalendar getFechaHora() {
+    public LocalDateTime getFechaHora() {
         return fechaHora;
     }
 
-    public void setFechaHora(GregorianCalendar fechaHora) {
+    public void setFechaHora(LocalDateTime fechaHora) {
         this.fechaHora = fechaHora;
     }
 
