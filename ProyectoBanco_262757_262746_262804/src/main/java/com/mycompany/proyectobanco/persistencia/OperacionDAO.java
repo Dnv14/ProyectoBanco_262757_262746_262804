@@ -8,6 +8,7 @@ import com.mycompany.proyectobanco.dtos.NuevaOperacionDTO;
 import com.mycompany.proyectobanco.entidades.Operacion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
@@ -25,13 +26,13 @@ public class OperacionDAO implements IOperacionDAO {
     @Override
     public Operacion realizarOperacion(NuevaOperacionDTO nuevaOpreacionDTO) throws PersistenciaException {
         try {
+            int idOperacion = 0;
             String codigoSQL = """
-                               INSERT INTO Operacion(monto, fechaHora, tipoOperacion, numeroCuenta)
-                               values(?,?,?,?);
+                               INSERT INTO Operacion(monto, fechaHora, numeroCuenta)
+                               values(?,?,?);
                                """;
             Connection conexion = ConexionBD.crearConexion();
-            PreparedStatement comando = conexion.prepareStatement(codigoSQL,Statement.RETURN_GENERATED_KEYS
-            );
+            PreparedStatement comando = conexion.prepareStatement(codigoSQL, Statement.RETURN_GENERATED_KEYS);
 
             LocalDateTime fechaHora = LocalDateTime.now();
             DateTimeFormatter formatterFechaHora = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
@@ -39,13 +40,20 @@ public class OperacionDAO implements IOperacionDAO {
 
             comando.setInt(1, nuevaOpreacionDTO.getMonto());
             comando.setString(2, formatoFechaHora);
-            comando.setString(3, nuevaOpreacionDTO.getTipoOperacion());
             comando.setString(4, nuevaOpreacionDTO.getNumeroCuenta());
 
             comando.execute();
+            comando.executeUpdate();
+
+            ResultSet idsOperacion = comando.getGeneratedKeys();
+
+            if (idsOperacion.next()) {
+              idOperacion = idsOperacion.getInt(1);
+            }
+            
             LOGGER.fine("Se registró la operación");
 
-            return new Operacion(0, nuevaOpreacionDTO.getMonto(), nuevaOpreacionDTO.getFechaHora(), nuevaOpreacionDTO.getTipoOperacion(), nuevaOpreacionDTO.getNumeroCuenta());
+            return new Operacion(idOperacion, nuevaOpreacionDTO.getMonto(), nuevaOpreacionDTO.getFechaHora(), nuevaOpreacionDTO.getTipoOperacion(), nuevaOpreacionDTO.getNumeroCuenta());
 
         } catch (SQLException ex) {
             LOGGER.severe(ex.getMessage());
