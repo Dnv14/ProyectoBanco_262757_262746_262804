@@ -212,6 +212,7 @@ public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame
             transferenciaBO.crearTransferencia(transferenciaDTO);
             operacionBO.actualizarSaldoCuentaOrigen(operacionDTO);
             
+            
             JOptionPane.showMessageDialog(
                 this, 
                 "Transferencia realizada correctamente.", 

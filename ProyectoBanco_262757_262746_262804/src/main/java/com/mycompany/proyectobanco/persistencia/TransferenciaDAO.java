@@ -46,21 +46,27 @@ public class TransferenciaDAO implements ITransferenciaDAO {
     @Override
     public void actualizarSaldoCuentaDestino(NuevaTransferenciaDTO transferenciaDTO) throws PersistenciaException {
         try {
-            Cuenta cuentaOrigen = null;
+            Cuenta cuentaDestino = null;
             ICuentasDAO cuentasDAO = new CuentasDAO();
             List<Cuenta> cuentasBanco = cuentasDAO.consultarCuentasActivas();
 
-            Operacion cuentaDestino = null;
+            Operacion operacionTransferencia = null;
             IOperacionDAO operacionesDAO = new OperacionDAO();
             List<Operacion> operaciones = operacionesDAO.consultarOperaciones();
             
+            for (Operacion operacion: operaciones){
+                if(operacion.getIdOperacion() == operacionTransferencia.getIdOperacion()){
+                    operacionTransferencia = operacion;
+                }
+            }
+            
             for (Cuenta cuenta : cuentasBanco) {
                 if (cuenta.getNumeroCuenta().equalsIgnoreCase(transferenciaDTO.getCuentaDestino())) {
-                    cuentaOrigen = cuenta;
+                    cuentaDestino = cuenta;
                 }
             }
 
-            Long saldoNuevo = cuentaOrigen.getSaldo() + ;
+            Long saldoNuevo = cuentaDestino.getSaldo() + operacionTransferencia.getMonto();
             String codigoSQL = """
                                 UPDATE cuenta
                                 SET saldo = ?
@@ -70,8 +76,12 @@ public class TransferenciaDAO implements ITransferenciaDAO {
             PreparedStatement comando = conexion.prepareStatement(codigoSQL);
 
             comando.setLong(1, saldoNuevo);
-            comando.setString(2, cuentaOrigen.getIdCliente());
-            comando.setString(3, cuentaOrigen.getNumeroCuenta());
+            comando.setString(2, cuentaDestino.getIdCliente());
+            comando.setString(3, cuentaDestino.getNumeroCuenta());
+            
+        } catch (SQLException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new PersistenciaException("No fue posible actualizar el saldo de la cuenta destino.", ex);
         }
 
     }
