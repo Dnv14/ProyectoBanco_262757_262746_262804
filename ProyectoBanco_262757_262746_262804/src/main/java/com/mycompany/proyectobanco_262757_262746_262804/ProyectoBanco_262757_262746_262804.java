@@ -22,16 +22,16 @@ import java.time.LocalDateTime;
 public class ProyectoBanco_262757_262746_262804 {
 
     public static void main(String[] args) {
-//        LocalDateTime fechaHora = LocalDateTime.now();
-//        NuevaOperacionDTO nuevaOperacionDTO = new NuevaOperacionDTO(500, fechaHora ,"1234567890123456");
-//        IOperacionDAO operacion = new OperacionDAO();
-//        try{
-//            operacion.realizarOperacion(nuevaOperacionDTO);
-//        }catch(PersistenciaException ex){
-//            System.out.println("Error");
-//        }   
+        LocalDateTime fechaHora = LocalDateTime.now();
+        NuevaOperacionDTO nuevaOperacionDTO = new NuevaOperacionDTO(500, fechaHora ,"1000000000000001");
+        IOperacionDAO operacion = new OperacionDAO();
+        try{
+            operacion.realizarOperacion(nuevaOperacionDTO);
+        }catch(PersistenciaException ex){
+            System.out.println("Error");
+        }   
         
-        NuevaTransferenciaDTO nuevaTransfDTO = new NuevaTransferenciaDTO(1, "9876543210987654");
+        NuevaTransferenciaDTO nuevaTransfDTO = new NuevaTransferenciaDTO(1, "1000000000000011");
         ITransferenciaDAO nuevaTransferenciaDAO = new TransferenciaDAO();
         try{
             nuevaTransferenciaDAO.crearTransferencia(nuevaTransfDTO);

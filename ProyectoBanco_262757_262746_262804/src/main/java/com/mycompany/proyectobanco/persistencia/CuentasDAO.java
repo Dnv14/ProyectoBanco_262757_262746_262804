@@ -42,6 +42,8 @@ public class CuentasDAO implements ICuentasDAO{
                 );
                 cuentasCliente.add(cuenta);
             }
+            comando.close();
+            conexion.close();
             
             return cuentasCliente;
         } catch (SQLException ex) {
