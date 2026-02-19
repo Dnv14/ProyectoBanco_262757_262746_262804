@@ -29,7 +29,7 @@ public class ProyectoBanco_262757_262746_262804 {
         IOperacionBO operacionBO = new OperacionBO(operacionDAO);
         
         ITransferenciaDAO nuevaTransferenciaDAO = new TransferenciaDAO();
-        ITransferenciaBO nuevaTransferenciaBO = new TransferenciaBO(nuevaTransferenciaDAO);
+        ITransferenciaBO nuevaTransferenciaBO = new TransferenciaBO(nuevaTransferenciaDAO,operacionBO);
         
         ICuentasDAO cuentasDAO = new CuentasDAO();
         ICuentasBO cuentasBO = new CuentasBO(cuentasDAO);

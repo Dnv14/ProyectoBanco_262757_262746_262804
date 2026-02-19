@@ -1,6 +1,8 @@
 package com.mycompany.proyectobanco.negocio;
 
+import com.mycompany.proyectobanco.dtos.NuevaOperacionDTO;
 import com.mycompany.proyectobanco.dtos.NuevaTransferenciaDTO;
+import com.mycompany.proyectobanco.dtos.NuevaTransferenciaFormDTO;
 import com.mycompany.proyectobanco.entidades.Cuenta;
 import com.mycompany.proyectobanco.entidades.Operacion;
 import com.mycompany.proyectobanco.entidades.Transferencia;
@@ -10,6 +12,7 @@ import com.mycompany.proyectobanco.persistencia.IOperacionDAO;
 import com.mycompany.proyectobanco.persistencia.ITransferenciaDAO;
 import com.mycompany.proyectobanco.persistencia.OperacionDAO;
 import com.mycompany.proyectobanco.persistencia.PersistenciaException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -19,28 +22,36 @@ import java.util.List;
 public class TransferenciaBO implements ITransferenciaBO {
 
     private final ITransferenciaDAO transferenciaDAO;
+    private final IOperacionBO operacionBO;
 
-    public TransferenciaBO(ITransferenciaDAO transferenciaDAO) {
+    public TransferenciaBO(ITransferenciaDAO transferenciaDAO, IOperacionBO operacionBO) {
         this.transferenciaDAO = transferenciaDAO;
+        this.operacionBO = operacionBO;
     }
 
     @Override
-    public Transferencia crearTransferencia(NuevaTransferenciaDTO nuevaTransferencia) throws NegocioException {
-        if (nuevaTransferencia.getCuentaDestino() == null) {
-            throw new NegocioException("La cuenta destino no puede estar vacia!", null);
-        }
-
-        if (nuevaTransferencia.getIdOperacion() == null || nuevaTransferencia.getIdOperacion() < 0) {
-            throw new NegocioException("Id de operacion invalido!!", null);
-        }
-
-        if (nuevaTransferencia.getCuentaDestino().length() != 16) {
-            throw new NegocioException("La cuenta destino tiene que tener 16 digitos!", null);
-        }
+    public Transferencia crearTransferencia(NuevaTransferenciaFormDTO nuevaTransferencia) throws NegocioException {
+//        if (nuevaTransferencia.getCuentaDestino() == null) {
+//            throw new NegocioException("La cuenta destino no puede estar vacia!", null);
+//        }
+//
+//        if (nuevaTransferencia.getIdOperacion() == null || nuevaTransferencia.getIdOperacion() < 0) {
+//            throw new NegocioException("Id de operacion invalido!!", null);
+//        }
+//
+//        if (nuevaTransferencia.getCuentaDestino().length() != 16) {
+//            throw new NegocioException("La cuenta destino tiene que tener 16 digitos!", null);
+//        }
 
         try {
-
-            Transferencia transferencia = this.transferenciaDAO.crearTransferencia(nuevaTransferencia);
+            NuevaOperacionDTO operacionDTO = new NuevaOperacionDTO(nuevaTransferencia.getMonto(), nuevaTransferencia.getFechaHora(), nuevaTransferencia.getCuentaOrigen().getNumeroCuenta());
+            Operacion operacion = operacionBO.realizarOperacion(operacionDTO);
+            NuevaTransferenciaDTO transferenciaDTO = new NuevaTransferenciaDTO(operacion.getIdOperacion(), nuevaTransferencia.getNumeroCuentaDestino());
+            
+            operacionBO.actualizarSaldoCuentaOrigen(operacionDTO);
+            this.actualizarSaldoCuentaDestino(transferenciaDTO);
+            
+            Transferencia transferencia = this.transferenciaDAO.crearTransferencia(transferenciaDTO);
             return transferencia;
 
         } catch (PersistenciaException ex) {

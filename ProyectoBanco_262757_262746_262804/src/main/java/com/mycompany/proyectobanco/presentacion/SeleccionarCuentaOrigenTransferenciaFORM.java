@@ -6,6 +6,7 @@ package com.mycompany.proyectobanco.presentacion;
 
 import com.mycompany.proyectobanco.dtos.NuevaOperacionDTO;
 import com.mycompany.proyectobanco.dtos.NuevaTransferenciaDTO;
+import com.mycompany.proyectobanco.dtos.NuevaTransferenciaFormDTO;
 import com.mycompany.proyectobanco.entidades.Cuenta;
 import com.mycompany.proyectobanco.entidades.Operacion;
 import com.mycompany.proyectobanco.negocio.ICuentasBO;
@@ -210,13 +211,8 @@ public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame
             Integer montoTransferencia = Integer.valueOf(txtMontoATransferir.getText());
             LocalDateTime fechaHora = LocalDateTime.now();
 
-            NuevaOperacionDTO operacionDTO = new NuevaOperacionDTO(montoTransferencia, fechaHora, cuentaOrigen.getNumeroCuenta());
-            Operacion operacion = operacionBO.realizarOperacion(operacionDTO);
-
-            NuevaTransferenciaDTO transferenciaDTO = new NuevaTransferenciaDTO(operacion.getIdOperacion(), cuentaDestino);
-            transferenciaBO.crearTransferencia(transferenciaDTO);
-            operacionBO.actualizarSaldoCuentaOrigen(operacionDTO);
-            transferenciaBO.actualizarSaldoCuentaDestino(transferenciaDTO);
+            NuevaTransferenciaFormDTO transferenciaFormDTO = new NuevaTransferenciaFormDTO(cuentaDestino,cuentaOrigen,montoTransferencia,fechaHora);
+            this.transferenciaBO.crearTransferencia(transferenciaFormDTO);
 
             JOptionPane.showMessageDialog(
                     this,
