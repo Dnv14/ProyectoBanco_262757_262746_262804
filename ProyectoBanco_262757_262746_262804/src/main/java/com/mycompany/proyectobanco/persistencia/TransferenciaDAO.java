@@ -22,14 +22,14 @@ public class TransferenciaDAO implements ITransferenciaDAO {
         try {
             String codigoSQL = """
                                INSERT INTO Transferencia(idOperacion, cuentaDestino)
-                               VALUES (?, ?)
+                               VALUES (?, ?);
                                """;
             Connection conexion = ConexionBD.crearConexion();
             PreparedStatement comando = conexion.prepareStatement(codigoSQL);
 
             comando.setInt(1, nuevaTransferencia.getIdOperacion());
             comando.setString(2, nuevaTransferencia.getCuentaDestino());
-            
+            comando.execute();
             return new Transferencia(nuevaTransferencia.getIdOperacion(), nuevaTransferencia.getCuentaDestino());
 
         } catch (SQLException ex) {
