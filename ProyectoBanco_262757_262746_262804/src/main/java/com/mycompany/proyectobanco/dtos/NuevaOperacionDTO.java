@@ -11,17 +11,17 @@ import java.time.LocalDateTime;
  * @author BALAMRUSH
  */
 public class NuevaOperacionDTO {
-    private Integer monto;
+    private long monto;
     private LocalDateTime fechaHora;
     private String numeroCuenta;
 
-    public NuevaOperacionDTO(Integer monto, LocalDateTime fechaHora, String numeroCuenta) {
+    public NuevaOperacionDTO(long monto, LocalDateTime fechaHora, String numeroCuenta) {
         this.monto = monto;
         this.fechaHora = fechaHora;
         this.numeroCuenta = numeroCuenta;
     }
 
-    public Integer getMonto() {
+    public long getMonto() {
         return monto;
     }
 
