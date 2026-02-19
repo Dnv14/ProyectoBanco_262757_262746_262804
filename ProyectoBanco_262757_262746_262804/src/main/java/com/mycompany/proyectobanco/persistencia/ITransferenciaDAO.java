@@ -13,4 +13,5 @@ import com.mycompany.proyectobanco.entidades.Transferencia;
  */
 public interface ITransferenciaDAO {
     public abstract Transferencia crearTransferencia (NuevaTransferenciaDTO nuevaTransferencia)throws PersistenciaException;
+    
 }
