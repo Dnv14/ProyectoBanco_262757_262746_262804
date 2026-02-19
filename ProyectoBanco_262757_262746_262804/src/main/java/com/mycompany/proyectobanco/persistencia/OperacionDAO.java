@@ -42,7 +42,7 @@ public class OperacionDAO implements IOperacionDAO {
             comando.setString(2, formatoFechaHora);
             comando.setString(3, nuevaOpreacionDTO.getNumeroCuenta());
 
-            comando.executeUpdate();
+            comando.execute();
 
             ResultSet idsOperacion = comando.getGeneratedKeys();
 

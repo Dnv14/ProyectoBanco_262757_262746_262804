@@ -29,13 +29,13 @@ public class TransferenciaDAO implements ITransferenciaDAO {
 
             comando.setInt(1, nuevaTransferencia.getIdOperacion());
             comando.setString(2, nuevaTransferencia.getCuentaDestino());
+            
+            return new Transferencia(nuevaTransferencia.getIdOperacion(), nuevaTransferencia.getCuentaDestino());
 
         } catch (SQLException ex) {
             LOGGER.severe(ex.getMessage());
             throw new PersistenciaException("no se pudo crear la transferencia", ex);
         }
-        return null;
-
     }
 
 }

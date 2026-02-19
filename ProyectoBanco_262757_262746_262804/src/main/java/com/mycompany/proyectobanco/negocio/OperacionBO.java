@@ -27,11 +27,17 @@ public class OperacionBO implements IOperacionBO {
             throw new NegocioException("El numero de cuenta es obligatorio", null);
         }
         
+        if(nuevaOperacionDTO.getNumeroCuenta().length() != 16){
+            throw new NegocioException("El número de cuenta es inválido", null);
+        }
         if (nuevaOperacionDTO.getMonto() <= 0) {
             throw new NegocioException("parametros de monto invalidos ", null);
         }
         
-        
+        if(nuevaOperacionDTO.getMonto()>50000){
+            throw new NegocioException("Cantidad demasiado grande, ingrese una cantidad mucho más pequeña.", null);
+        }
+             
         try {
             Operacion operacion = this.operacionDAO.realizarOperacion(nuevaOperacionDTO);
             return operacion;
