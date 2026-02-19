@@ -28,21 +28,142 @@ public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        comboCuentasCliente = new javax.swing.JComboBox<>();
+        lblCuentaOrigen = new javax.swing.JLabel();
+        lblTitulo = new javax.swing.JLabel();
+        lblCuentaDestino = new javax.swing.JLabel();
+        txtCuentaDestino = new javax.swing.JTextField();
+        btnContinuar = new javax.swing.JButton();
+        txtMontoATransferir = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("SeleccionarCuentaOrigen");
+        setPreferredSize(new java.awt.Dimension(800, 500));
+
+        jPanel1.setBackground(new java.awt.Color(153, 153, 153));
+
+        comboCuentasCliente.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        comboCuentasCliente.setForeground(new java.awt.Color(0, 0, 0));
+        comboCuentasCliente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboCuentasCliente.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        comboCuentasCliente.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        comboCuentasCliente.addActionListener(this::comboCuentasClienteActionPerformed);
+
+        lblCuentaOrigen.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
+        lblCuentaOrigen.setForeground(new java.awt.Color(0, 0, 0));
+        lblCuentaOrigen.setText("Seleccione la cuenta origen: ");
+
+        lblTitulo.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
+        lblTitulo.setForeground(new java.awt.Color(0, 0, 0));
+        lblTitulo.setText("Realizar Transferencia");
+
+        lblCuentaDestino.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
+        lblCuentaDestino.setForeground(new java.awt.Color(0, 0, 0));
+        lblCuentaDestino.setText("Ingrese la cuenta destino:");
+
+        txtCuentaDestino.setBackground(new java.awt.Color(86, 86, 86));
+        txtCuentaDestino.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        txtCuentaDestino.setForeground(new java.awt.Color(0, 0, 0));
+        txtCuentaDestino.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        btnContinuar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        btnContinuar.setForeground(new java.awt.Color(0, 0, 0));
+        btnContinuar.setText("Continuar");
+        btnContinuar.addActionListener(this::btnContinuarActionPerformed);
+
+        txtMontoATransferir.setBackground(new java.awt.Color(86, 86, 86));
+        txtMontoATransferir.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        txtMontoATransferir.setForeground(new java.awt.Color(0, 0, 0));
+        txtMontoATransferir.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jLabel1.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel1.setText("Monto:");
+
+        jLabel2.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel2.setText("Saldo Disponible: ");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(303, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(lblCuentaDestino)
+                        .addGap(268, 268, 268))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(lblTitulo)
+                        .addGap(276, 276, 276))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnContinuar, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(348, 348, 348))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtMontoATransferir, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(lblCuentaOrigen)
+                                .addComponent(comboCuentasCliente, 0, 280, Short.MAX_VALUE)
+                                .addComponent(txtCuentaDestino)))
+                        .addGap(251, 251, 251))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(189, 189, 189))))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(340, 340, 340)
+                .addComponent(jLabel2)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblTitulo)
+                .addGap(68, 68, 68)
+                .addComponent(lblCuentaOrigen)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(comboCuentasCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(44, 44, 44)
+                .addComponent(lblCuentaDestino)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtCuentaDestino, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtMontoATransferir, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addGap(19, 19, 19)
+                .addComponent(btnContinuar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(47, 47, 47))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContinuarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnContinuarActionPerformed
+
+    private void comboCuentasClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboCuentasClienteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboCuentasClienteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -70,5 +191,15 @@ public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnContinuar;
+    private javax.swing.JComboBox<String> comboCuentasCliente;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lblCuentaDestino;
+    private javax.swing.JLabel lblCuentaOrigen;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JTextField txtCuentaDestino;
+    private javax.swing.JTextField txtMontoATransferir;
     // End of variables declaration//GEN-END:variables
 }
