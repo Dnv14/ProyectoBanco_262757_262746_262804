@@ -4,16 +4,19 @@
 
 package com.mycompany.proyectobanco_262757_262746_262804;
 
-import com.mycompany.proyectobanco.dtos.NuevaOperacionDTO;
-import com.mycompany.proyectobanco.dtos.NuevaTransferenciaDTO;
-import com.mycompany.proyectobanco.entidades.Operacion;
+import com.mycompany.proyectobanco.negocio.CuentasBO;
+import com.mycompany.proyectobanco.negocio.ICuentasBO;
+import com.mycompany.proyectobanco.negocio.IOperacionBO;
 import com.mycompany.proyectobanco.negocio.ITransferenciaBO;
+import com.mycompany.proyectobanco.negocio.OperacionBO;
+import com.mycompany.proyectobanco.negocio.TransferenciaBO;
+import com.mycompany.proyectobanco.persistencia.CuentasDAO;
+import com.mycompany.proyectobanco.persistencia.ICuentasDAO;
 import com.mycompany.proyectobanco.persistencia.IOperacionDAO;
 import com.mycompany.proyectobanco.persistencia.ITransferenciaDAO;
 import com.mycompany.proyectobanco.persistencia.OperacionDAO;
-import com.mycompany.proyectobanco.persistencia.PersistenciaException;
 import com.mycompany.proyectobanco.persistencia.TransferenciaDAO;
-import java.time.LocalDateTime;
+import com.mycompany.proyectobanco.presentacion.SeleccionarCuentaOrigenTransferenciaFORM;
 
 /**
  *
@@ -22,21 +25,16 @@ import java.time.LocalDateTime;
 public class ProyectoBanco_262757_262746_262804 {
 
     public static void main(String[] args) {
-        LocalDateTime fechaHora = LocalDateTime.now();
-        NuevaOperacionDTO nuevaOperacionDTO = new NuevaOperacionDTO(500, fechaHora ,"1000000000000001");
-        IOperacionDAO operacion = new OperacionDAO();
-        try{
-            operacion.realizarOperacion(nuevaOperacionDTO);
-        }catch(PersistenciaException ex){
-            System.out.println("Error");
-        }   
+        IOperacionDAO operacionDAO = new OperacionDAO();
+        IOperacionBO operacionBO = new OperacionBO(operacionDAO);
         
-        NuevaTransferenciaDTO nuevaTransfDTO = new NuevaTransferenciaDTO(1, "1000000000000011");
         ITransferenciaDAO nuevaTransferenciaDAO = new TransferenciaDAO();
-        try{
-            nuevaTransferenciaDAO.crearTransferencia(nuevaTransfDTO);
-        }catch(PersistenciaException ex){
-            System.out.println("error");
-        }
+        ITransferenciaBO nuevaTransferenciaBO = new TransferenciaBO(nuevaTransferenciaDAO);
+        
+        ICuentasDAO cuentasDAO = new CuentasDAO();
+        ICuentasBO cuentasBO = new CuentasBO(cuentasDAO);
+        
+        SeleccionarCuentaOrigenTransferenciaFORM transferenciaFORM = new SeleccionarCuentaOrigenTransferenciaFORM(cuentasBO,nuevaTransferenciaBO,operacionBO);
+        transferenciaFORM.setVisible(true);
     }
 }

@@ -4,10 +4,16 @@
  */
 package com.mycompany.proyectobanco.presentacion;
 
+import com.mycompany.proyectobanco.dtos.NuevaOperacionDTO;
+import com.mycompany.proyectobanco.dtos.NuevaTransferenciaDTO;
 import com.mycompany.proyectobanco.dtos.NuevaTransferenciaFormDTO;
 import com.mycompany.proyectobanco.entidades.Cuenta;
+import com.mycompany.proyectobanco.entidades.Operacion;
 import com.mycompany.proyectobanco.negocio.ICuentasBO;
+import com.mycompany.proyectobanco.negocio.IOperacionBO;
+import com.mycompany.proyectobanco.negocio.ITransferenciaBO;
 import com.mycompany.proyectobanco.negocio.NegocioException;
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.swing.JOptionPane;
 
@@ -18,15 +24,17 @@ import javax.swing.JOptionPane;
 public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(SeleccionarCuentaOrigenTransferenciaFORM.class.getName());
-    //private ITransferenciaBO transferenciaBO;
+    private final ITransferenciaBO transferenciaBO;
+    private final IOperacionBO operacionBO;
     private final ICuentasBO cuentasBO;
     /**
      * Creates new form SeleccionarCuentaOrigenTransferenciaFORM
      * @param cuentasBO
      */
-    public SeleccionarCuentaOrigenTransferenciaFORM(ICuentasBO cuentasBO) {
+    public SeleccionarCuentaOrigenTransferenciaFORM(ICuentasBO cuentasBO, ITransferenciaBO transferenciaBO, IOperacionBO operacionBO) {
         this.cuentasBO = cuentasBO;
-        //this.transferenciaBO = transferenciaBO
+        this.transferenciaBO = transferenciaBO;
+        this.operacionBO = operacionBO;
         initComponents();
         this.llenarCuentasCliente();
     }
@@ -59,7 +67,6 @@ public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame
 
         comboCuentasCliente.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         comboCuentasCliente.setForeground(new java.awt.Color(0, 0, 0));
-        comboCuentasCliente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         comboCuentasCliente.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         comboCuentasCliente.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         comboCuentasCliente.addActionListener(this::comboCuentasClienteActionPerformed);
@@ -170,7 +177,7 @@ public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnTransferirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransferirActionPerformed
-        
+        this.realizarTransferencia();
     }//GEN-LAST:event_btnTransferirActionPerformed
 
     private void comboCuentasClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboCuentasClienteActionPerformed
@@ -178,11 +185,28 @@ public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame
     }//GEN-LAST:event_comboCuentasClienteActionPerformed
 
     private void realizarTransferencia(){
-        Cuenta cuentaOrigen = (Cuenta) comboCuentasCliente.getSelectedItem();
-        String cuentaDestino = txtCuentaDestino.getText();
-        Integer montoTransferencia = Integer.parseInt(txtMontoATransferir.getText());
-        
-        NuevaTransferenciaFormDTO datosTransferencia = new NuevaTransferenciaFormDTO(cuentaDestino, cuentaOrigen, montoTransferencia);
+        try {
+            Cuenta cuentaOrigen = (Cuenta) comboCuentasCliente.getSelectedItem();
+            String cuentaDestino = txtCuentaDestino.getText();
+            Integer montoTransferencia = Integer.valueOf(txtMontoATransferir.getText());
+            LocalDateTime fechaHora = LocalDateTime.now();
+            
+            NuevaOperacionDTO operacionDTO = new NuevaOperacionDTO(montoTransferencia,fechaHora,cuentaOrigen.getNumeroCuenta());
+            Operacion operacion = operacionBO.realizarOperacion(operacionDTO);
+            
+            NuevaTransferenciaDTO transferenciaDTO = new NuevaTransferenciaDTO(operacion.getIdOperacion(),cuentaDestino);
+            transferenciaBO.crearTransferencia(transferenciaDTO);
+            
+            JOptionPane.showMessageDialog(
+                this, 
+                "Transferencia realizada correctamente.", 
+                "Información", 
+                JOptionPane.INFORMATION_MESSAGE
+            );
+            
+        } catch (NegocioException ex) {
+            
+        }
         
     }
     
@@ -191,8 +215,9 @@ public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame
             List<Cuenta> cuentasClientes = cuentasBO.consultarCuentasCliente(1); //Aqui se cambiara a que sea el id del usuario que inicio sesion,
                                                                                  // esta para poder probar el CU transferencia
             comboCuentasCliente.removeAllItems(); 
+            
             for (Cuenta cuenta : cuentasClientes) {
-                comboCuentasCliente.addItem(cuenta.toString());
+                comboCuentasCliente.addItem(cuenta);
             }
         } catch (NegocioException ex) {
             JOptionPane.showMessageDialog(this,
