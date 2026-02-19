@@ -50,12 +50,12 @@ public class OperacionDAO implements IOperacionDAO {
             ResultSet idsOperacion = comando.getGeneratedKeys();
 
             if (idsOperacion.next() == true) {
-              idOperacion = idsOperacion.getInt(1);
+                idOperacion = idsOperacion.getInt(1);
             }
-            
+
             LOGGER.fine("Se registró la operación");
 
-            return new Operacion(idOperacion, nuevaOpreacionDTO.getMonto(), nuevaOpreacionDTO.getFechaHora(),nuevaOpreacionDTO.getNumeroCuenta());
+            return new Operacion(idOperacion, nuevaOpreacionDTO.getMonto(), nuevaOpreacionDTO.getFechaHora(), nuevaOpreacionDTO.getNumeroCuenta());
 
         } catch (SQLException ex) {
             LOGGER.severe(ex.getMessage());
@@ -69,13 +69,13 @@ public class OperacionDAO implements IOperacionDAO {
             Cuenta cuentaOrigen = null;
             ICuentasDAO cuentasDAO = new CuentasDAO();
             List<Cuenta> cuentasBanco = cuentasDAO.consultarCuentasActivas();
-            
-            for(Cuenta cuenta: cuentasBanco){
-                if(cuenta.getNumeroCuenta().equalsIgnoreCase(operacionDTO.getNumeroCuenta())){
+
+            for (Cuenta cuenta : cuentasBanco) {
+                if (cuenta.getNumeroCuenta().equalsIgnoreCase(operacionDTO.getNumeroCuenta())) {
                     cuentaOrigen = cuenta;
                 }
             }
-            
+
             Long saldoNuevo = cuentaOrigen.getSaldo() - operacionDTO.getMonto();
             String codigoSQL = """
                                 UPDATE cuenta
@@ -84,21 +84,21 @@ public class OperacionDAO implements IOperacionDAO {
                               """;
             Connection conexion = ConexionBD.crearConexion();
             PreparedStatement comando = conexion.prepareStatement(codigoSQL);
-            
+
             comando.setLong(1, saldoNuevo);
             comando.setString(2, cuentaOrigen.getIdCliente());
             comando.setString(3, cuentaOrigen.getNumeroCuenta());
-            
+
             comando.execute();
             comando.close();
             conexion.close();
-            
+
         } catch (SQLException ex) {
             LOGGER.severe(ex.getMessage());
             throw new PersistenciaException("No fue posible actualizar el saldo de la cuenta origen.", ex);
         }
     }
-    
+
     @Override
     public List<Operacion> consultarOperaciones() throws PersistenciaException {
         try {
@@ -110,14 +110,14 @@ public class OperacionDAO implements IOperacionDAO {
             Connection conexion = ConexionBD.crearConexion();
             PreparedStatement comando = conexion.prepareStatement(codigoSQL);
             ResultSet rs = comando.executeQuery();
-            
-            LocalDateTime fechaHora = rs.getTimestamp("fechaHora").toLocalDateTime();
+
             while (rs.next()) {
+                LocalDateTime fechaHora = rs.getTimestamp("fechaHora").toLocalDateTime();
                 Operacion operacion = new Operacion(
                         rs.getInt("idOperacion"),
                         rs.getLong("monto"),
                         fechaHora,
-                        rs.getString("numeroCuenta") );
+                        rs.getString("numeroCuenta"));
                 operaciones.add(operacion);
             }
             comando.close();
@@ -129,7 +129,5 @@ public class OperacionDAO implements IOperacionDAO {
             throw new PersistenciaException("No fue posible consultar las operaciones", ex);
         }
     }
-    
+
 }
-
-

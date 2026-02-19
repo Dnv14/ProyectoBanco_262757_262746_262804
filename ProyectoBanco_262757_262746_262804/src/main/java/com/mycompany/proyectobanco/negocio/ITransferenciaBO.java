@@ -13,4 +13,5 @@ import com.mycompany.proyectobanco.entidades.Transferencia;
  */
 public interface ITransferenciaBO {
     public abstract Transferencia crearTransferencia(NuevaTransferenciaDTO nuevaTransferencia)throws NegocioException;
+    public abstract void actualizarSaldoCuentaDestino(NuevaTransferenciaDTO operacionDTO) throws NegocioException;
 }
