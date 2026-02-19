@@ -96,9 +96,3 @@ public class TransferenciaDAO implements ITransferenciaDAO {
 
 }
 
-//CREATE TABLE Transferencia (
-//  idOperacion INT PRIMARY KEY NOT NULL,
-//  cuentaDestino VARCHAR(16) NOT NULL,
-//  FOREIGN KEY (idOperacion) REFERENCES Operacion(idOperacion),
-//  FOREIGN KEY (cuentaDestino) REFERENCES Cuenta(numeroCuenta)
-//);
