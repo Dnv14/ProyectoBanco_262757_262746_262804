@@ -14,6 +14,6 @@ import com.mycompany.proyectobanco.entidades.Operacion;
 public class ProyectoBanco_262757_262746_262804 {
 
     public static void main(String[] args) {
-        NuevaOperacionDTO nuevaOperacionDTO = new NuevaOperacionDTO(500, ,);
+        
     }
 }

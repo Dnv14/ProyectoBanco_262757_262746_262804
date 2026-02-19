@@ -15,17 +15,15 @@ public class Operacion {
     private int idOperacion;
     private Integer monto;
     private LocalDateTime fechaHora;
-    private String tipoOperacion;
     private String numeroCuenta;
 
     public Operacion() {
     }
 
-    public Operacion(int idOperacion, Integer monto, LocalDateTime fechaHora, String tipoOperacion, String numeroCuenta) {
+    public Operacion(int idOperacion, Integer monto, LocalDateTime fechaHora, String numeroCuenta) {
         this.idOperacion = idOperacion;
         this.monto = monto;
         this.fechaHora = fechaHora;
-        this.tipoOperacion = tipoOperacion;
         this.numeroCuenta = numeroCuenta;
     }
 
@@ -52,15 +50,7 @@ public class Operacion {
     public void setFechaHora(LocalDateTime fechaHora) {
         this.fechaHora = fechaHora;
     }
-
-    public String getTipoOperacion() {
-        return tipoOperacion;
-    }
-
-    public void setTipoOperacion(String tipoOperacion) {
-        this.tipoOperacion = tipoOperacion;
-    }
-
+    
     public String getNumeroCuenta() {
         return numeroCuenta;
     }

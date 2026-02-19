@@ -47,13 +47,13 @@ public class OperacionDAO implements IOperacionDAO {
 
             ResultSet idsOperacion = comando.getGeneratedKeys();
 
-            if (idsOperacion.next()) {
+            if (idsOperacion.next() == true) {
               idOperacion = idsOperacion.getInt(1);
             }
             
             LOGGER.fine("Se registró la operación");
 
-            return new Operacion(idOperacion, nuevaOpreacionDTO.getMonto(), nuevaOpreacionDTO.getFechaHora(), nuevaOpreacionDTO.getTipoOperacion(), nuevaOpreacionDTO.getNumeroCuenta());
+            return new Operacion(idOperacion, nuevaOpreacionDTO.getMonto(), nuevaOpreacionDTO.getFechaHora(),nuevaOpreacionDTO.getNumeroCuenta());
 
         } catch (SQLException ex) {
             LOGGER.severe(ex.getMessage());

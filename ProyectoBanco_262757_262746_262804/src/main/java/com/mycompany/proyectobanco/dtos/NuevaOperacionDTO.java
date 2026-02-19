@@ -13,13 +13,11 @@ import java.time.LocalDateTime;
 public class NuevaOperacionDTO {
     private Integer monto;
     private LocalDateTime fechaHora;
-    private String tipoOperacion;
     private String numeroCuenta;
 
-    public NuevaOperacionDTO(Integer monto, LocalDateTime fechaHora, String tipoOperacion, String numeroCuenta) {
+    public NuevaOperacionDTO(Integer monto, LocalDateTime fechaHora, String numeroCuenta) {
         this.monto = monto;
         this.fechaHora = fechaHora;
-        this.tipoOperacion = tipoOperacion;
         this.numeroCuenta = numeroCuenta;
     }
 
@@ -29,10 +27,6 @@ public class NuevaOperacionDTO {
 
     public LocalDateTime getFechaHora() {
         return fechaHora;
-    }
-
-    public String getTipoOperacion() {
-        return tipoOperacion;
     }
 
     public String getNumeroCuenta() {
