@@ -226,7 +226,7 @@ public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame
             comboCuentasCliente.setSelectedIndex(0);
 
         } catch (NegocioException ex) {
-
+            JOptionPane.showMessageDialog(this, "Error en transferencia: " + ex.getMessage(),"ERROR",JOptionPane.ERROR_MESSAGE);
         }
 
     }

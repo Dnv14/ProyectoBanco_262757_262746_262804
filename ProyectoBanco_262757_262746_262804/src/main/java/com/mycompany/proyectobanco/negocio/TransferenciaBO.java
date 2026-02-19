@@ -31,26 +31,30 @@ public class TransferenciaBO implements ITransferenciaBO {
 
     @Override
     public Transferencia crearTransferencia(NuevaTransferenciaFormDTO nuevaTransferencia) throws NegocioException {
-//        if (nuevaTransferencia.getCuentaDestino() == null) {
-//            throw new NegocioException("La cuenta destino no puede estar vacia!", null);
-//        }
-//
-//        if (nuevaTransferencia.getIdOperacion() == null || nuevaTransferencia.getIdOperacion() < 0) {
-//            throw new NegocioException("Id de operacion invalido!!", null);
-//        }
-//
-//        if (nuevaTransferencia.getCuentaDestino().length() != 16) {
-//            throw new NegocioException("La cuenta destino tiene que tener 16 digitos!", null);
-//        }
+        
+        if (nuevaTransferencia.getCuentaOrigen() == null) {
+            throw new NegocioException("la cuenta de origen no puede estar vacia", null);
+        }
+        if (nuevaTransferencia.getNumeroCuentaDestino() == null) {
+            throw new NegocioException("La cuenta destino no puede estar vacia!", null);
+        }
+        
+        if (nuevaTransferencia.getNumeroCuentaDestino().length() != 16) {
+            throw new NegocioException("La cuenta destino tiene que tener 16 digitos!", null);
+        }
+
+        if(nuevaTransferencia.getMonto() <= 0) {
+            throw new NegocioException("monto invalido", null);
+        }
 
         try {
             NuevaOperacionDTO operacionDTO = new NuevaOperacionDTO(nuevaTransferencia.getMonto(), nuevaTransferencia.getFechaHora(), nuevaTransferencia.getCuentaOrigen().getNumeroCuenta());
             Operacion operacion = operacionBO.realizarOperacion(operacionDTO);
             NuevaTransferenciaDTO transferenciaDTO = new NuevaTransferenciaDTO(operacion.getIdOperacion(), nuevaTransferencia.getNumeroCuentaDestino());
-            
+
             operacionBO.actualizarSaldoCuentaOrigen(operacionDTO);
             this.actualizarSaldoCuentaDestino(transferenciaDTO);
-            
+
             Transferencia transferencia = this.transferenciaDAO.crearTransferencia(transferenciaDTO);
             return transferencia;
 
