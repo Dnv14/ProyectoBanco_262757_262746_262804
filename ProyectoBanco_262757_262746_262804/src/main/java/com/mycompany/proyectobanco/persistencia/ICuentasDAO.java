@@ -10,4 +10,5 @@ import java.util.List;
  */
 public interface ICuentasDAO {
     public abstract List<Cuenta> consultarCuentasCliente(Integer idCliente) throws PersistenciaException;
+    public abstract List<Cuenta> consultarCuentasActivas() throws PersistenciaException;
 }

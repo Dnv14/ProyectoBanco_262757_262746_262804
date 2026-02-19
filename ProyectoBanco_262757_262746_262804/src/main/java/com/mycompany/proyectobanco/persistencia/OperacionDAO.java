@@ -5,6 +5,7 @@
 package com.mycompany.proyectobanco.persistencia;
 
 import com.mycompany.proyectobanco.dtos.NuevaOperacionDTO;
+import com.mycompany.proyectobanco.entidades.Cuenta;
 import com.mycompany.proyectobanco.entidades.Operacion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,6 +14,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -60,4 +62,35 @@ public class OperacionDAO implements IOperacionDAO {
         }
     }
 
+    @Override
+    public void actualizarSaldoCuentaOrigen(NuevaOperacionDTO operacionDTO) throws PersistenciaException {
+        try {
+            Cuenta cuentaOrigen = null;
+            ICuentasDAO cuentasDAO = new CuentasDAO();
+            List<Cuenta> cuentasBanco = cuentasDAO.consultarCuentasActivas();
+            
+            for(Cuenta cuenta: cuentasBanco){
+                if(cuenta.getNumeroCuenta().equalsIgnoreCase(operacionDTO.getNumeroCuenta())){
+                    cuentaOrigen = cuenta;
+                }
+            }
+            
+            Long saldoNuevo = 12l;
+            String codigoSQL = """
+                                UPDATE cuenta
+                                SET saldo = ?
+                                WHERE idCliente = ?;
+                              """;
+            Connection conexion = ConexionBD.crearConexion();
+            PreparedStatement comando = conexion.prepareStatement(codigoSQL);
+            
+            comando.setLong(1, saldoNuevo);
+            comando.setString(2, cuentaOrigen.getIdCliente());
+            
+        } catch (SQLException ex) {
+            //TODO
+        }
+    }
 }
+
+

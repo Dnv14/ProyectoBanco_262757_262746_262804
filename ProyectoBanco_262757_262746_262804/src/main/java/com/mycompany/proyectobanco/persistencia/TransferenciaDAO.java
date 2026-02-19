@@ -42,6 +42,13 @@ public class TransferenciaDAO implements ITransferenciaDAO {
         }
     }
 
+    @Override
+    public void actualizarSaldoCuentaDestino(NuevaTransferenciaDTO transferencia) throws PersistenciaException {
+        
+    }
+
+    
+    
 }
 
 //CREATE TABLE Transferencia (

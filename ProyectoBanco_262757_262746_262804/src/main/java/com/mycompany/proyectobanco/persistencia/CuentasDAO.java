@@ -24,9 +24,9 @@ public class CuentasDAO implements ICuentasDAO{
         try {
             List<Cuenta> cuentasCliente = new LinkedList<>();
             String codigoSQL = """
-                                                      select numeroCuenta, estado, fechaApertura, saldo, idCliente
-                                                      from cuenta
-                                                      where idCliente = 1
+                                                      SELECT numeroCuenta, estado, fechaApertura, saldo, idCliente
+                                                      FROM cuenta
+                                                      WHERE idCliente = 1
                                            """; //Aqui se cambiara a que sea el id del cliente que inicio sesion, para poder probar se dejo el idCliente = 1
             Connection conexion = ConexionBD.crearConexion();
             PreparedStatement comando = conexion.prepareStatement(codigoSQL);
@@ -57,5 +57,39 @@ public class CuentasDAO implements ICuentasDAO{
         calendario.setTime(fechaSQL);
         return calendario;
     }
+
+    @Override
+    public List<Cuenta> consultarCuentasActivas() throws PersistenciaException {
+        try {
+            List<Cuenta> cuentasCliente = new LinkedList<>();
+            String codigoSQL = """
+                                           SELECT numeroCuenta, estado, fechaApertura, saldo, idCliente
+                                           FROM cuenta
+                                           WHERE estado = 'ACTIVO';
+                                                          """;
+            Connection conexion = ConexionBD.crearConexion();
+            PreparedStatement comando = conexion.prepareStatement(codigoSQL);
+            ResultSet rs = comando.executeQuery();
+            while (rs.next()) {
+                Cuenta cuenta = new Cuenta(
+                    rs.getString("numeroCuenta"),
+                    Cuenta.Estado.valueOf(rs.getString("estado")),
+                    convertirFecha(rs.getDate("fechaApertura")),
+                    rs.getLong("saldo"),
+                    String.valueOf(rs.getLong("idCliente"))
+                );
+                cuentasCliente.add(cuenta);
+            }
+            comando.close();
+            conexion.close();
+            
+            return cuentasCliente;
+        } catch (SQLException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new PersistenciaException("No fue posible consultar las cuentas activas del banco.", ex);
+        }
+    }
+
+    
     
 }
