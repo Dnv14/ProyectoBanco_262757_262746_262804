@@ -73,6 +73,7 @@ public class OperacionDAO implements IOperacionDAO {
             for(Cuenta cuenta: cuentasBanco){
                 if(cuenta.getNumeroCuenta().equalsIgnoreCase(operacionDTO.getNumeroCuenta())){
                     cuentaOrigen = cuenta;
+                    break;
                 }
             }
             
@@ -86,10 +87,10 @@ public class OperacionDAO implements IOperacionDAO {
             PreparedStatement comando = conexion.prepareStatement(codigoSQL);
             
             comando.setLong(1, saldoNuevo);
-            comando.setString(2, cuentaOrigen.getIdCliente());
+            comando.setLong(2, Long.parseLong(cuentaOrigen.getIdCliente()));
             comando.setString(3, cuentaOrigen.getNumeroCuenta());
             
-            comando.execute();
+            comando.executeUpdate();
             comando.close();
             conexion.close();
             
