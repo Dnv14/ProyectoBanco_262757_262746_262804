@@ -71,7 +71,7 @@ public class OperacionBO implements IOperacionBO {
             }
             this.operacionDAO.actualizarSaldoCuentaOrigen(operacionDTO);
         } catch (PersistenciaException ex) {
-            //TODO
+            throw new NegocioException("No fue posible actualizar el saldo de la cuenta origen.",ex);
         }
     }
 
