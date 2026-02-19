@@ -16,13 +16,13 @@ public class Cuenta {
     private String numeroCuenta;
     private Estado estado;
     private GregorianCalendar fechaApertura;
-    private Integer saldo;
+    private Long saldo;
     private String idCliente;
 
     public Cuenta() {}
     
        
-    public Cuenta(String numeroCuenta, Estado estado, GregorianCalendar fechaApertura, Integer saldo, String idCliente) {
+    public Cuenta(String numeroCuenta, Estado estado, GregorianCalendar fechaApertura, Long saldo, String idCliente) {
         this.numeroCuenta = numeroCuenta;
         this.estado = estado;
         this.fechaApertura = fechaApertura;
@@ -42,7 +42,7 @@ public class Cuenta {
         return fechaApertura;
     }
 
-    public Integer getSaldo() {
+    public Long getSaldo() {
         return saldo;
     }
 
@@ -62,7 +62,7 @@ public class Cuenta {
         this.fechaApertura = fechaApertura;
     }
 
-    public void setSaldo(Integer saldo) {
+    public void setSaldo(Long saldo) {
         this.saldo = saldo;
     }
 

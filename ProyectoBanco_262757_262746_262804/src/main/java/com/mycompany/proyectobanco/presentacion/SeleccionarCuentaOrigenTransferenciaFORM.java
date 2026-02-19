@@ -6,6 +6,7 @@ package com.mycompany.proyectobanco.presentacion;
 
 import com.mycompany.proyectobanco.dtos.NuevaTransferenciaFormDTO;
 import com.mycompany.proyectobanco.entidades.Cuenta;
+import java.util.List;
 
 /**
  *
@@ -177,7 +178,10 @@ public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame
         NuevaTransferenciaFormDTO datosTransferencia = new NuevaTransferenciaFormDTO(cuentaDestino, cuentaOrigen, montoTransferencia);
         
     }
-
+    
+    private void llenarCuentasCliente(){
+        
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnTransferir;
     private javax.swing.JComboBox<String> comboCuentasCliente;
