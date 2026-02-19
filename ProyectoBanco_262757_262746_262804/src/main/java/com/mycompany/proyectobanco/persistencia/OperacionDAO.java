@@ -30,7 +30,7 @@ public class OperacionDAO implements IOperacionDAO {
                                values(?,?,?,?);
                                """;
             Connection conexion = ConexionBD.crearConexion();
-            PreparedStatement insertarOperacionStmt = conexion.prepareStatement(codigoSQL,Statement.RETURN_GENERATED_KEYS
+            PreparedStatement comando = conexion.prepareStatement(codigoSQL,Statement.RETURN_GENERATED_KEYS
             );
 
             LocalDateTime fechaHora = LocalDateTime.now();
