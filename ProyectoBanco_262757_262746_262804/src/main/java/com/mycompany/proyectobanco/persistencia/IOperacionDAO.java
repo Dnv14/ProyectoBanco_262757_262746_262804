@@ -13,4 +13,5 @@ import com.mycompany.proyectobanco.entidades.Operacion;
  */
 public interface IOperacionDAO {
     public abstract Operacion realizarOperacion(NuevaOperacionDTO nuevaOperacionDTO)throws PersistenciaException;
+    public abstract void actualizarSaldoCuentaOrigen(NuevaOperacionDTO operacionDTO) throws PersistenciaException;
 }

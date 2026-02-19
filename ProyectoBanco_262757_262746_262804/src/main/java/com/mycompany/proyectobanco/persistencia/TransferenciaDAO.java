@@ -30,14 +30,26 @@ public class TransferenciaDAO implements ITransferenciaDAO {
             comando.setInt(1, nuevaTransferencia.getIdOperacion());
             comando.setString(2, nuevaTransferencia.getCuentaDestino());
             comando.execute();
-            return new Transferencia(nuevaTransferencia.getIdOperacion(), nuevaTransferencia.getCuentaDestino());
+            
+            comando.close();
+            conexion.close();
 
+            return new Transferencia(nuevaTransferencia.getIdOperacion(), nuevaTransferencia.getCuentaDestino());
+            
+            
         } catch (SQLException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new PersistenciaException("no se pudo crear la transferencia", ex);
+            throw new PersistenciaException("N se pudo realizar la transferencia", ex);
         }
     }
 
+    @Override
+    public void actualizarSaldoCuentaDestino(NuevaTransferenciaDTO transferencia) throws PersistenciaException {
+        
+    }
+
+    
+    
 }
 
 //CREATE TABLE Transferencia (
