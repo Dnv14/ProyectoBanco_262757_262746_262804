@@ -6,7 +6,10 @@ package com.mycompany.proyectobanco.presentacion;
 
 import com.mycompany.proyectobanco.dtos.NuevaTransferenciaFormDTO;
 import com.mycompany.proyectobanco.entidades.Cuenta;
+import com.mycompany.proyectobanco.negocio.ICuentasBO;
+import com.mycompany.proyectobanco.negocio.NegocioException;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -16,12 +19,16 @@ public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame
     
     private static final java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(SeleccionarCuentaOrigenTransferenciaFORM.class.getName());
     //private ITransferenciaBO transferenciaBO;
+    private final ICuentasBO cuentasBO;
     /**
      * Creates new form SeleccionarCuentaOrigenTransferenciaFORM
+     * @param cuentasBO
      */
-    public SeleccionarCuentaOrigenTransferenciaFORM() {
+    public SeleccionarCuentaOrigenTransferenciaFORM(ICuentasBO cuentasBO) {
+        this.cuentasBO = cuentasBO;
         //this.transferenciaBO = transferenciaBO
         initComponents();
+        this.llenarCuentasCliente();
     }
 
     /**
@@ -180,7 +187,19 @@ public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame
     }
     
     private void llenarCuentasCliente(){
-        
+        try {
+            List<Cuenta> cuentasClientes = cuentasBO.consultarCuentasCliente(1); //Aqui se cambiara a que sea el id del usuario que inicio sesion,
+                                                                                 // esta para poder probar el CU transferencia
+            comboCuentasCliente.removeAllItems(); 
+            for (Cuenta cuenta : cuentasClientes) {
+                comboCuentasCliente.addItem(cuenta.toString());
+            }
+        } catch (NegocioException ex) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al consultar cuentas del cliente: "+ex.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnTransferir;
