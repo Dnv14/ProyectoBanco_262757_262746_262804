@@ -4,18 +4,22 @@
  */
 package com.mycompany.proyectobanco.presentacion;
 
+import com.mycompany.proyectobanco.dtos.NuevaTransferenciaFormDTO;
+import com.mycompany.proyectobanco.entidades.Cuenta;
+
 /**
  *
  * @author Julian
  */
 public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(SeleccionarCuentaOrigenTransferenciaFORM.class.getName());
-
+    private static final java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(SeleccionarCuentaOrigenTransferenciaFORM.class.getName());
+    //private ITransferenciaBO transferenciaBO;
     /**
      * Creates new form SeleccionarCuentaOrigenTransferenciaFORM
      */
     public SeleccionarCuentaOrigenTransferenciaFORM() {
+        //this.transferenciaBO = transferenciaBO
         initComponents();
     }
 
@@ -34,10 +38,10 @@ public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame
         lblTitulo = new javax.swing.JLabel();
         lblCuentaDestino = new javax.swing.JLabel();
         txtCuentaDestino = new javax.swing.JTextField();
-        btnContinuar = new javax.swing.JButton();
+        btnTransferir = new javax.swing.JButton();
         txtMontoATransferir = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        lblMontoATransferir = new javax.swing.JLabel();
+        lblSaldoDisponible = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SeleccionarCuentaOrigen");
@@ -69,23 +73,23 @@ public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame
         txtCuentaDestino.setForeground(new java.awt.Color(0, 0, 0));
         txtCuentaDestino.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        btnContinuar.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        btnContinuar.setForeground(new java.awt.Color(0, 0, 0));
-        btnContinuar.setText("Continuar");
-        btnContinuar.addActionListener(this::btnContinuarActionPerformed);
+        btnTransferir.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        btnTransferir.setForeground(new java.awt.Color(0, 0, 0));
+        btnTransferir.setText("Transferir");
+        btnTransferir.addActionListener(this::btnTransferirActionPerformed);
 
         txtMontoATransferir.setBackground(new java.awt.Color(86, 86, 86));
         txtMontoATransferir.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         txtMontoATransferir.setForeground(new java.awt.Color(0, 0, 0));
         txtMontoATransferir.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel1.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel1.setText("Monto:");
+        lblMontoATransferir.setFont(new java.awt.Font("Arial", 1, 20)); // NOI18N
+        lblMontoATransferir.setForeground(new java.awt.Color(0, 0, 0));
+        lblMontoATransferir.setText("Monto:");
 
-        jLabel2.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel2.setText("Saldo Disponible: ");
+        lblSaldoDisponible.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        lblSaldoDisponible.setForeground(new java.awt.Color(0, 0, 0));
+        lblSaldoDisponible.setText("Saldo Disponible: ");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -101,7 +105,7 @@ public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame
                         .addComponent(lblTitulo)
                         .addGap(276, 276, 276))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnContinuar, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnTransferir, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(348, 348, 348))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -112,11 +116,11 @@ public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame
                                 .addComponent(txtCuentaDestino)))
                         .addGap(251, 251, 251))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblMontoATransferir, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(189, 189, 189))))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(340, 340, 340)
-                .addComponent(jLabel2)
+                .addComponent(lblSaldoDisponible)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -133,13 +137,13 @@ public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtCuentaDestino, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
-                .addComponent(jLabel1)
+                .addComponent(lblMontoATransferir)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtMontoATransferir, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
+                .addComponent(lblSaldoDisponible)
                 .addGap(19, 19, 19)
-                .addComponent(btnContinuar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnTransferir, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(47, 47, 47))
         );
 
@@ -157,47 +161,31 @@ public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContinuarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnContinuarActionPerformed
+    private void btnTransferirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransferirActionPerformed
+        
+    }//GEN-LAST:event_btnTransferirActionPerformed
 
     private void comboCuentasClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboCuentasClienteActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_comboCuentasClienteActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new SeleccionarCuentaOrigenTransferenciaFORM().setVisible(true));
+    private void realizarTransferencia(){
+        Cuenta cuentaOrigen = (Cuenta) comboCuentasCliente.getSelectedItem();
+        String cuentaDestino = txtCuentaDestino.getText();
+        Integer montoTransferencia = Integer.parseInt(txtMontoATransferir.getText());
+        
+        NuevaTransferenciaFormDTO datosTransferencia = new NuevaTransferenciaFormDTO(cuentaDestino, cuentaOrigen, montoTransferencia);
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnContinuar;
+    private javax.swing.JButton btnTransferir;
     private javax.swing.JComboBox<String> comboCuentasCliente;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblCuentaDestino;
     private javax.swing.JLabel lblCuentaOrigen;
+    private javax.swing.JLabel lblMontoATransferir;
+    private javax.swing.JLabel lblSaldoDisponible;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JTextField txtCuentaDestino;
     private javax.swing.JTextField txtMontoATransferir;
