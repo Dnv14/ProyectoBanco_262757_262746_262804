@@ -7,7 +7,7 @@
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.release>25</maven.compiler.release>
+        <maven.compiler.release>22</maven.compiler.release>
         <exec.mainClass>com.mycompany.proyectobanco_262757_262746_262804.ProyectoBanco_262757_262746_262804</exec.mainClass>
     </properties>
     <dependencies>
