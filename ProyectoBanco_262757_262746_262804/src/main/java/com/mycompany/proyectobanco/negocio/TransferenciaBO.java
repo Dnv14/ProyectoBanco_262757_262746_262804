@@ -77,7 +77,7 @@ public class TransferenciaBO implements ITransferenciaBO {
             }
 
             if (cuentaDestino == null) {
-                throw new NegocioException("No existe la cuenta destino o no está activa.", null);
+                throw new NegocioException("No existe la cuenta destino ", null);
             }
             this.transferenciaDAO.actualizarSaldoCuentaDestino(transferenciaDTO);
         } catch (PersistenciaException ex) {
