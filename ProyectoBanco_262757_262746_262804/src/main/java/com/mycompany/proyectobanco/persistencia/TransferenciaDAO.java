@@ -2,6 +2,11 @@ package com.mycompany.proyectobanco.persistencia;
 
 import com.mycompany.proyectobanco.dtos.NuevaTransferenciaDTO;
 import com.mycompany.proyectobanco.entidades.Transferencia;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Logger;
 
 /**
@@ -9,20 +14,30 @@ import java.util.logging.Logger;
  * @author Diego
  */
 public class TransferenciaDAO implements ITransferenciaDAO {
-    
+
     private static final Logger LOGGER = Logger.getLogger(TransferenciaDAO.class.getName());
-    
+
     @Override
     public Transferencia crearTransferencia(NuevaTransferenciaDTO nuevaTransferencia) throws PersistenciaException {
         try {
             String codigoSQL = """
-                               
-                               """; 
-        } catch (Exception e) {
-        }return null;
- 
+                               INSERT INTO Transferencia(idOperacion, cuentaDestino)
+                               VALUES (?, ?)
+                               """;
+            Connection conexion = ConexionBD.crearConexion();
+            PreparedStatement comando = conexion.prepareStatement(codigoSQL);
+
+            comando.setInt(1, nuevaTransferencia.getIdOperacion());
+            comando.setString(2, nuevaTransferencia.getCuentaDestino());
+
+        } catch (SQLException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new PersistenciaException("no se pudo crear la transferencia", ex);
+        }
+        return null;
+
     }
-    
+
 }
 
 //CREATE TABLE Transferencia (
