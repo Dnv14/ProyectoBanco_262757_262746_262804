@@ -4,11 +4,8 @@
  */
 package com.mycompany.proyectobanco.presentacion;
 
-import com.mycompany.proyectobanco.dtos.NuevaOperacionDTO;
-import com.mycompany.proyectobanco.dtos.NuevaTransferenciaDTO;
 import com.mycompany.proyectobanco.dtos.NuevaTransferenciaFormDTO;
 import com.mycompany.proyectobanco.entidades.Cuenta;
-import com.mycompany.proyectobanco.entidades.Operacion;
 import com.mycompany.proyectobanco.negocio.ICuentasBO;
 import com.mycompany.proyectobanco.negocio.IOperacionBO;
 import com.mycompany.proyectobanco.negocio.ITransferenciaBO;
