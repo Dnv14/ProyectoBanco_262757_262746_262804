@@ -13,14 +13,14 @@ import java.util.GregorianCalendar;
  */
 public class Operacion {
     private int idOperacion;
-    private Integer monto;
+    private long monto;
     private LocalDateTime fechaHora;
     private String numeroCuenta;
 
     public Operacion() {
     }
 
-    public Operacion(int idOperacion, Integer monto, LocalDateTime fechaHora, String numeroCuenta) {
+    public Operacion(int idOperacion, long monto, LocalDateTime fechaHora, String numeroCuenta) {
         this.idOperacion = idOperacion;
         this.monto = monto;
         this.fechaHora = fechaHora;
@@ -35,11 +35,11 @@ public class Operacion {
         this.idOperacion = idOperacion;
     }
 
-    public Integer getMonto() {
+    public long getMonto() {
         return monto;
     }
 
-    public void setMonto(Integer monto) {
+    public void setMonto(long monto) {
         this.monto = monto;
     }
 

@@ -1,12 +1,13 @@
 package com.mycompany.proyectobanco.persistencia;
 
 import com.mycompany.proyectobanco.dtos.NuevaTransferenciaDTO;
+import com.mycompany.proyectobanco.entidades.Cuenta;
+import com.mycompany.proyectobanco.entidades.Operacion;
 import com.mycompany.proyectobanco.entidades.Transferencia;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -44,8 +45,46 @@ public class TransferenciaDAO implements ITransferenciaDAO {
     }
 
     @Override
-    public void actualizarSaldoCuentaDestino(NuevaTransferenciaDTO transferencia) throws PersistenciaException {
-        
+    public void actualizarSaldoCuentaDestino(NuevaTransferenciaDTO transferenciaDTO) throws PersistenciaException {
+        try {
+            Cuenta cuentaDestino = null;
+            ICuentasDAO cuentasDAO = new CuentasDAO();
+            List<Cuenta> cuentasBanco = cuentasDAO.consultarCuentasActivas();
+
+            Operacion operacionTransferencia = null;
+            IOperacionDAO operacionesDAO = new OperacionDAO();
+            List<Operacion> operaciones = operacionesDAO.consultarOperaciones();
+            
+            for (Operacion operacion: operaciones){
+                if(operacion.getIdOperacion() == operacionTransferencia.getIdOperacion()){
+                    operacionTransferencia = operacion;
+                }
+            }
+            
+            for (Cuenta cuenta : cuentasBanco) {
+                if (cuenta.getNumeroCuenta().equalsIgnoreCase(transferenciaDTO.getCuentaDestino())) {
+                    cuentaDestino = cuenta;
+                }
+            }
+
+            Long saldoNuevo = cuentaDestino.getSaldo() + operacionTransferencia.getMonto();
+            String codigoSQL = """
+                                UPDATE cuenta
+                                SET saldo = ?
+                                WHERE idCliente = ? AND numeroCuenta = ?;
+                              """;
+            Connection conexion = ConexionBD.crearConexion();
+            PreparedStatement comando = conexion.prepareStatement(codigoSQL);
+
+            comando.setLong(1, saldoNuevo);
+            comando.setString(2, cuentaDestino.getIdCliente());
+            comando.setString(3, cuentaDestino.getNumeroCuenta());
+            
+        } catch (SQLException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new PersistenciaException("No fue posible actualizar el saldo de la cuenta destino.", ex);
+        }
+
     }
 
     

@@ -13,4 +13,5 @@ import com.mycompany.proyectobanco.entidades.Operacion;
  */
 public interface IOperacionBO {
     public abstract Operacion realizarOperacion(NuevaOperacionDTO nuevaOperacionDTO)throws NegocioException;
+    public abstract void actualizarSaldoCuentaOrigen(NuevaOperacionDTO operacionDTO) throws NegocioException;
 }
