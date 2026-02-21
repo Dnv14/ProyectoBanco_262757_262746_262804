@@ -55,7 +55,6 @@ public class GenerarRetiroSinCuentaFORM extends javax.swing.JFrame {
         btnGenerarRetiro = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(800, 500));
 
         pnlGenerarRetiroSinCuenta.setBackground(new java.awt.Color(153, 153, 153));
 
@@ -64,6 +63,7 @@ public class GenerarRetiroSinCuentaFORM extends javax.swing.JFrame {
         lblTitulo.setText("Generar Retiro Sin Cuenta");
 
         comboCuentasCliente.setBackground(new java.awt.Color(255, 255, 255));
+        comboCuentasCliente.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         comboCuentasCliente.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         comboCuentasCliente.addItemListener(this::cambioSaldoDisponibleCuenta);
 

@@ -27,7 +27,7 @@ public class CuentasDAO implements ICuentasDAO {
                                                       SELECT numeroCuenta, estado, fechaApertura, saldo, idCliente
                                                       FROM Cuentas
                                                       WHERE idCliente = ?
-                                           """; //Aqui se cambiara a que sea el id del cliente que inicio sesion, para poder probar se dejo el idCliente = 1
+                                           """;
             Connection conexion = ConexionBD.crearConexion();
             PreparedStatement comando = conexion.prepareStatement(codigoSQL);
             comando.setLong(1, idCliente);

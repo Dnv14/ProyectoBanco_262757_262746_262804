@@ -21,6 +21,7 @@ import com.mycompany.proyectobanco.persistencia.OperacionDAO;
 import com.mycompany.proyectobanco.persistencia.RetiroDAO;
 import com.mycompany.proyectobanco.persistencia.TransferenciaDAO;
 import com.mycompany.proyectobanco.presentacion.CambiarEstadoCuentaFORM;
+import com.mycompany.proyectobanco.presentacion.CobrarRetiroSinCuentaFORM;
 import com.mycompany.proyectobanco.presentacion.GenerarRetiroSinCuentaFORM;
 import com.mycompany.proyectobanco.presentacion.SeleccionarCuentaOrigenTransferenciaFORM;
 
@@ -43,7 +44,9 @@ public class ProyectoBanco_262757_262746_262804 {
 //        GenerarRetiroSinCuentaFORM retiroSinCuenta = new GenerarRetiroSinCuentaFORM(cuentasBO,retiroBO);
 //        retiroSinCuenta.setVisible(true);
         
-        CambiarEstadoCuentaFORM cambiarEstado = new CambiarEstadoCuentaFORM(cuentasBO);
-        cambiarEstado.setVisible(true);
+//        CambiarEstadoCuentaFORM cambiarEstado = new CambiarEstadoCuentaFORM(cuentasBO);
+//        cambiarEstado.setVisible(true);
+        CobrarRetiroSinCuentaFORM cobrarRetiro = new CobrarRetiroSinCuentaFORM(retiroBO);
+        cobrarRetiro.setVisible(true);
     }
 }

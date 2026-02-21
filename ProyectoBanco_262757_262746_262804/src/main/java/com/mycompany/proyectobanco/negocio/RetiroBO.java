@@ -1,11 +1,13 @@
 
 package com.mycompany.proyectobanco.negocio;
 
+import com.mycompany.proyectobanco.dtos.CobrarRetiroDTO;
 import com.mycompany.proyectobanco.dtos.NuevaOperacionDTO;
 import com.mycompany.proyectobanco.dtos.NuevoRetiroDTO;
 import com.mycompany.proyectobanco.dtos.NuevoRetiroFormDTO;
 import com.mycompany.proyectobanco.entidades.Operacion;
 import com.mycompany.proyectobanco.entidades.Retiro;
+import com.mycompany.proyectobanco.entidades.Retiro.Estado;
 import com.mycompany.proyectobanco.persistencia.IRetiroDAO;
 import com.mycompany.proyectobanco.persistencia.PersistenciaException;
 import java.security.SecureRandom;
@@ -43,8 +45,28 @@ public class RetiroBO implements IRetiroBO{
         }
     }
     
+    @Override
+    public Retiro cobrarRetiroSinCuenta(CobrarRetiroDTO cobroRetiro) throws NegocioException {
+        if(cobroRetiro.getFolioOperacion() == null){
+            throw new NegocioException("El folio de la operacion no debe estar vacio.",null);
+        }
+        if(cobroRetiro.getContrasenia() == null){
+            throw new NegocioException("La contrasenia no debe estar vacia.",null);
+        }
+        if(cobroRetiro.getContrasenia().length()>8){
+            throw new NegocioException("La contrasenia debe tener maximo 8 caracteres.",null);
+        }
+        try {
+            Retiro retiro = retiroDAO.cobrarRetiroSinCuenta(cobroRetiro);
+            if(retiro == null){
+                throw new NegocioException("No se encontro ningun retiro sin cuenta con ese folio.",null);
+            }
+            return retiro;
+        } catch (PersistenciaException ex) {
+            throw new NegocioException("No se pudo cobrar el retiro.",ex);
+        }
+    }
     
-    //Generar contrasenia unica para poder cobrar el retiro sin cuenta
     private static final String CARACTERES =
             "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
             "abcdefghijklmnopqrstuvwxyz" +
@@ -60,5 +82,5 @@ public class RetiroBO implements IRetiroBO{
         }
         return contrasenia.toString();
     }
-    
+  
 }
