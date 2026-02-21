@@ -31,13 +31,12 @@ public class TransferenciaDAO implements ITransferenciaDAO {
             comando.setInt(1, nuevaTransferencia.getIdOperacion());
             comando.setString(2, nuevaTransferencia.getCuentaDestino());
             comando.execute();
-            
+
             comando.close();
             conexion.close();
 
             return new Transferencia(nuevaTransferencia.getIdOperacion(), nuevaTransferencia.getCuentaDestino());
-            
-            
+
         } catch (SQLException ex) {
             LOGGER.severe(ex.getMessage());
             throw new PersistenciaException("N se pudo realizar la transferencia", ex);
@@ -54,19 +53,24 @@ public class TransferenciaDAO implements ITransferenciaDAO {
             Operacion operacionTransferencia = null;
             IOperacionDAO operacionesDAO = new OperacionDAO();
             List<Operacion> operaciones = operacionesDAO.consultarOperaciones();
-            
-            for (Operacion operacion: operaciones){
-                if(operacion.getIdOperacion() == operacionTransferencia.getIdOperacion()){
+
+            for (Operacion operacion : operaciones) {
+                if (operacion.getIdOperacion() == transferenciaDTO.getIdOperacion()) {
                     operacionTransferencia = operacion;
+                    break;
                 }
+                
+
             }
-            
+
             for (Cuenta cuenta : cuentasBanco) {
                 if (cuenta.getNumeroCuenta().equalsIgnoreCase(transferenciaDTO.getCuentaDestino())) {
                     cuentaDestino = cuenta;
+                    break;
                 }
             }
 
+           
             Long saldoNuevo = cuentaDestino.getSaldo() + operacionTransferencia.getMonto();
             String codigoSQL = """
                                 UPDATE cuenta
@@ -77,9 +81,13 @@ public class TransferenciaDAO implements ITransferenciaDAO {
             PreparedStatement comando = conexion.prepareStatement(codigoSQL);
 
             comando.setLong(1, saldoNuevo);
-            comando.setString(2, cuentaDestino.getIdCliente());
+            comando.setLong(2, cuentaDestino.getIdCliente());
             comando.setString(3, cuentaDestino.getNumeroCuenta());
-            
+
+            comando.executeUpdate();
+            comando.close();
+            conexion.close();
+
         } catch (SQLException ex) {
             LOGGER.severe(ex.getMessage());
             throw new PersistenciaException("No fue posible actualizar el saldo de la cuenta destino.", ex);
@@ -87,13 +95,5 @@ public class TransferenciaDAO implements ITransferenciaDAO {
 
     }
 
-    
-    
 }
 
-//CREATE TABLE Transferencia (
-//  idOperacion INT PRIMARY KEY NOT NULL,
-//  cuentaDestino VARCHAR(16) NOT NULL,
-//  FOREIGN KEY (idOperacion) REFERENCES Operacion(idOperacion),
-//  FOREIGN KEY (cuentaDestino) REFERENCES Cuenta(numeroCuenta)
-//);

@@ -4,10 +4,8 @@
  */
 package com.mycompany.proyectobanco.presentacion;
 
-import com.mycompany.proyectobanco.dtos.NuevaOperacionDTO;
-import com.mycompany.proyectobanco.dtos.NuevaTransferenciaDTO;
+import com.mycompany.proyectobanco.dtos.NuevaTransferenciaFormDTO;
 import com.mycompany.proyectobanco.entidades.Cuenta;
-import com.mycompany.proyectobanco.entidades.Operacion;
 import com.mycompany.proyectobanco.negocio.ICuentasBO;
 import com.mycompany.proyectobanco.negocio.IOperacionBO;
 import com.mycompany.proyectobanco.negocio.ITransferenciaBO;
@@ -21,15 +19,16 @@ import javax.swing.JOptionPane;
  * @author Julian
  */
 public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(SeleccionarCuentaOrigenTransferenciaFORM.class.getName());
     private final ITransferenciaBO transferenciaBO;
     private final IOperacionBO operacionBO;
     private final ICuentasBO cuentasBO;
     //private JComboBox<Cuenta> comboCuentasCliente;
-    
+
     /**
      * Creates new form SeleccionarCuentaOrigenTransferenciaFORM
+     *
      * @param cuentasBO
      */
     public SeleccionarCuentaOrigenTransferenciaFORM(ICuentasBO cuentasBO, ITransferenciaBO transferenciaBO, IOperacionBO operacionBO) {
@@ -38,7 +37,7 @@ public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame
         this.operacionBO = operacionBO;
         initComponents();
         this.llenarCuentasCliente();
-        
+
 //        if (comboCuentasCliente.getItemCount() > 0) {
 //            comboCuentasCliente.setSelectedIndex(0);
 //        }
@@ -180,9 +179,13 @@ public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void vaciarFORM() {
+        txtCuentaDestino.setText("");
+        txtMontoATransferir.setText("");
+    }
     private void btnTransferirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransferirActionPerformed
         this.realizarTransferencia();
-        
+
     }//GEN-LAST:event_btnTransferirActionPerformed
 
     private void comboCuentasClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboCuentasClienteActionPerformed
@@ -198,54 +201,50 @@ public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame
         }
     }//GEN-LAST:event_comboCuentasClienteItemStateChanged
 
-    private void realizarTransferencia(){
+    private void realizarTransferencia() {
         try {
             Cuenta cuentaOrigen = (Cuenta) comboCuentasCliente.getSelectedItem();
             String cuentaDestino = txtCuentaDestino.getText();
             Integer montoTransferencia = Integer.valueOf(txtMontoATransferir.getText());
             LocalDateTime fechaHora = LocalDateTime.now();
-            
-            NuevaOperacionDTO operacionDTO = new NuevaOperacionDTO(montoTransferencia,fechaHora,cuentaOrigen.getNumeroCuenta());
-            Operacion operacion = operacionBO.realizarOperacion(operacionDTO);
-            
-            NuevaTransferenciaDTO transferenciaDTO = new NuevaTransferenciaDTO(operacion.getIdOperacion(),cuentaDestino);
-            transferenciaBO.crearTransferencia(transferenciaDTO);
-            operacionBO.actualizarSaldoCuentaOrigen(operacionDTO);
-            
-            
+
+            NuevaTransferenciaFormDTO transferenciaFormDTO = new NuevaTransferenciaFormDTO(cuentaDestino,cuentaOrigen,montoTransferencia,fechaHora);
+            this.transferenciaBO.crearTransferencia(transferenciaFormDTO);
+
             JOptionPane.showMessageDialog(
-                this, 
-                "Transferencia realizada correctamente.", 
-                "Información", 
-                JOptionPane.INFORMATION_MESSAGE
+                    this,
+                    "Transferencia realizada correctamente.",
+                    "Información",
+                    JOptionPane.INFORMATION_MESSAGE
             );
-            
+
             llenarCuentasCliente();
+            vaciarFORM();
             comboCuentasCliente.setSelectedIndex(0);
-            
+
         } catch (NegocioException ex) {
-            
+            JOptionPane.showMessageDialog(this, "Error en transferencia: " + ex.getMessage(),"ERROR",JOptionPane.ERROR_MESSAGE);
         }
-        
+
     }
-    
-    private void llenarCuentasCliente(){
+
+    private void llenarCuentasCliente() {
         try {
-            List<Cuenta> cuentasClientes = cuentasBO.consultarCuentasCliente(1); //Aqui se cambiara a que sea el id del usuario que inicio sesion,
-                                                                                 // esta para poder probar el CU transferencia
-            comboCuentasCliente.removeAllItems(); 
-            
+            List<Cuenta> cuentasClientes = cuentasBO.consultarCuentasCliente(1l); //Aqui se cambiara a que sea el id del usuario que inicio sesion,
+            // esta para poder probar el CU transferencia
+            comboCuentasCliente.removeAllItems();
+
             for (Cuenta cuenta : cuentasClientes) {
                 comboCuentasCliente.addItem(cuenta);
             }
         } catch (NegocioException ex) {
             JOptionPane.showMessageDialog(this,
-                    "Error al consultar cuentas del cliente: "+ex.getMessage(),
+                    "Error al consultar cuentas del cliente: " + ex.getMessage(),
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnTransferir;
     private javax.swing.JComboBox<Cuenta> comboCuentasCliente;

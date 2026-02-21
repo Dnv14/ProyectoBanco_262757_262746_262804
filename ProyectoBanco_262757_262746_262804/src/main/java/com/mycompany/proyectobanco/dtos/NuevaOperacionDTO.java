@@ -14,7 +14,7 @@ public class NuevaOperacionDTO {
     private long monto;
     private LocalDateTime fechaHora;
     private String numeroCuenta;
-
+    
     public NuevaOperacionDTO(long monto, LocalDateTime fechaHora, String numeroCuenta) {
         this.monto = monto;
         this.fechaHora = fechaHora;
