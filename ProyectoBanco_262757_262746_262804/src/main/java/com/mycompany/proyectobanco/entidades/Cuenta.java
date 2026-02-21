@@ -1,4 +1,3 @@
-
 package com.mycompany.proyectobanco.entidades;
 
 import java.util.GregorianCalendar;
@@ -8,21 +7,22 @@ import java.util.GregorianCalendar;
  * @author Julian
  */
 public class Cuenta {
-    
-    public enum Estado{
-        ACTIVO,INACTIVO
+
+    public enum Estado {
+        ACTIVO, INACTIVO;
+
     }
-    
+
     private String numeroCuenta;
     private Estado estado;
     private GregorianCalendar fechaApertura;
     private Long saldo;
-    private String idCliente;
+    private Long idCliente;
 
-    public Cuenta() {}
-    
-       
-    public Cuenta(String numeroCuenta, Estado estado, GregorianCalendar fechaApertura, Long saldo, String idCliente) {
+    public Cuenta() {
+    }
+
+    public Cuenta(String numeroCuenta, Estado estado, GregorianCalendar fechaApertura, Long saldo, Long idCliente) {
         this.numeroCuenta = numeroCuenta;
         this.estado = estado;
         this.fechaApertura = fechaApertura;
@@ -46,7 +46,7 @@ public class Cuenta {
         return saldo;
     }
 
-    public String getIdCliente() {
+    public Long getIdCliente() {
         return idCliente;
     }
 
@@ -66,7 +66,7 @@ public class Cuenta {
         this.saldo = saldo;
     }
 
-    public void setIdCliente(String idCliente) {
+    public void setIdCliente(Long idCliente) {
         this.idCliente = idCliente;
     }
 
@@ -74,6 +74,5 @@ public class Cuenta {
     public String toString() {
         return numeroCuenta;
     }
-    
-    
+
 }

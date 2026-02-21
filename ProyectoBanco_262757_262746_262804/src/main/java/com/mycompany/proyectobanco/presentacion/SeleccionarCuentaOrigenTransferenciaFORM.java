@@ -230,7 +230,7 @@ public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame
 
     private void llenarCuentasCliente() {
         try {
-            List<Cuenta> cuentasClientes = cuentasBO.consultarCuentasCliente(1); //Aqui se cambiara a que sea el id del usuario que inicio sesion,
+            List<Cuenta> cuentasClientes = cuentasBO.consultarCuentasCliente(1l); //Aqui se cambiara a que sea el id del usuario que inicio sesion,
             // esta para poder probar el CU transferencia
             comboCuentasCliente.removeAllItems();
 

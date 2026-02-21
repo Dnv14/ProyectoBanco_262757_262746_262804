@@ -80,7 +80,7 @@ public class TransferenciaDAO implements ITransferenciaDAO {
             PreparedStatement comando = conexion.prepareStatement(codigoSQL);
 
             comando.setLong(1, saldoNuevo);
-            comando.setString(2, cuentaDestino.getIdCliente());
+            comando.setLong(2, cuentaDestino.getIdCliente());
             comando.setString(3, cuentaDestino.getNumeroCuenta());
 
             comando.executeUpdate();

@@ -86,7 +86,7 @@ public class OperacionDAO implements IOperacionDAO {
             PreparedStatement comando = conexion.prepareStatement(codigoSQL);
 
             comando.setLong(1, saldoNuevo);
-            comando.setString(2, cuentaOrigen.getIdCliente());
+            comando.setLong(2, cuentaOrigen.getIdCliente());
             comando.setString(3, cuentaOrigen.getNumeroCuenta());
 
             comando.execute();
