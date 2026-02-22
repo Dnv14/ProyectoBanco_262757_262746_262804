@@ -9,6 +9,7 @@ import com.mycompany.proyectobanco.negocio.IHistorialOperacionesBO;
 import com.mycompany.proyectobanco.persistencia.HistorialOperacioneDAO;
 import com.mycompany.proyectobanco.persistencia.IHistorialOperacionesDAO;
 import com.mycompany.proyectobanco.persistencia.PersistenciaException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,7 +34,7 @@ public class HistorialOperacionesBO implements IHistorialOperacionesBO{
         } catch (PersistenciaException ex) {
             Logger.getLogger(HistorialOperacionesBO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return  List.of();
+        return new ArrayList<>();
     }  
 
 
@@ -45,7 +46,7 @@ public class HistorialOperacionesBO implements IHistorialOperacionesBO{
         } catch (PersistenciaException ex) {
             Logger.getLogger(HistorialOperacionesBO.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return List.of();
+        return new ArrayList<>();
     }
     
     

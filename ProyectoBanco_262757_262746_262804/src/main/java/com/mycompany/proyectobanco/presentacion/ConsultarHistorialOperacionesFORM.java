@@ -34,7 +34,7 @@ public class ConsultarHistorialOperacionesFORM extends javax.swing.JFrame {
     private void cargarDatosCuentas(){
         try{
             cuentaCombo.removeAllItems();
-            
+            cuentaCombo.addItem("TODAS");
             for(String cuenta: historialOperacionesBO.obtenerNumerosCuenta()){
                 cuentaCombo.addItem(cuenta);
             }
@@ -45,8 +45,9 @@ public class ConsultarHistorialOperacionesFORM extends javax.swing.JFrame {
     
     private void cargarDatosTiposOperaciones(){
         tipoOperacionCombo.removeAllItems();
-        tipoOperacionCombo.addItem("Retiro");
-        tipoOperacionCombo.addItem("Transferencia");
+        tipoOperacionCombo.addItem("TODOS");
+        tipoOperacionCombo.addItem("RETIRO");
+        tipoOperacionCombo.addItem("TRANSFERENCIA");
     }
     
     private void actualizarTabla(){
@@ -57,6 +58,13 @@ public class ConsultarHistorialOperacionesFORM extends javax.swing.JFrame {
             String cuenta = cuentaCombo.getSelectedItem().toString();
             String tipo = tipoOperacionCombo.getSelectedItem().toString();
             
+            if(cuenta.equals("TODAS")){
+                cuenta = null;
+            }
+            
+            if(cuenta.equals("TODOS")){
+                tipo = null;
+            }
             var lista = historialOperacionesBO.consultarHistorialOperaciones(cuenta, tipo);
             DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
             modelo.setRowCount(0);
@@ -139,9 +147,9 @@ public class ConsultarHistorialOperacionesFORM extends javax.swing.JFrame {
                     .addComponent(tipoOperacionCombo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(cuentaLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(tipoOperacionLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE))
-                .addGap(135, 135, 135)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 137, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 289, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addGap(20, 20, 20))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
