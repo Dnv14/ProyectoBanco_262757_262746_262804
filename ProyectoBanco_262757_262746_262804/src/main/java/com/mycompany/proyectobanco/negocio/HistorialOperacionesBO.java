@@ -4,13 +4,14 @@
  */
 package com.mycompany.proyectobanco.negocio;
 
-import com.mycompany.proyectobanco.entidades.Operacion;
-import com.mycompany.proyectobanco.entidades.Retiro;
-import com.mycompany.proyectobanco.entidades.Transferencia;
+import com.mycompany.proyectobanco.dtos.HistorialOperacionesDTO;
+import com.mycompany.proyectobanco.negocio.IHistorialOperacionesBO;
 import com.mycompany.proyectobanco.persistencia.HistorialOperacioneDAO;
 import com.mycompany.proyectobanco.persistencia.IHistorialOperacionesDAO;
 import com.mycompany.proyectobanco.persistencia.PersistenciaException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -20,41 +21,34 @@ public class HistorialOperacionesBO implements IHistorialOperacionesBO{
     
     private IHistorialOperacionesDAO historialOperacionesDAO;
 
-    public HistorialOperacionesBO(IHistorialOperacionesBO historialOperacionesDAO) {
+    public HistorialOperacionesBO() {
         this.historialOperacionesDAO = new HistorialOperacioneDAO();
     }
+
+
+    @Override
+    public List<HistorialOperacionesDTO> consultarHistorialOperaciones(String numeroCuenta, String tipo){                                                            
+        try { 
+            return historialOperacionesDAO.consultarOperacionesCuenta(numeroCuenta, tipo);
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(HistorialOperacionesBO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return  List.of();
+    }  
+
+
+
+    @Override
+    public List<String> obtenerNumerosCuenta(){       
+        try {   
+            return historialOperacionesDAO.obtenerNumerosCuenta();
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(HistorialOperacionesBO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return List.of();
+    }
     
     
-
-    @Override
-    public List<Operacion> consultarOperacionesCuenta(String numeroCuenta) throws NegocioException {
-        if(numeroCuenta == null || numeroCuenta.isEmpty()){
-            throw new NegocioException("No se ha seleccionado una cuenta", null);
-        }
-        try{
-            return historialOperacionesDAO.consultarOperacionesCuenta(numeroCuenta);
-        }catch(PersistenciaException ex){
-            throw new NegocioException("Existe un error al consultar las operaciones", ex);
-            
-        }
-    }
-
-    @Override
-    public List<Retiro> consultarRetiroCuenta(String numeroCuenta) throws NegocioException {
-        try{
-            return historialOperacionesDAO.consultarRetirosCuenta(numeroCuenta);
-        }catch(PersistenciaException ex){
-            throw new NegocioException("Existe un error al consultar el retiro", ex);
-        }
-    }
-
-    @Override
-    public List<Transferencia> consultarTrasnferenciaCuenta(String numeroCuenta) throws NegocioException {
-        try{
-            return historialOperacionesDAO.consultarTransferenciaCuenta(numeroCuenta);
-        }catch(PersistenciaException ex){
-            throw new NegocioException("Existe un error al consultar las transacciones", ex);
-        }
-    }
+ 
     
 }

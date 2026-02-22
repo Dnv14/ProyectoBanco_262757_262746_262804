@@ -4,15 +4,11 @@
  */
 package com.mycompany.proyectobanco.persistencia;
 
-import com.mycompany.proyectobanco.entidades.Operacion;
-import com.mycompany.proyectobanco.entidades.Retiro;
-import com.mycompany.proyectobanco.entidades.Retiro.Estado;
-import com.mycompany.proyectobanco.entidades.Transferencia;
+import com.mycompany.proyectobanco.dtos.HistorialOperacionesDTO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,25 +23,41 @@ public class HistorialOperacioneDAO implements IHistorialOperacionesDAO{
     private static final Logger LOGGER = Logger.getLogger(HistorialOperacioneDAO.class.getName());
 
     @Override
-    public List<Operacion> consultarOperacionesCuenta(String numeroCuenta) throws PersistenciaException {
+    public List<HistorialOperacionesDTO> consultarOperacionesCuenta(String numeroCuenta, String tipos) throws PersistenciaException {
+        String comandoSQL;
+            if(tipos.equalsIgnoreCase("Retiro")){
+                comandoSQL = """
+                             SELECT o.idOperacion, o.monto, o.fechaHora
+                             FROM Operacion o
+                             INNER JOIN RetiroSinCuenta r  ON o.idOperacion = r.idOperacion
+                             WHERE o.numeroCuenta =?
+                             ORDER BY o.fechaHora DESC;
+                             """;
+            }else if(tipos.equalsIgnoreCase("Transferencia")){
+                comandoSQL = """
+                            SELECT o.idOperacion, o.monto, o.fechaHora
+                            FROM Operacion o
+                            INNER JOIN Transferencia t
+                            ON o.idOperacion = t.idOperacion
+                            WHERE o.numeroCuenta = ?
+                            ORDER BY o.fechaHora DESC;
+                             """;
+            }else{
+                throw new PersistenciaException("Este tipo de Operacion no existe", null);
+            }
         try{
-            List<Operacion> listaOperaciones = new ArrayList<>();
-            String comandoSQL = """
-                                SELECT *
-                                FROM Operaciones o
-                                WHERE numeroCuenta =?;
-                                """;
+            List<HistorialOperacionesDTO> listaOperaciones = new ArrayList<>();           
             Connection conexion = ConexionBD.crearConexion();
             PreparedStatement comando = conexion.prepareStatement(comandoSQL);
             comando.setString(1, numeroCuenta);
             ResultSet rs = comando.executeQuery();
             
             while(rs.next()){
-                Operacion operacion = new Operacion(
+                HistorialOperacionesDTO operacion = new HistorialOperacionesDTO(
                         rs.getInt("idOperacion"),
                         rs.getLong("monto"),
                         rs.getTimestamp("fechaHora").toLocalDateTime(),
-                        rs.getString("numeroCuenta")
+                        tipos
                 );
                 listaOperaciones.add(operacion);            
                 
@@ -60,84 +72,30 @@ public class HistorialOperacioneDAO implements IHistorialOperacionesDAO{
         }
     }
 
-    @Override
-    public List<Retiro> consultarRetirosCuenta(String numeroCuenta) throws PersistenciaException {
-        try{
-            List<Retiro> listaRetiros = new ArrayList<>();
-            String comandoSQL = """
-                                SELECT o.idOperacion, o.monto, o.fechaHora, o.numeroCuenta, r.contraseña, r.folio, r.estado
-                                FROM Operacion o
-                                INNER JOIN RetiroSinCuenta r ON o.idOperacion = r.idOperacion
-                                WHERE o.numeroCuenta = ?;
-                            """;
-            Connection conexion = ConexionBD.crearConexion();
-            PreparedStatement comando = conexion.prepareStatement(comandoSQL);
-            comando.setString(1, numeroCuenta);
-            
-            ResultSet rs = comando.executeQuery();
-            
-            while(rs.next()){
-                LocalDateTime fechaHora = rs.getTimestamp("fechaHora").toLocalDateTime();
-                Retiro retiro = new Retiro(
-                        rs.getInt("idOperacion"),
-                        rs.getString("contraseña"),
-                        rs.getInt("folio"),
-                        Retiro.Estado.valueOf(rs.getString("estado"))
-                );
-                
-                listaRetiros.add(retiro);       
-            }
-            conexion.close();
-            return listaRetiros;
-        }catch(SQLException ex){
-            LOGGER.severe(ex.getMessage());
-            throw new PersistenciaException("No se pudo encontrar el retiro", ex);          
-        }
-        
-        
-    }
 
     @Override
-    public List<Transferencia> consultarTransferenciaCuenta(String numeroCuenta) throws PersistenciaException {
-        
+    public List<String> obtenerNumerosCuenta() throws PersistenciaException {
         try{
-            List<Transferencia> listaTransferencia = new ArrayList<>();
+            List<String> listaCuentas = new ArrayList<>();
+        
             String comandoSQL = """
-                                SELECT o.idOperacion, o.monto, o.fechaHora, o.numeroCuenta, t.cuentaDestino
-                                FROM Operacion o
-                                INNER JOIN Transferencia t ON o.idOperacion = t.idOperacion
-                                WHERE o.numeroCuenta = ?;
-                                
+                                SELECT DISTINCT numeroCuenta
+                                FROM Operacion;
                                 """;
             Connection conexion = ConexionBD.crearConexion();
             PreparedStatement comando = conexion.prepareStatement(comandoSQL);
-            comando.setString(1, numeroCuenta);
             ResultSet rs = comando.executeQuery();
             
             while(rs.next()){
-                Transferencia transferencia = new Transferencia(
-                        rs.getInt("idOperacion"),
-                        rs.getString("cuentaDestino")
-                );
-                
-                listaTransferencia.add(transferencia);
+                listaCuentas.add(rs.getString("numeroCuenta"));                       
             }
             conexion.close();
-            return listaTransferencia;
+            return listaCuentas;
         }catch(SQLException ex){
-            LOGGER.severe(ex.getMessage());
-            throw new PersistenciaException("Existió un error al querer acceder a las transacciones", ex);
-            
+            throw new PersistenciaException("No se pudo obtener el numero de cuenta", ex);
         }
         
         
-        
     }
-
-  
-  
-
-    
-    
     
 }

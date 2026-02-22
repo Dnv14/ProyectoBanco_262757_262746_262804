@@ -4,9 +4,7 @@
  */
 package com.mycompany.proyectobanco.persistencia;
 
-import com.mycompany.proyectobanco.entidades.Operacion;
-import com.mycompany.proyectobanco.entidades.Retiro;
-import com.mycompany.proyectobanco.entidades.Transferencia;
+import com.mycompany.proyectobanco.dtos.HistorialOperacionesDTO;
 import java.util.List;
 
 /**
@@ -14,8 +12,7 @@ import java.util.List;
  * @author BALAMRUSH
  */
 public interface IHistorialOperacionesDAO {
-    public List<Operacion> consultarOperacionesCuenta(String numeroCuenta)throws PersistenciaException;
-    public List<Retiro> consultarRetirosCuenta(String numeroCuenta)throws PersistenciaException;
-    public List<Transferencia> consultarTransferenciaCuenta(String numeroCuenta)throws PersistenciaException;
+    public List<HistorialOperacionesDTO> consultarOperacionesCuenta(String numeroCuenta, String tipos)throws PersistenciaException;
+    public List<String> obtenerNumerosCuenta() throws PersistenciaException;
     
 }

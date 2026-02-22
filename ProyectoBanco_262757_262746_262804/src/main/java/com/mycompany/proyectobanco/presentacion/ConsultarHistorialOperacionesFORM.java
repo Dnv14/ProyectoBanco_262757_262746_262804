@@ -4,18 +4,79 @@
  */
 package com.mycompany.proyectobanco.presentacion;
 
+import com.mycompany.proyectobanco.dtos.HistorialOperacionesDTO;
+import com.mycompany.proyectobanco.negocio.CuentasBO;
+import com.mycompany.proyectobanco.negocio.HistorialOperacionesBO;
+import com.mycompany.proyectobanco.negocio.NegocioException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author BALAMRUSH
  */
-public class ConsultarHistorialOperacionesFORM extends javax.swing.JPanel {
+public class ConsultarHistorialOperacionesFORM extends javax.swing.JFrame {
+    private HistorialOperacionesBO historialOperacionesBO;
 
     /**
      * Creates new form ConsultarHistorialOperacionesFORM
      */
-    public ConsultarHistorialOperacionesFORM() {
+    public ConsultarHistorialOperacionesFORM() throws NegocioException {
+        historialOperacionesBO = new HistorialOperacionesBO();
         initComponents();
+        cargarDatosCuentas();
+        cargarDatosTiposOperaciones();
     }
+    
+    private void cargarDatosCuentas(){
+        try{
+            cuentaCombo.removeAllItems();
+            
+            for(String cuenta: historialOperacionesBO.obtenerNumerosCuenta()){
+                cuentaCombo.addItem(cuenta);
+            }
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(this, "Hubo un error al cargar las cuentas");
+        }
+    }
+    
+    private void cargarDatosTiposOperaciones(){
+        tipoOperacionCombo.removeAllItems();
+        tipoOperacionCombo.addItem("Retiro");
+        tipoOperacionCombo.addItem("Transferencia");
+    }
+    
+    private void actualizarTabla(){
+        if(cuentaCombo.getSelectedItem()== null || tipoOperacionCombo.getSelectedItem()== null){
+            return;
+        }
+        try{
+            String cuenta = cuentaCombo.getSelectedItem().toString();
+            String tipo = tipoOperacionCombo.getSelectedItem().toString();
+            
+            var lista = historialOperacionesBO.consultarHistorialOperaciones(cuenta, tipo);
+            DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+            modelo.setRowCount(0);
+            for(HistorialOperacionesDTO historialDTO: lista){
+                modelo.addRow(new Object[]{
+                    historialDTO.getIdOperacion(),
+                    historialDTO.getMonto(),
+                    historialDTO.getFechaHora(),
+                    historialDTO.getTipo()
+                });
+            }
+
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(this, "Hubo un error"+ex.getMessage());
+        }
+ 
+    }
+
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -56,10 +117,13 @@ public class ConsultarHistorialOperacionesFORM extends javax.swing.JPanel {
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
                 {null, null, null, null}
             },
             new String [] {
-                "ID", "", "Title 3", "Title 4"
+                "ID", "Monto", "Fecha", "Tipo"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -100,11 +164,11 @@ public class ConsultarHistorialOperacionesFORM extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cuentaComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cuentaComboActionPerformed
-        // TODO add your handling code here:
+       actualizarTabla();
     }//GEN-LAST:event_cuentaComboActionPerformed
 
     private void tipoOperacionComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tipoOperacionComboActionPerformed
-        // TODO add your handling code here:
+        actualizarTabla();
     }//GEN-LAST:event_tipoOperacionComboActionPerformed
 
 

@@ -4,6 +4,7 @@
  */
 package com.mycompany.proyectobanco.negocio;
 
+import com.mycompany.proyectobanco.dtos.HistorialOperacionesDTO;
 import com.mycompany.proyectobanco.entidades.Operacion;
 import com.mycompany.proyectobanco.entidades.Retiro;
 import com.mycompany.proyectobanco.entidades.Transferencia;
@@ -14,9 +15,9 @@ import java.util.List;
  * @author BALAMRUSH
  */
 public interface IHistorialOperacionesBO {
-    List<Operacion> consultarOperacionesCuenta(String numeroCuenta)throws NegocioException;
-    List<Retiro> consultarRetiroCuenta(String numeroCuenta)throws NegocioException;
-    List<Transferencia> consultarTrasnferenciaCuenta(String numeroCuenta)throws NegocioException;
+    List<HistorialOperacionesDTO> consultarHistorialOperaciones(String numeroCuenta, String tipo);
+    List<String> obtenerNumerosCuenta() ;
+    
         
    
 }

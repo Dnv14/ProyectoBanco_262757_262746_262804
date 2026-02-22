@@ -9,6 +9,7 @@ import com.mycompany.proyectobanco.negocio.ICuentasBO;
 import com.mycompany.proyectobanco.negocio.IOperacionBO;
 import com.mycompany.proyectobanco.negocio.IRetiroBO;
 import com.mycompany.proyectobanco.negocio.ITransferenciaBO;
+import com.mycompany.proyectobanco.negocio.NegocioException;
 import com.mycompany.proyectobanco.negocio.OperacionBO;
 import com.mycompany.proyectobanco.negocio.RetiroBO;
 import com.mycompany.proyectobanco.negocio.TransferenciaBO;
@@ -22,6 +23,7 @@ import com.mycompany.proyectobanco.persistencia.RetiroDAO;
 import com.mycompany.proyectobanco.persistencia.TransferenciaDAO;
 import com.mycompany.proyectobanco.presentacion.CambiarEstadoCuentaFORM;
 import com.mycompany.proyectobanco.presentacion.CobrarRetiroSinCuentaFORM;
+import com.mycompany.proyectobanco.presentacion.ConsultarHistorialOperacionesFORM;
 import com.mycompany.proyectobanco.presentacion.GenerarRetiroSinCuentaFORM;
 import com.mycompany.proyectobanco.presentacion.SeleccionarCuentaOrigenTransferenciaFORM;
 
@@ -31,7 +33,7 @@ import com.mycompany.proyectobanco.presentacion.SeleccionarCuentaOrigenTransfere
  */
 public class ProyectoBanco_262757_262746_262804 {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NegocioException {
         IOperacionDAO operacionDAO = new OperacionDAO();
         IOperacionBO operacionBO = new OperacionBO(operacionDAO);
         
@@ -46,7 +48,10 @@ public class ProyectoBanco_262757_262746_262804 {
         
 //        CambiarEstadoCuentaFORM cambiarEstado = new CambiarEstadoCuentaFORM(cuentasBO);
 //        cambiarEstado.setVisible(true);
-        CobrarRetiroSinCuentaFORM cobrarRetiro = new CobrarRetiroSinCuentaFORM(retiroBO);
-        cobrarRetiro.setVisible(true);
+//        CobrarRetiroSinCuentaFORM cobrarRetiro = new CobrarRetiroSinCuentaFORM(retiroBO);
+//        cobrarRetiro.setVisible(true);
+
+        ConsultarHistorialOperacionesFORM historialOperaciones = new ConsultarHistorialOperacionesFORM();
+        historialOperaciones.setVisible(true);
     }
 }
