@@ -62,21 +62,31 @@ public class CuentasBO implements ICuentasBO {
     public Cuenta crearCuenta(NuevaCuentaDTO cuentaDTO) throws NegocioException {
         Random random = new Random();
         String numeroCuenta = "";
-        numeroCuenta += (random.nextInt(9) + 1);
+        boolean repetido = true;
 
-        for (int i = 1; i < 16; i++) {
-            numeroCuenta += (random.nextInt(10));
-        }
-        boolean repetido = false;
         try {
-            List<String> cuentas = cuentasDAO.consultarCuentaNumero(numeroCuenta);
-            for (String cuentasNumero : cuentas) {
-                if (cuentasNumero.equals(numeroCuenta)) {
-                    repetido = true;
-                    break;
+            while (repetido) {
+                numeroCuenta = "";
+                numeroCuenta += (random.nextInt(9) + 1);
+
+                for (int i = 1; i < 16; i++) {
+                    numeroCuenta += (random.nextInt(10));
+                }
+
+                repetido = false;
+
+                List<String> cuentas = cuentasDAO.consultarCuentaNumero(numeroCuenta);
+                for (String cuentasNumero : cuentas) {
+                    if (cuentasNumero.equals(numeroCuenta)) {
+                        repetido = true;
+                        break;
+                    }
                 }
             }
-            return this.crearCuenta(cuentaDTO);
+            NuevaCuentaDTO nuevaCuentaDTO = new NuevaCuentaDTO(numeroCuenta, cuentaDTO.getEstado(), cuentaDTO.getFechaApertura(), cuentaDTO.getSaldo(), cuentaDTO.getIdCliente());
+
+            Cuenta cuentaCreada = this.cuentasDAO.crearCuenta(nuevaCuentaDTO);
+            return cuentaCreada;
         } catch (PersistenciaException ex) {
             throw new NegocioException("No se pudo crear la cuenta ", ex);
         }

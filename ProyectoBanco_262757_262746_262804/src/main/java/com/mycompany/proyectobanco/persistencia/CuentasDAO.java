@@ -194,7 +194,6 @@ public class CuentasDAO implements ICuentasDAO {
             while (resultadoConsulta.next()) {
                 String numeroCuentaConsulta = resultadoConsulta.getString("numeroCuenta");
                 cuentasCliente.add(numeroCuentaConsulta);
-                return cuentasCliente;
             }
             comando.close();
             conexion.close();
