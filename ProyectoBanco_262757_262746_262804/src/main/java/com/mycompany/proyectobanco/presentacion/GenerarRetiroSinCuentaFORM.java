@@ -87,7 +87,7 @@ public class GenerarRetiroSinCuentaFORM extends javax.swing.JFrame {
         btnGenerarRetiro.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         btnGenerarRetiro.setForeground(new java.awt.Color(0, 0, 0));
         btnGenerarRetiro.setText("Generar Retiro");
-        btnGenerarRetiro.addActionListener(this::btnGenerarRetiroActionPerformed);
+        btnGenerarRetiro.addActionListener(this::btnGenerarRetiroSinCuentaActionPerformed);
 
         jButton1.setBackground(new java.awt.Color(153, 153, 153));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
@@ -199,9 +199,9 @@ public class GenerarRetiroSinCuentaFORM extends javax.swing.JFrame {
         txtMonto.setText("");
     }
     
-    private void btnGenerarRetiroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarRetiroActionPerformed
+    private void btnGenerarRetiroActionPerformed(java.awt.event.ActionEvent evt) {                                                 
         this.generarRetiroSinCuenta();
-    }//GEN-LAST:event_btnGenerarRetiroActionPerformed
+    }                                                
 
     private void cambioSaldoDisponibleCuenta(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cambioSaldoDisponibleCuenta
         if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
@@ -212,17 +212,14 @@ public class GenerarRetiroSinCuentaFORM extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_cambioSaldoDisponibleCuenta
 
-<<<<<<< Updated upstream
-    private void btnGenerarRetiroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarRetiroActionPerformed
-        this.generarRetiroSinCuenta();
-    }//GEN-LAST:event_btnGenerarRetiroActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         volverAtras();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-=======
->>>>>>> Stashed changes
+    private void btnGenerarRetiroSinCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarRetiroSinCuentaActionPerformed
+        this.generarRetiroSinCuenta();
+    }//GEN-LAST:event_btnGenerarRetiroSinCuentaActionPerformed
+
     private void llenarCuentasCliente() {
         try {
             List<Cuenta> cuentasClientes = objetosBO.getCuentasBO().consultarCuentasCliente(Long.valueOf(clienteLogeado.getIdCliente())); 

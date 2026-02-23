@@ -68,11 +68,12 @@ public class CuentasBO implements ICuentasBO {
             numeroCuenta += (random.nextInt(10));
         }
         String numeroCuentaFinal = numeroCuenta.toString();
-        try {
-
-        } catch (PersistenciaException ex) {
-            throw new NegocioException("No se pudo crear la cuenta ", ex);
-        }
+        return null;
+//        try {
+//            return null;
+//        } catch (PersistenciaException ex) {
+//            throw new NegocioException("No se pudo crear la cuenta ", ex);
+//        }
 
     }
 

@@ -56,17 +56,6 @@ public class ProyectoBanco_262757_262746_262804 {
         
         ObjetosBoDTO objetosBO = new ObjetosBoDTO(clientesBO,cuentasBO,operacionBO,retiroBO,transferenciaBO,historialBO);
         
-//        GenerarRetiroSinCuentaFORM retiroSinCuenta = new GenerarRetiroSinCuentaFORM(cuentasBO,retiroBO);
-//        retiroSinCuenta.setVisible(true);
-        
-//        CambiarEstadoCuentaFORM cambiarEstado = new CambiarEstadoCuentaFORM(cuentasBO);
-//        cambiarEstado.setVisible(true);
-//        CobrarRetiroSinCuentaFORM cobrarRetiro = new CobrarRetiroSinCuentaFORM(retiroBO);
-//        cobrarRetiro.setVisible(true);
-//
-//        ConsultarHistorialOperacionesFORM historialOperaciones = new ConsultarHistorialOperacionesFORM();
-//        historialOperaciones.setVisible(true);
-
         InicioSesionFORM iniciarSesion = new InicioSesionFORM(objetosBO);
         iniciarSesion.setVisible(true);
     }
