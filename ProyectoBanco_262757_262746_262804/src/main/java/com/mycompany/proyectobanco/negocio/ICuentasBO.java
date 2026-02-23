@@ -1,6 +1,7 @@
 
 package com.mycompany.proyectobanco.negocio;
 
+import com.mycompany.proyectobanco.dtos.NuevaCuentaDTO;
 import com.mycompany.proyectobanco.entidades.Cuenta;
 import java.util.List;
 
@@ -11,4 +12,5 @@ import java.util.List;
 public interface ICuentasBO {
     public abstract List<Cuenta> consultarCuentasCliente(Long idCliente) throws NegocioException;
     public abstract void cambiarEstadoCuenta(String numeroCuentae) throws NegocioException;
+    public abstract Cuenta crearCuenta(NuevaCuentaDTO cuentaDTO)throws NegocioException;
 }

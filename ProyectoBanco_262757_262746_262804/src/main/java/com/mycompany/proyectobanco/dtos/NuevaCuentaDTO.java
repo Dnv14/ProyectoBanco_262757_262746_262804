@@ -4,6 +4,8 @@
  */
 package com.mycompany.proyectobanco.dtos;
 
+
+import com.mycompany.proyectobanco.entidades.Cuenta;
 import java.util.GregorianCalendar;
 
 /**
@@ -11,18 +13,13 @@ import java.util.GregorianCalendar;
  * @author Diego
  */
 public class NuevaCuentaDTO {
-    
-    public enum Estado{
-        ACTIVO,INACTIVO
-    }
-    
     private String numeroCuenta;
-    private Estado estado;
+    private Cuenta.Estado estado;;
     private GregorianCalendar fechaApertura;
     private Long saldo;
     private Long idCliente;
-
-    public NuevaCuentaDTO(String numeroCuenta, Estado estado, GregorianCalendar fechaApertura, Long saldo, Long idCliente) {
+    
+    public NuevaCuentaDTO(String numeroCuenta, Cuenta.Estado estado, GregorianCalendar fechaApertura, Long saldo, Long idCliente) {
         this.numeroCuenta = numeroCuenta;
         this.estado = estado;
         this.fechaApertura = fechaApertura;
@@ -34,7 +31,7 @@ public class NuevaCuentaDTO {
         return numeroCuenta;
     }
 
-    public Estado getEstado() {
+    public Cuenta.Estado getEstado() {
         return estado;
     }
 

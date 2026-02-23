@@ -1,11 +1,13 @@
 package com.mycompany.proyectobanco.persistencia;
 
+import com.mycompany.proyectobanco.dtos.NuevaCuentaDTO;
 import com.mycompany.proyectobanco.entidades.Cuenta;
 import com.mycompany.proyectobanco.entidades.Cuenta.Estado;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
@@ -144,4 +146,79 @@ public class CuentasDAO implements ICuentasDAO {
 
     }
 
+    @Override
+    public Cuenta crearCuenta(NuevaCuentaDTO cuentaDTO) throws PersistenciaException {
+        try {
+            String comandoSQL = """
+                                     INSERT INTO Cuentas(numeroCuenta, estado, fechaApertura, saldo, idCliente)
+                                     VALUES(? ,? , current_date() , ?, ?);
+                                     """;
+
+            Connection conexion = ConexionBD.crearConexion();
+            PreparedStatement comando = conexion.prepareStatement(comandoSQL);
+
+            SimpleDateFormat formateadorFecha = new SimpleDateFormat("dd-MM-yyyy");
+            String fechaString = formateadorFecha.format(cuentaDTO.getFechaApertura().getTime());
+
+            comando.setString(1, cuentaDTO.getNumeroCuenta());
+            comando.setString(2, cuentaDTO.getEstado().name());
+            comando.setString(3, fechaString);
+            comando.setLong(4, cuentaDTO.getSaldo());
+            comando.setLong(5, cuentaDTO.getIdCliente());
+
+            comando.execute();
+            conexion.close();
+            comando.close();
+
+            return new Cuenta(cuentaDTO.getNumeroCuenta(), cuentaDTO.getEstado(), cuentaDTO.getFechaApertura(), cuentaDTO.getSaldo(), cuentaDTO.getIdCliente());
+
+        } catch (SQLException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new PersistenciaException("no se pudo crear la cuenta", ex);
+        }
+    }
+
+    @Override
+    public List<Cuenta> consultarCuentas() throws PersistenciaException {
+        try {
+            List<Cuenta> cuentasCliente = new LinkedList<>();
+            String codigoSQL = """
+                               SELECT numeroCuenta, estado, fechaApertura, saldo, idCliente                                                      
+                               FROM Cuentas
+                               """;
+
+            Connection conexion = ConexionBD.crearConexion();
+            PreparedStatement comando = conexion.prepareStatement(codigoSQL);
+            ResultSet resultadoConsulta = comando.executeQuery();
+
+            while (resultadoConsulta.next()) {
+                String numeroCuenta = resultadoConsulta.getString("numeroCuenta");
+                Estado estado = Estado.valueOf(resultadoConsulta.getString("estado"));
+                long saldo = resultadoConsulta.getLong("saldo");
+                long idCliente = resultadoConsulta.getLong("idCliente");
+
+                GregorianCalendar fechaApertura = new GregorianCalendar();
+                fechaApertura.setTimeInMillis(resultadoConsulta.getDate("fechaApertura").getTime());
+
+                Cuenta cuenta = new Cuenta(numeroCuenta, estado, fechaApertura, saldo, idCliente);
+                cuentasCliente.add(cuenta);
+            }
+            comando.close();
+            conexion.close();
+
+            return cuentasCliente;
+        } catch (SQLException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new PersistenciaException("No fue posible consultar las cuentas del cliente.", ex);
+        }
+    }
+
 }
+//CREATE TABLE Cuentas (
+//  numeroCuenta VARCHAR(16) PRIMARY KEY,
+//  estado ENUM ('ACTIVO','INACTIVO') NOT NULL,
+//  fechaApertura DATE NOT NULL,
+//  saldo BIGINT NOT NULL,
+//  idCliente BIGINT NOT NULL,
+//  FOREIGN KEY (idCliente) REFERENCES Clientes(idCliente)
+//);
