@@ -5,12 +5,14 @@
 package com.mycompany.proyectobanco.persistencia;
 
 import com.mycompany.proyectobanco.dtos.HistorialOperacionesDTO;
+import com.mycompany.proyectobanco.entidades.Operacion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -23,79 +25,107 @@ public class HistorialOperacioneDAO implements IHistorialOperacionesDAO{
     private static final Logger LOGGER = Logger.getLogger(HistorialOperacioneDAO.class.getName());
 
     @Override
-    public List<HistorialOperacionesDTO> consultarOperacionesCuenta(String numeroCuenta, String tipos) throws PersistenciaException {
-        String comandoSQL;
-            if(tipos.equalsIgnoreCase("Retiro")){
-                comandoSQL = """
-                             SELECT o.idOperacion, o.monto, o.fechaHora
-                             FROM Operacion o
-                             INNER JOIN RetiroSinCuenta r  ON o.idOperacion = r.idOperacion
-                             WHERE o.numeroCuenta =?
-                             ORDER BY o.fechaHora DESC;
-                             """;
-            }else if(tipos.equalsIgnoreCase("Transferencia")){
-                comandoSQL = """
-                            SELECT o.idOperacion, o.monto, o.fechaHora
-                            FROM Operacion o
-                            INNER JOIN Transferencia t
-                            ON o.idOperacion = t.idOperacion
-                            WHERE o.numeroCuenta = ?
-                            ORDER BY o.fechaHora DESC;
-                             """;
-            }else{
-                throw new PersistenciaException("Este tipo de Operacion no existe", null);
-            }
+    public List<Operacion> consultarOperacionesCuenta(String numeroCuenta) throws PersistenciaException {
         try{
-            List<HistorialOperacionesDTO> listaOperaciones = new ArrayList<>();           
+            List<Operacion> operaciones = new LinkedList<>();
+            String comandoSQL = """
+                                SELECT idOperacion, monto, fechaHora, numeroCuenta
+                                FROM Operacion
+                                WHERE numeroCuenta = ?;
+                                """;
             Connection conexion = ConexionBD.crearConexion();
             PreparedStatement comando = conexion.prepareStatement(comandoSQL);
             comando.setString(1, numeroCuenta);
             ResultSet rs = comando.executeQuery();
             
             while(rs.next()){
-                HistorialOperacionesDTO operacion = new HistorialOperacionesDTO(
+                LocalDateTime fechaHora = rs.getTimestamp("fechaHora").toLocalDateTime();
+                Operacion op = new Operacion(
                         rs.getInt("idOperacion"),
                         rs.getLong("monto"),
-                        rs.getTimestamp("fechaHora").toLocalDateTime(),
-                        tipos
+                        fechaHora,
+                        rs.getString("numeroCuenta")
                 );
-                listaOperaciones.add(operacion);            
-                
-                                  
+                operaciones.add(op);
             }
+            comando.close();
             conexion.close();
-            return listaOperaciones;
-                                         
+            return operaciones;
         }catch(SQLException ex){
             LOGGER.severe(ex.getMessage());
-            throw new PersistenciaException("Existe un error al querer consultar operaciones", ex);
+            throw new PersistenciaException("No es posible consultar las operacines de la cuenta", ex);
         }
     }
 
-
     @Override
-    public List<String> obtenerNumerosCuenta() throws PersistenciaException {
+    public List<Operacion> consultarTrasnferenciaCuenta(String numeroCuenta) throws PersistenciaException {
         try{
-            List<String> listaCuentas = new ArrayList<>();
-        
+            List<Operacion> operaciones = new LinkedList<>();
             String comandoSQL = """
-                                SELECT DISTINCT numeroCuenta
-                                FROM Operacion;
+                                SELECT o.idOperacion, o.monto, o.fechaHora, o.numeroCuenta
+                                FROM Operacion o
+                                INNER JOIN Transferencia t ON o.idOperacion = t.idOperacion
+                                WHERE o.numeroCuenta = ?;
                                 """;
             Connection conexion = ConexionBD.crearConexion();
             PreparedStatement comando = conexion.prepareStatement(comandoSQL);
+            comando.setString(1, numeroCuenta);
             ResultSet rs = comando.executeQuery();
             
             while(rs.next()){
-                listaCuentas.add(rs.getString("numeroCuenta"));                       
+                LocalDateTime fechaHora = rs.getTimestamp("fechaHora").toLocalDateTime();
+                Operacion op = new Operacion(
+                        rs.getInt("idOperacion"),
+                        rs.getLong("monto"),
+                        fechaHora,
+                        rs.getString("numeroCuenta")
+                );
+                operaciones.add(op);
             }
+            comando.close();
             conexion.close();
-            return listaCuentas;
+            return operaciones;
         }catch(SQLException ex){
-            throw new PersistenciaException("No se pudo obtener el numero de cuenta", ex);
+            LOGGER.severe(ex.getMessage());
+            throw new PersistenciaException("No es posible consultar las operacines de la cuenta", ex);
         }
-        
-        
     }
+
+    @Override
+    public List<Operacion> consultarRetirosCuenta(String numeroCuenta) throws PersistenciaException {
+        try{
+            List<Operacion> operaciones = new LinkedList<>();
+            String comandoSQL = """
+                                SELECT o.idOperacion, o.monto, o.fechaHora, o.numeroCuenta
+                                FROM Operacion o
+                                INNER JOIN RetiroSinCuenta r ON o.idOperacion = r.idOperacion
+                                WHERE o.numeroCuenta = ?;
+                                """;
+            Connection conexion = ConexionBD.crearConexion();
+            PreparedStatement comando = conexion.prepareStatement(comandoSQL);
+            comando.setString(1, numeroCuenta);
+            ResultSet rs = comando.executeQuery();
+            
+            while(rs.next()){
+                LocalDateTime fechaHora = rs.getTimestamp("fechaHora").toLocalDateTime();
+                Operacion op = new Operacion(
+                        rs.getInt("idOperacion"),
+                        rs.getLong("monto"),
+                        fechaHora,
+                        rs.getString("numeroCuenta")
+                );
+                operaciones.add(op);
+            }
+            comando.close();
+            conexion.close();
+            return operaciones;
+        }catch(SQLException ex){
+            LOGGER.severe(ex.getMessage());
+            throw new PersistenciaException("No es posible consultar las operacines de la cuenta", ex);
+        }
+    }
+
+
+    
     
 }
