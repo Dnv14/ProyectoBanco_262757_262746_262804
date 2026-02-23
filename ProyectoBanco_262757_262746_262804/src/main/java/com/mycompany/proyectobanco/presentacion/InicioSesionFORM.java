@@ -4,8 +4,8 @@
  */
 package com.mycompany.proyectobanco.presentacion;
 
+import com.mycompany.proyectobanco.dtos.ObjetosBoDTO;
 import com.mycompany.proyectobanco.dtos.ValidarUsuarioClienteDTO;
-import com.mycompany.proyectobanco.negocio.IClientesBO;
 import com.mycompany.proyectobanco.negocio.NegocioException;
 import javax.swing.JOptionPane;
 
@@ -16,16 +16,16 @@ import javax.swing.JOptionPane;
 public class InicioSesionFORM extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(InicioSesionFORM.class.getName());
-    private IClientesBO clientesBO;
     
+    private ObjetosBoDTO objetosBO;
     
     
     /**
      * Creates new form InicioSesionFORM
-     * @param clientesBO
+     * @param objetosBO
      */
-    public InicioSesionFORM(IClientesBO clientesBO) {
-        this.clientesBO = clientesBO;
+    public InicioSesionFORM(ObjetosBoDTO objetosBO) {
+        this.objetosBO = objetosBO;
         initComponents();
     }
 
@@ -84,6 +84,7 @@ public class InicioSesionFORM extends javax.swing.JFrame {
         btnRetiroSinCuenta.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         btnRetiroSinCuenta.setForeground(new java.awt.Color(0, 0, 0));
         btnRetiroSinCuenta.setText("Retiro Sin Cuenta");
+        btnRetiroSinCuenta.addActionListener(this::btnRetiroSinCuentaActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -152,9 +153,9 @@ public class InicioSesionFORM extends javax.swing.JFrame {
             String contrasenia = txtContrasenia.getText();
             
             ValidarUsuarioClienteDTO usuarioCliente = new ValidarUsuarioClienteDTO(usuario,contrasenia);
-            boolean acceso = clientesBO.validarClienteEstaRegistrado(usuarioCliente);
+            boolean acceso = objetosBO.getClientesBO().validarClienteEstaRegistrado(usuarioCliente);
             if(acceso){
-                new MenuPrincipalFORM().setVisible(true);
+                new MenuPrincipalFORM(objetosBO).setVisible(true);
                 vaciarForm();
                 this.dispose();
             }else{
@@ -164,6 +165,12 @@ public class InicioSesionFORM extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Error al iniciar sesion: " + ex.getMessage(),"ERROR",JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
+
+    private void btnRetiroSinCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetiroSinCuentaActionPerformed
+        vaciarForm();
+        this.dispose();
+        new CobrarRetiroSinCuentaFORM(objetosBO).setVisible(true);
+    }//GEN-LAST:event_btnRetiroSinCuentaActionPerformed
     
     private void vaciarForm(){
         txtContrasenia.setText("");

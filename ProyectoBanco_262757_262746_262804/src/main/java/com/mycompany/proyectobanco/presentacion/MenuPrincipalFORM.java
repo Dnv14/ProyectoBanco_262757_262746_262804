@@ -4,6 +4,8 @@
  */
 package com.mycompany.proyectobanco.presentacion;
 
+import com.mycompany.proyectobanco.dtos.ObjetosBoDTO;
+
 /**
  *
  * @author Julian
@@ -11,11 +13,14 @@ package com.mycompany.proyectobanco.presentacion;
 public class MenuPrincipalFORM extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MenuPrincipalFORM.class.getName());
-
+    
+    private  ObjetosBoDTO objetosBO ;
     /**
      * Creates new form MenuPrincipalFORM
+     * @param objetosBO
      */
-    public MenuPrincipalFORM() {
+    public MenuPrincipalFORM(ObjetosBoDTO objetosBO) {
+        this.objetosBO = objetosBO;
         initComponents();
     }
 
@@ -48,11 +53,13 @@ public class MenuPrincipalFORM extends javax.swing.JFrame {
         btnTransferencia.setForeground(new java.awt.Color(0, 0, 0));
         btnTransferencia.setText("Transferencia");
         btnTransferencia.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        btnTransferencia.addActionListener(this::btnTransferenciaActionPerformed);
 
         btnRetiroSinCuenta.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         btnRetiroSinCuenta.setForeground(new java.awt.Color(0, 0, 0));
         btnRetiroSinCuenta.setText("Retiro Sin Cuenta");
         btnRetiroSinCuenta.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        btnRetiroSinCuenta.addActionListener(this::btnRetiroSinCuentaActionPerformed);
 
         btnHistorial.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         btnHistorial.setForeground(new java.awt.Color(0, 0, 0));
@@ -68,6 +75,7 @@ public class MenuPrincipalFORM extends javax.swing.JFrame {
         btnCerrarSesion.setForeground(new java.awt.Color(0, 0, 0));
         btnCerrarSesion.setText("Cerrar Sesion");
         btnCerrarSesion.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        btnCerrarSesion.addActionListener(this::btnCerrarSesionActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -119,6 +127,21 @@ public class MenuPrincipalFORM extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnTransferenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransferenciaActionPerformed
+        new SeleccionarCuentaOrigenTransferenciaFORM(objetosBO).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnTransferenciaActionPerformed
+
+    private void btnRetiroSinCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetiroSinCuentaActionPerformed
+        new GenerarRetiroSinCuentaFORM(objetosBO).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnRetiroSinCuentaActionPerformed
+
+    private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
+        new InicioSesionFORM(objetosBO).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

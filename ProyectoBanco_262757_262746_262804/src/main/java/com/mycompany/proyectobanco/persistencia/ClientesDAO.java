@@ -36,7 +36,7 @@ public class ClientesDAO implements IClientesDAO{
         try {
             String codigoSQL = """
                                            SELECT 1
-                                           FROM cliente
+                                           FROM clientes
                                            WHERE usuario = ? AND contrasenia = ?;
                                            """;
             Connection conexion = ConexionBD.crearConexion();

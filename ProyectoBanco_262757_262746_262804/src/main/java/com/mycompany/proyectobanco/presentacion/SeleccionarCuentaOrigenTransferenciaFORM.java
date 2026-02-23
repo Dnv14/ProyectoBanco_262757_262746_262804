@@ -5,10 +5,8 @@
 package com.mycompany.proyectobanco.presentacion;
 
 import com.mycompany.proyectobanco.dtos.NuevaTransferenciaFormDTO;
+import com.mycompany.proyectobanco.dtos.ObjetosBoDTO;
 import com.mycompany.proyectobanco.entidades.Cuenta;
-import com.mycompany.proyectobanco.negocio.ICuentasBO;
-import com.mycompany.proyectobanco.negocio.IOperacionBO;
-import com.mycompany.proyectobanco.negocio.ITransferenciaBO;
 import com.mycompany.proyectobanco.negocio.NegocioException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,26 +19,20 @@ import javax.swing.JOptionPane;
 public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger(SeleccionarCuentaOrigenTransferenciaFORM.class.getName());
-    private final ITransferenciaBO transferenciaBO;
-    private final IOperacionBO operacionBO;
-    private final ICuentasBO cuentasBO;
-    //private JComboBox<Cuenta> comboCuentasCliente;
+    
+    private final ObjetosBoDTO objetosBO ;
 
     /**
      * Creates new form SeleccionarCuentaOrigenTransferenciaFORM
      *
+     * @param objetosBO
      * @param cuentasBO
      */
-    public SeleccionarCuentaOrigenTransferenciaFORM(ICuentasBO cuentasBO, ITransferenciaBO transferenciaBO, IOperacionBO operacionBO) {
-        this.cuentasBO = cuentasBO;
-        this.transferenciaBO = transferenciaBO;
-        this.operacionBO = operacionBO;
+    public SeleccionarCuentaOrigenTransferenciaFORM(ObjetosBoDTO objetosBO) {
+        this.objetosBO = objetosBO;
         initComponents();
         this.llenarCuentasCliente();
 
-//        if (comboCuentasCliente.getItemCount() > 0) {
-//            comboCuentasCliente.setSelectedIndex(0);
-//        }
     }
 
     /**
@@ -62,6 +54,7 @@ public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame
         txtMontoATransferir = new javax.swing.JTextField();
         lblMontoATransferir = new javax.swing.JLabel();
         lblMostrarSaldoDisponible = new javax.swing.JLabel();
+        btnVolver = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("SeleccionarCuentaOrigen");
@@ -111,42 +104,56 @@ public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame
         lblMostrarSaldoDisponible.setForeground(new java.awt.Color(0, 0, 0));
         lblMostrarSaldoDisponible.setText("Saldo Disponible: $");
 
+        btnVolver.setBackground(new java.awt.Color(153, 153, 153));
+        btnVolver.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        btnVolver.setForeground(new java.awt.Color(0, 0, 0));
+        btnVolver.setText(">");
+        btnVolver.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        btnVolver.addActionListener(this::btnVolverActionPerformed);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(303, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnVolver)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 301, Short.MAX_VALUE)
                         .addComponent(lblTitulo)
                         .addGap(276, 276, 276))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(lblCuentaDestino)
-                        .addGap(270, 270, 270))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(lblMontoATransferir, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(187, 187, 187))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(btnTransferir, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(348, 348, 348))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lblMostrarSaldoDisponible, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(txtMontoATransferir, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(lblCuentaOrigen)
-                                    .addComponent(comboCuentasCliente, 0, 280, Short.MAX_VALUE)
-                                    .addComponent(txtCuentaDestino))))
-                        .addGap(251, 251, 251))))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(lblCuentaDestino)
+                                .addGap(270, 270, 270))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(lblMontoATransferir, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(187, 187, 187))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(btnTransferir, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(348, 348, 348))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(lblMostrarSaldoDisponible, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(txtMontoATransferir, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(lblCuentaOrigen)
+                                            .addComponent(comboCuentasCliente, 0, 280, Short.MAX_VALUE)
+                                            .addComponent(txtCuentaDestino))))
+                                .addGap(251, 251, 251))))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblTitulo)
-                .addGap(68, 68, 68)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTitulo)
+                    .addComponent(btnVolver))
+                .addGap(66, 66, 66)
                 .addComponent(lblCuentaOrigen)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(comboCuentasCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -159,7 +166,7 @@ public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtMontoATransferir, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblMostrarSaldoDisponible, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+                .addComponent(lblMostrarSaldoDisponible, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(btnTransferir, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(65, 65, 65))
@@ -201,6 +208,10 @@ public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame
         }
     }//GEN-LAST:event_comboCuentasClienteItemStateChanged
 
+    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+        volverAtras();
+    }//GEN-LAST:event_btnVolverActionPerformed
+
     private void realizarTransferencia() {
         try {
             Cuenta cuentaOrigen = (Cuenta) comboCuentasCliente.getSelectedItem();
@@ -209,7 +220,7 @@ public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame
             LocalDateTime fechaHora = LocalDateTime.now();
 
             NuevaTransferenciaFormDTO transferenciaFormDTO = new NuevaTransferenciaFormDTO(cuentaDestino,cuentaOrigen,montoTransferencia,fechaHora);
-            this.transferenciaBO.crearTransferencia(transferenciaFormDTO);
+            this.objetosBO.getTransferenciaBO().crearTransferencia(transferenciaFormDTO);
 
             JOptionPane.showMessageDialog(
                     this,
@@ -230,7 +241,7 @@ public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame
 
     private void llenarCuentasCliente() {
         try {
-            List<Cuenta> cuentasClientes = cuentasBO.consultarCuentasCliente(1l); //Aqui se cambiara a que sea el id del usuario que inicio sesion,
+            List<Cuenta> cuentasClientes = objetosBO.getCuentasBO().consultarCuentasCliente(1l); //Aqui se cambiara a que sea el id del usuario que inicio sesion,
             // esta para poder probar el CU transferencia
             comboCuentasCliente.removeAllItems();
 
@@ -244,9 +255,16 @@ public class SeleccionarCuentaOrigenTransferenciaFORM extends javax.swing.JFrame
                     JOptionPane.ERROR_MESSAGE);
         }
     }
-
+    
+    private void volverAtras(){
+        vaciarFORM();
+        this.dispose();
+        new MenuPrincipalFORM(objetosBO).setVisible(true);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnTransferir;
+    private javax.swing.JButton btnVolver;
     private javax.swing.JComboBox<Cuenta> comboCuentasCliente;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblCuentaDestino;

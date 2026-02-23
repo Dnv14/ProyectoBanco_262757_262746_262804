@@ -4,10 +4,13 @@
 
 package com.mycompany.proyectobanco_262757_262746_262804;
 
+import com.mycompany.proyectobanco.dtos.ObjetosBoDTO;
 import com.mycompany.proyectobanco.negocio.ClientesBO;
 import com.mycompany.proyectobanco.negocio.CuentasBO;
+import com.mycompany.proyectobanco.negocio.HistorialOperacionesBO;
 import com.mycompany.proyectobanco.negocio.IClientesBO;
 import com.mycompany.proyectobanco.negocio.ICuentasBO;
+import com.mycompany.proyectobanco.negocio.IHistorialOperacionesBO;
 import com.mycompany.proyectobanco.negocio.IOperacionBO;
 import com.mycompany.proyectobanco.negocio.IRetiroBO;
 import com.mycompany.proyectobanco.negocio.ITransferenciaBO;
@@ -25,12 +28,7 @@ import com.mycompany.proyectobanco.persistencia.ITransferenciaDAO;
 import com.mycompany.proyectobanco.persistencia.OperacionDAO;
 import com.mycompany.proyectobanco.persistencia.RetiroDAO;
 import com.mycompany.proyectobanco.persistencia.TransferenciaDAO;
-import com.mycompany.proyectobanco.presentacion.CambiarEstadoCuentaFORM;
-import com.mycompany.proyectobanco.presentacion.CobrarRetiroSinCuentaFORM;
-import com.mycompany.proyectobanco.presentacion.ConsultarHistorialOperacionesFORM;
-import com.mycompany.proyectobanco.presentacion.GenerarRetiroSinCuentaFORM;
 import com.mycompany.proyectobanco.presentacion.InicioSesionFORM;
-import com.mycompany.proyectobanco.presentacion.SeleccionarCuentaOrigenTransferenciaFORM;
 
 /**
  *
@@ -51,6 +49,13 @@ public class ProyectoBanco_262757_262746_262804 {
         IClientesDAO clientesDAO = new ClientesDAO();
         IClientesBO clientesBO = new ClientesBO(clientesDAO);
         
+        ITransferenciaDAO transferenciaDAO = new TransferenciaDAO();
+        ITransferenciaBO transferenciaBO = new TransferenciaBO(transferenciaDAO,operacionBO);
+        
+        IHistorialOperacionesBO historialBO = new HistorialOperacionesBO();
+        
+        ObjetosBoDTO objetosBO = new ObjetosBoDTO(clientesBO,cuentasBO,operacionBO,retiroBO,transferenciaBO,historialBO);
+        
 //        GenerarRetiroSinCuentaFORM retiroSinCuenta = new GenerarRetiroSinCuentaFORM(cuentasBO,retiroBO);
 //        retiroSinCuenta.setVisible(true);
         
@@ -62,7 +67,7 @@ public class ProyectoBanco_262757_262746_262804 {
 //        ConsultarHistorialOperacionesFORM historialOperaciones = new ConsultarHistorialOperacionesFORM();
 //        historialOperaciones.setVisible(true);
 
-        InicioSesionFORM iniciarSesion = new InicioSesionFORM(clientesBO);
+        InicioSesionFORM iniciarSesion = new InicioSesionFORM(objetosBO);
         iniciarSesion.setVisible(true);
     }
 }

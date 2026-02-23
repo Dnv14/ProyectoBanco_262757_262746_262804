@@ -4,6 +4,7 @@
  */
 package com.mycompany.proyectobanco.presentacion;
 
+import com.mycompany.proyectobanco.dtos.ObjetosBoDTO;
 import com.mycompany.proyectobanco.entidades.Cuenta;
 import com.mycompany.proyectobanco.negocio.ICuentasBO;
 import com.mycompany.proyectobanco.negocio.IOperacionBO;
@@ -19,13 +20,14 @@ import javax.swing.JOptionPane;
 public class CambiarEstadoCuentaFORM extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(CambiarEstadoCuentaFORM.class.getName());
-    private final ICuentasBO cuentasBO;
+    private final ObjetosBoDTO objetosBO;
 
     /**
      * Creates new form CambiarEstadoCuentaFORM
+     * @param objetosBO
      */
-    public CambiarEstadoCuentaFORM(ICuentasBO cuentasBO) {
-        this.cuentasBO = cuentasBO;
+    public CambiarEstadoCuentaFORM(ObjetosBoDTO objetosBO) {
+        this.objetosBO = objetosBO;
         initComponents();
         this.llenarCuentasCliente();
 
@@ -47,6 +49,7 @@ public class CambiarEstadoCuentaFORM extends javax.swing.JFrame {
         lblTitulo = new javax.swing.JLabel();
         btnCambiarEstado = new javax.swing.JButton();
         lblEstadoActual = new javax.swing.JLabel();
+        btnVolverAtras = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -76,16 +79,19 @@ public class CambiarEstadoCuentaFORM extends javax.swing.JFrame {
         lblEstadoActual.setForeground(new java.awt.Color(0, 0, 0));
         lblEstadoActual.setText("Estado Actual de la Cuenta:");
 
+        btnVolverAtras.setBackground(new java.awt.Color(153, 153, 153));
+        btnVolverAtras.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        btnVolverAtras.setForeground(new java.awt.Color(0, 0, 0));
+        btnVolverAtras.setText(">");
+        btnVolverAtras.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        btnVolverAtras.addActionListener(this::btnVolverAtrasActionPerformed);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(120, 120, 120)
-                .addComponent(lblEstadoActual, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 143, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(149, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -100,18 +106,26 @@ public class CambiarEstadoCuentaFORM extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(btnCambiarEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(174, 174, 174))))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(120, 120, 120)
+                        .addComponent(lblEstadoActual, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnVolverAtras))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(56, 56, 56)
+                .addComponent(btnVolverAtras)
+                .addGap(29, 29, 29)
                 .addComponent(lblTitulo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblCuentaCambiar)
                 .addGap(18, 18, 18)
                 .addComponent(comboCuentasCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(161, 161, 161)
-                .addComponent(lblEstadoActual, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblEstadoActual, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(btnCambiarEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(107, 107, 107))
@@ -153,7 +167,7 @@ public class CambiarEstadoCuentaFORM extends javax.swing.JFrame {
 
     private void llenarCuentasCliente() {
         try {
-            List<Cuenta> cuentasClientes = cuentasBO.consultarCuentasCliente(1l); //Aqui se cambiara a que sea el id del usuario que inicio sesion,
+            List<Cuenta> cuentasClientes = objetosBO.getCuentasBO().consultarCuentasCliente(1l); //Aqui se cambiara a que sea el id del usuario que inicio sesion,
             // esta para poder probar el CU transferencia
             comboCuentasCliente.removeAllItems();
 
@@ -175,11 +189,15 @@ public class CambiarEstadoCuentaFORM extends javax.swing.JFrame {
         this.cambiarEstado();
     }//GEN-LAST:event_btnCambiarEstadoActionPerformed
 
+    private void btnVolverAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverAtrasActionPerformed
+        volverAtras();
+    }//GEN-LAST:event_btnVolverAtrasActionPerformed
+
     private void cambiarEstado() {
         Cuenta cuentaCliente = (Cuenta) comboCuentasCliente.getSelectedItem();
         String numeroCuenta = cuentaCliente.getNumeroCuenta();
         try {
-            this.cuentasBO.cambiarEstadoCuenta(numeroCuenta);
+            this.objetosBO.getCuentasBO().cambiarEstadoCuenta(numeroCuenta);
             JOptionPane.showMessageDialog(
                     this,
                     "Se ha cambiado el estado de cuenta correctamente",
@@ -197,9 +215,13 @@ public class CambiarEstadoCuentaFORM extends javax.swing.JFrame {
         }
 
     }
-
+    private void volverAtras(){
+        this.dispose();
+        new MenuPrincipalFORM(objetosBO).setVisible(true);
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCambiarEstado;
+    private javax.swing.JButton btnVolverAtras;
     private javax.swing.JComboBox<Cuenta> comboCuentasCliente;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblCuentaCambiar;

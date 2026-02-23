@@ -5,6 +5,7 @@
 package com.mycompany.proyectobanco.presentacion;
 
 import com.mycompany.proyectobanco.dtos.NuevoRetiroFormDTO;
+import com.mycompany.proyectobanco.dtos.ObjetosBoDTO;
 import com.mycompany.proyectobanco.entidades.Cuenta;
 import com.mycompany.proyectobanco.entidades.Retiro;
 import com.mycompany.proyectobanco.entidades.Retiro.Estado;
@@ -23,15 +24,13 @@ import javax.swing.JOptionPane;
 public class GenerarRetiroSinCuentaFORM extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(GenerarRetiroSinCuentaFORM.class.getName());
-    private final ICuentasBO cuentasBO;
-    private final IRetiroBO retiroBO;
+    private final ObjetosBoDTO objetosBO;
 
     /**
      * Creates new form GenerarRetiroSinCuentaFORM
      */
-    public GenerarRetiroSinCuentaFORM(ICuentasBO cuentasBO, IRetiroBO retiroBO) {
-        this.retiroBO = retiroBO;
-        this.cuentasBO = cuentasBO;
+    public GenerarRetiroSinCuentaFORM(ObjetosBoDTO objetosBO) {
+        this.objetosBO = objetosBO;
         initComponents();
         this.llenarCuentasCliente();
     }
@@ -53,6 +52,7 @@ public class GenerarRetiroSinCuentaFORM extends javax.swing.JFrame {
         lblMonto = new javax.swing.JLabel();
         lblSaldoDisponible = new javax.swing.JLabel();
         btnGenerarRetiro = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -88,40 +88,51 @@ public class GenerarRetiroSinCuentaFORM extends javax.swing.JFrame {
         btnGenerarRetiro.setText("Generar Retiro");
         btnGenerarRetiro.addActionListener(this::btnGenerarRetiroActionPerformed);
 
+        jButton1.setBackground(new java.awt.Color(153, 153, 153));
+        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(0, 0, 0));
+        jButton1.setText(">");
+        jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jButton1.addActionListener(this::jButton1ActionPerformed);
+
         javax.swing.GroupLayout pnlGenerarRetiroSinCuentaLayout = new javax.swing.GroupLayout(pnlGenerarRetiroSinCuenta);
         pnlGenerarRetiroSinCuenta.setLayout(pnlGenerarRetiroSinCuentaLayout);
         pnlGenerarRetiroSinCuentaLayout.setHorizontalGroup(
             pnlGenerarRetiroSinCuentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlGenerarRetiroSinCuentaLayout.createSequentialGroup()
                 .addGroup(pnlGenerarRetiroSinCuentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlGenerarRetiroSinCuentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(pnlGenerarRetiroSinCuentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlGenerarRetiroSinCuentaLayout.createSequentialGroup()
                             .addGap(252, 252, 252)
-                            .addGroup(pnlGenerarRetiroSinCuentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(lblSeleccionCuentaOrigen)
-                                .addGroup(pnlGenerarRetiroSinCuentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(comboCuentasCliente, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(pnlGenerarRetiroSinCuentaLayout.createSequentialGroup()
-                                        .addGap(18, 18, 18)
-                                        .addComponent(lblTitulo)))))
+                            .addComponent(lblSeleccionCuentaOrigen))
                         .addGroup(pnlGenerarRetiroSinCuentaLayout.createSequentialGroup()
                             .addContainerGap()
                             .addGroup(pnlGenerarRetiroSinCuentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(lblSaldoDisponible)
-                                .addComponent(txtMonto, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(txtMonto, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(pnlGenerarRetiroSinCuentaLayout.createSequentialGroup()
+                            .addComponent(jButton1)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(pnlGenerarRetiroSinCuentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(comboCuentasCliente, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(pnlGenerarRetiroSinCuentaLayout.createSequentialGroup()
+                                    .addGap(18, 18, 18)
+                                    .addComponent(lblTitulo)))))
                     .addGroup(pnlGenerarRetiroSinCuentaLayout.createSequentialGroup()
                         .addGap(313, 313, 313)
                         .addComponent(lblMonto))
                     .addGroup(pnlGenerarRetiroSinCuentaLayout.createSequentialGroup()
                         .addGap(310, 310, 310)
                         .addComponent(btnGenerarRetiro, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(268, Short.MAX_VALUE))
+                .addContainerGap(275, Short.MAX_VALUE))
         );
         pnlGenerarRetiroSinCuentaLayout.setVerticalGroup(
             pnlGenerarRetiroSinCuentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlGenerarRetiroSinCuentaLayout.createSequentialGroup()
-                .addComponent(lblTitulo)
-                .addGap(90, 90, 90)
+                .addGroup(pnlGenerarRetiroSinCuentaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTitulo)
+                    .addComponent(jButton1))
+                .addGap(88, 88, 88)
                 .addComponent(lblSeleccionCuentaOrigen)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(comboCuentasCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -133,7 +144,7 @@ public class GenerarRetiroSinCuentaFORM extends javax.swing.JFrame {
                 .addComponent(lblSaldoDisponible)
                 .addGap(38, 38, 38)
                 .addComponent(btnGenerarRetiro, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 87, Short.MAX_VALUE))
+                .addGap(0, 84, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -159,7 +170,7 @@ public class GenerarRetiroSinCuentaFORM extends javax.swing.JFrame {
             Estado estado = Estado.ACTIVO; 
             
             NuevoRetiroFormDTO retiroDTO = new NuevoRetiroFormDTO(montoRetiro,fechaHora,cuentaOrigen,estado);
-            Retiro retiro = retiroBO.generarRetiroSinCuenta(retiroDTO);
+            Retiro retiro = objetosBO.getRetiroBO().generarRetiroSinCuenta(retiroDTO);
             
             DateTimeFormatter formatterFechaHora = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
             String formatoFechaHora = fechaHora.format(formatterFechaHora);
@@ -200,9 +211,13 @@ public class GenerarRetiroSinCuentaFORM extends javax.swing.JFrame {
         this.generarRetiroSinCuenta();
     }//GEN-LAST:event_btnGenerarRetiroActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        volverAtras();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     private void llenarCuentasCliente() {
         try {
-            List<Cuenta> cuentasClientes = cuentasBO.consultarCuentasCliente(1l); //Aqui se cambiara a que sea el id del usuario que inicio sesion,
+            List<Cuenta> cuentasClientes = objetosBO.getCuentasBO().consultarCuentasCliente(1l); //Aqui se cambiara a que sea el id del usuario que inicio sesion,
             // esta para poder probar el CU transferencia
             comboCuentasCliente.removeAllItems();
 
@@ -216,10 +231,17 @@ public class GenerarRetiroSinCuentaFORM extends javax.swing.JFrame {
                     JOptionPane.ERROR_MESSAGE);
         }
     }
-
+    
+    private void volverAtras(){
+        vaciarForm();
+        this.dispose();
+        new MenuPrincipalFORM(objetosBO).setVisible(true);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGenerarRetiro;
     private javax.swing.JComboBox<Cuenta> comboCuentasCliente;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel lblMonto;
     private javax.swing.JLabel lblSaldoDisponible;
     private javax.swing.JLabel lblSeleccionCuentaOrigen;
