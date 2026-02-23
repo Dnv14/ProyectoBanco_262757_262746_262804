@@ -28,6 +28,9 @@ import com.mycompany.proyectobanco.persistencia.ITransferenciaDAO;
 import com.mycompany.proyectobanco.persistencia.OperacionDAO;
 import com.mycompany.proyectobanco.persistencia.RetiroDAO;
 import com.mycompany.proyectobanco.persistencia.TransferenciaDAO;
+import com.mycompany.proyectobanco.presentacion.CambiarEstadoCuentaFORM;
+import com.mycompany.proyectobanco.presentacion.CobrarRetiroSinCuentaFORM;
+import com.mycompany.proyectobanco.presentacion.ConsultarHIstorialOPeracionFORM;
 import com.mycompany.proyectobanco.presentacion.InicioSesionFORM;
 
 /**
@@ -37,26 +40,38 @@ import com.mycompany.proyectobanco.presentacion.InicioSesionFORM;
 public class ProyectoBanco_262757_262746_262804 {
 
     public static void main(String[] args) throws NegocioException {
-        IOperacionDAO operacionDAO = new OperacionDAO();
-        IOperacionBO operacionBO = new OperacionBO(operacionDAO);
         
-        IRetiroDAO retiroDAO = new RetiroDAO();
-        IRetiroBO retiroBO = new RetiroBO(operacionBO,retiroDAO);
-        
-        ICuentasDAO cuentasDAO = new CuentasDAO();
-        ICuentasBO cuentasBO = new CuentasBO(cuentasDAO);
-        
-        IClientesDAO clientesDAO = new ClientesDAO();
-        IClientesBO clientesBO = new ClientesBO(clientesDAO);
-        
-        ITransferenciaDAO transferenciaDAO = new TransferenciaDAO();
-        ITransferenciaBO transferenciaBO = new TransferenciaBO(transferenciaDAO,operacionBO);
-        
-        IHistorialOperacionesBO historialBO = new HistorialOperacionesBO();
-        
-        ObjetosBoDTO objetosBO = new ObjetosBoDTO(clientesBO,cuentasBO,operacionBO,retiroBO,transferenciaBO,historialBO);
-        
-        InicioSesionFORM iniciarSesion = new InicioSesionFORM(objetosBO);
-        iniciarSesion.setVisible(true);
     }
+//        IOperacionDAO operacionDAO = new OperacionDAO();
+//        IOperacionBO operacionBO = new OperacionBO(operacionDAO);
+//        
+//        IRetiroDAO retiroDAO = new RetiroDAO();
+//        IRetiroBO retiroBO = new RetiroBO(operacionBO,retiroDAO);
+//        
+//        ICuentasDAO cuentasDAO = new CuentasDAO();
+//        ICuentasBO cuentasBO = new CuentasBO(cuentasDAO);
+//        
+//        IClientesDAO clientesDAO = new ClientesDAO();
+//        IClientesBO clientesBO = new ClientesBO(clientesDAO);
+//        
+//<<<<<<< HEAD
+////        CambiarEstadoCuentaFORM cambiarEstado = new CambiarEstadoCuentaFORM(cuentasBO);
+////        cambiarEstado.setVisible(true);
+////        CobrarRetiroSinCuentaFORM cobrarRetiro = new CobrarRetiroSinCuentaFORM(retiroBO);
+////        cobrarRetiro.setVisible(true);
+//
+//        ConsultarHIstorialOPeracionFORM historialOperaciones = new ConsultarHIstorialOPeracionFORM();
+//        historialOperaciones.setVisible(true);
+//=======
+//        ITransferenciaDAO transferenciaDAO = new TransferenciaDAO();
+//        ITransferenciaBO transferenciaBO = new TransferenciaBO(transferenciaDAO,operacionBO);
+//        
+//        IHistorialOperacionesBO historialBO = new HistorialOperacionesBO();
+//        
+//        ObjetosBoDTO objetosBO = new ObjetosBoDTO(clientesBO,cuentasBO,operacionBO,retiroBO,transferenciaBO,historialBO);
+//        
+//        InicioSesionFORM iniciarSesion = new InicioSesionFORM(objetosBO);
+//        iniciarSesion.setVisible(true);
+//>>>>>>> e118c6c69554e3730eb37f1e2b58b1667c89deb7
+//    }
 }
