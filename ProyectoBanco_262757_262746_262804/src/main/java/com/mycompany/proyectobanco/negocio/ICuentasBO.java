@@ -13,4 +13,5 @@ public interface ICuentasBO {
     public abstract List<Cuenta> consultarCuentasCliente(Long idCliente) throws NegocioException;
     public abstract void cambiarEstadoCuenta(String numeroCuentae) throws NegocioException;
     public abstract Cuenta crearCuenta(NuevaCuentaDTO cuentaDTO)throws NegocioException;
+    public String generarNumeroCuenta() throws NegocioException;
 }

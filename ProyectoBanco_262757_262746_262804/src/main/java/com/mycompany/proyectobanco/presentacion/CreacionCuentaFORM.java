@@ -1,7 +1,12 @@
 package com.mycompany.proyectobanco.presentacion;
 
+import com.mycompany.proyectobanco.dtos.NuevaCuentaDTO;
 import com.mycompany.proyectobanco.dtos.ObjetosBoDTO;
 import com.mycompany.proyectobanco.entidades.Cliente;
+import com.mycompany.proyectobanco.entidades.Cuenta;
+import com.mycompany.proyectobanco.negocio.NegocioException;
+import java.util.GregorianCalendar;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -150,13 +155,36 @@ public class CreacionCuentaFORM extends javax.swing.JFrame {
         volverAtras();
     }//GEN-LAST:event_btnVolverAtrasActionPerformed
 
-    private void crearCuenta(){
-        
+    private void crearCuenta() {
+        try {
+            String numCuenta = objetosBO.getCuentasBO().generarNumeroCuenta();
+            txtNumCuenta.setText(numCuenta);
+            
+            long idCliente = Long.parseLong(clienteLogeado.getIdCliente());
+            long saldo = 0;
+            GregorianCalendar fechaApertura = new GregorianCalendar();
+            
+            
+            NuevaCuentaDTO cuentaDTO = new NuevaCuentaDTO(numCuenta, Cuenta.Estado.ACTIVO, fechaApertura, saldo, idCliente);
+            objetosBO.getCuentasBO().crearCuenta(cuentaDTO);
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Se ha creado la cuenta correctamente",
+                    "Información",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+        } catch (NegocioException ex) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al crear cuenta: " + ex.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+
     }
-    
-    private void volverAtras(){
+
+    private void volverAtras() {
         this.dispose();
-        new MenuPrincipalFORM(objetosBO,clienteLogeado).setVisible(true);
+        new MenuPrincipalFORM(objetosBO, clienteLogeado).setVisible(true);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

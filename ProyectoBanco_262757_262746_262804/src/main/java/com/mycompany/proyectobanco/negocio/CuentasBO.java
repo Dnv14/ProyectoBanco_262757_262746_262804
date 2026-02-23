@@ -60,6 +60,21 @@ public class CuentasBO implements ICuentasBO {
 
     @Override
     public Cuenta crearCuenta(NuevaCuentaDTO cuentaDTO) throws NegocioException {
+        try {
+           String numeroCuenta = generarNumeroCuenta();
+           
+            NuevaCuentaDTO nuevaCuentaDTO = new NuevaCuentaDTO(numeroCuenta, cuentaDTO.getEstado(), cuentaDTO.getFechaApertura(), cuentaDTO.getSaldo(), cuentaDTO.getIdCliente());
+
+            Cuenta cuentaCreada = this.cuentasDAO.crearCuenta(nuevaCuentaDTO);
+            return cuentaCreada;
+        } catch (PersistenciaException ex) {
+            throw new NegocioException("No se pudo crear la cuenta ", ex);
+        }
+
+    }
+    
+    @Override
+    public String generarNumeroCuenta() throws NegocioException {
         Random random = new Random();
         String numeroCuenta = "";
         boolean repetido = true;
@@ -83,10 +98,7 @@ public class CuentasBO implements ICuentasBO {
                     }
                 }
             }
-            NuevaCuentaDTO nuevaCuentaDTO = new NuevaCuentaDTO(numeroCuenta, cuentaDTO.getEstado(), cuentaDTO.getFechaApertura(), cuentaDTO.getSaldo(), cuentaDTO.getIdCliente());
-
-            Cuenta cuentaCreada = this.cuentasDAO.crearCuenta(nuevaCuentaDTO);
-            return cuentaCreada;
+            return numeroCuenta;
         } catch (PersistenciaException ex) {
             throw new NegocioException("No se pudo crear la cuenta ", ex);
         }
