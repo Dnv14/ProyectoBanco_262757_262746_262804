@@ -19,24 +19,24 @@ public class ObjetosBoDTO {
     private IOperacionBO operacionBO;
     private IRetiroBO retiroBO;
     private ITransferenciaBO transferenciaBO;
-    private IHistorialOperacionesBO historialBO;
+//    private IHistorialOperacionesBO historialBO;
 
     public ObjetosBoDTO() {
     }
     
     
-    public ObjetosBoDTO(IClientesBO clientesBO, ICuentasBO cuentasBO, IOperacionBO operacionBO, IRetiroBO retiroBO, ITransferenciaBO transferenciaBO, IHistorialOperacionesBO historialBO) {
+    public ObjetosBoDTO(IClientesBO clientesBO, ICuentasBO cuentasBO, IOperacionBO operacionBO, IRetiroBO retiroBO, ITransferenciaBO transferenciaBO) {
         this.clientesBO = clientesBO;
         this.cuentasBO = cuentasBO;
         this.operacionBO = operacionBO;
         this.retiroBO = retiroBO;
         this.transferenciaBO = transferenciaBO;
-        this.historialBO = historialBO;
+//        this.historialBO = historialBO;
     }
 
-    public IHistorialOperacionesBO getHistorialDAO() {
-        return historialBO;
-    }
+//    public IHistorialOperacionesBO getHistorialDAO() {
+//        return historialBO;
+//    }
 
     public IClientesBO getClientesBO() {
         return clientesBO;

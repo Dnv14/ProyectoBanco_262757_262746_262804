@@ -69,6 +69,7 @@ public class MenuPrincipalFORM extends javax.swing.JFrame {
         btnHistorial.setForeground(new java.awt.Color(0, 0, 0));
         btnHistorial.setText("Historial Operaciones");
         btnHistorial.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        btnHistorial.addActionListener(this::btnHistorialActionPerformed);
 
         btnAltaCuenta.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         btnAltaCuenta.setForeground(new java.awt.Color(0, 0, 0));
@@ -126,7 +127,6 @@ public class MenuPrincipalFORM extends javax.swing.JFrame {
                     .addComponent(btnCambiarEstadoCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(34, 34, 34)
                 .addComponent(btnAltaCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
@@ -175,9 +175,13 @@ public class MenuPrincipalFORM extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCambiarEstadoCuentaActionPerformed
 
     private void btnAltaCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAltaCuentaActionPerformed
-        new CreacionCuentaFORM(objetosBO, clienteLogeado);
+        new CreacionCuentaFORM(objetosBO, clienteLogeado).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnAltaCuentaActionPerformed
+
+    private void btnHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHistorialActionPerformed
+      //TODO
+    }//GEN-LAST:event_btnHistorialActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -2,10 +2,10 @@ package com.mycompany.proyectobanco.negocio;
 
 import com.mycompany.proyectobanco.dtos.NuevaCuentaDTO;
 import com.mycompany.proyectobanco.entidades.Cuenta;
-import com.mycompany.proyectobanco.entidades.Cuenta.Estado;
+import com.mycompany.proyectobanco.persistencia.IClientesDAO;
+
 import com.mycompany.proyectobanco.persistencia.ICuentasDAO;
 import com.mycompany.proyectobanco.persistencia.PersistenciaException;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -16,9 +16,11 @@ import java.util.Random;
 public class CuentasBO implements ICuentasBO {
 
     private final ICuentasDAO cuentasDAO;
+    private final IClientesDAO clientesDAO;
 
-    public CuentasBO(ICuentasDAO cuentasDAO) {
+    public CuentasBO(ICuentasDAO cuentasDAO, IClientesDAO clientesDAO) {
         this.cuentasDAO = cuentasDAO;
+        this.clientesDAO = clientesDAO;
     }
 
     @Override
@@ -59,10 +61,20 @@ public class CuentasBO implements ICuentasBO {
     }
 
     @Override
-    public Cuenta crearCuenta(NuevaCuentaDTO cuentaDTO) throws NegocioException {
+    public Cuenta crearCuenta(NuevaCuentaDTO cuentaDTO, String contrasenia) throws NegocioException {
         try {
-           String numeroCuenta = generarNumeroCuenta();
-           
+            List<String> contrasenias = clientesDAO.obtenerTodasLasContrasenias();
+
+            if (!contrasenias.contains(contrasenia)) {
+                throw new NegocioException("Contraseña incorrecta", null);
+            }
+        } catch (PersistenciaException ex) {
+            throw new NegocioException("no fue posible verificar la contraseña", ex);
+        }
+
+        try {
+            String numeroCuenta = generarNumeroCuenta();
+
             NuevaCuentaDTO nuevaCuentaDTO = new NuevaCuentaDTO(numeroCuenta, cuentaDTO.getEstado(), cuentaDTO.getFechaApertura(), cuentaDTO.getSaldo(), cuentaDTO.getIdCliente());
 
             Cuenta cuentaCreada = this.cuentasDAO.crearCuenta(nuevaCuentaDTO);
@@ -72,7 +84,7 @@ public class CuentasBO implements ICuentasBO {
         }
 
     }
-    
+
     @Override
     public String generarNumeroCuenta() throws NegocioException {
         Random random = new Random();
