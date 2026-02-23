@@ -22,7 +22,7 @@ public class TransferenciaDAO implements ITransferenciaDAO {
     public Transferencia crearTransferencia(NuevaTransferenciaDTO nuevaTransferencia) throws PersistenciaException {
         try {
             String codigoSQL = """
-                               INSERT INTO Transferencia(idOperacion, cuentaDestino)
+                               INSERT INTO Transferencias(idOperacion, cuentaDestino)
                                VALUES (?, ?);
                                """;
             Connection conexion = ConexionBD.crearConexion();
@@ -73,7 +73,7 @@ public class TransferenciaDAO implements ITransferenciaDAO {
            
             Long saldoNuevo = cuentaDestino.getSaldo() + operacionTransferencia.getMonto();
             String codigoSQL = """
-                                UPDATE cuenta
+                                UPDATE cuentas
                                 SET saldo = ?
                                 WHERE idCliente = ? AND numeroCuenta = ?;
                               """;

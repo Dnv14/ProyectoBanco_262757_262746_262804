@@ -22,6 +22,7 @@ public class ConsultarHIstorialOPeracionFORM extends javax.swing.JFrame {
     
     private final ICuentasBO cuentasBO;
     private final IHistorialOperacionesBO historialOperacionesBO;
+    
 
     /**
      * Creates new form ConsultarHIstorialOPeracionFORM
@@ -53,7 +54,7 @@ public class ConsultarHIstorialOPeracionFORM extends javax.swing.JFrame {
         comboTipoOperacion.addItem("Retiro sin cuenta");
     }
     
-    private void actualizarTabla(){
+    private void actualizarTabla() throws NegocioException{
         String numeroCuenta = (String) comboCuentas.getSelectedItem();
         String tipoSeleccionado = (String) comboTipoOperacion.getSelectedItem();
         if(numeroCuenta == null || tipoSeleccionado == null){
@@ -84,7 +85,7 @@ public class ConsultarHIstorialOPeracionFORM extends javax.swing.JFrame {
             if(operaciones.isEmpty()){
                 JOptionPane.showMessageDialog(this,"No existen operaciones para los filtros seleccionados.","Sin resultados", JOptionPane.INFORMATION_MESSAGE);
             }
-            }catch(PersistenciaException ex){
+            }catch(NegocioException ex){
                 JOptionPane.showMessageDialog(this,"Error al consultar el historial: " + ex.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
             }
     }
@@ -171,10 +172,10 @@ public class ConsultarHIstorialOPeracionFORM extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void comboTipoOperacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboTipoOperacionActionPerformed
-        actualizarTabla();
+//        actualizarTabla();
     }//GEN-LAST:event_comboTipoOperacionActionPerformed
     private void comboCuentaActioPerormed(java.awt.event.ActionEvent evt) {                                                   
-        actualizarTabla();
+//        actualizarTabla();
     }   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

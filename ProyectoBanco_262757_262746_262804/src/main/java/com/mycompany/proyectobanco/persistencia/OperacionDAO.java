@@ -31,7 +31,7 @@ public class OperacionDAO implements IOperacionDAO {
         try {
             int idOperacion = 0;
             String codigoSQL = """
-                               INSERT INTO Operacion(monto, fechaHora, numeroCuenta)
+                               INSERT INTO Operaciones(monto, fechaHora, numeroCuenta)
                                values(?,?,?);
                                """;
             Connection conexion = ConexionBD.crearConexion();
@@ -78,7 +78,7 @@ public class OperacionDAO implements IOperacionDAO {
 
             Long saldoNuevo = cuentaOrigen.getSaldo() - operacionDTO.getMonto();
             String codigoSQL = """
-                                UPDATE cuenta
+                                UPDATE cuentas
                                 SET saldo = ?
                                 WHERE idCliente = ? AND numeroCuenta = ?;
                               """;
@@ -105,7 +105,7 @@ public class OperacionDAO implements IOperacionDAO {
             List<Operacion> operaciones = new LinkedList<>();
             String codigoSQL = """
                                            SELECT idOperacion, monto, fechaHora, numeroCuenta
-                                           FROM Operacion;
+                                           FROM Operaciones;
                                                           """;
             Connection conexion = ConexionBD.crearConexion();
             PreparedStatement comando = conexion.prepareStatement(codigoSQL);

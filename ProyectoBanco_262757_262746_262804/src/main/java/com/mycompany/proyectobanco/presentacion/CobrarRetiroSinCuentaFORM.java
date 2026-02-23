@@ -1,13 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package com.mycompany.proyectobanco.presentacion;
 
 import com.mycompany.proyectobanco.dtos.CobrarRetiroDTO;
-import com.mycompany.proyectobanco.entidades.Retiro;
+import com.mycompany.proyectobanco.dtos.ObjetosBoDTO;
 import com.mycompany.proyectobanco.entidades.Retiro.Estado;
-import com.mycompany.proyectobanco.negocio.IRetiroBO;
 import com.mycompany.proyectobanco.negocio.NegocioException;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
@@ -23,13 +19,14 @@ public class CobrarRetiroSinCuentaFORM extends javax.swing.JFrame {
     private final int TIEMPO_LIMITE = 10 * 60; 
     private int segundosRestantes = TIEMPO_LIMITE;
     private Estado estado;
-    private final IRetiroBO retiroBO;
+    private final ObjetosBoDTO objetosBO;
 
     /**
      * Creates new form CobrarRetiroSinCuentaFORM
+     * @param objetosBO
      */
-    public CobrarRetiroSinCuentaFORM(IRetiroBO retiroBO) {
-        this.retiroBO = retiroBO;
+    public CobrarRetiroSinCuentaFORM(ObjetosBoDTO objetosBO) {
+        this.objetosBO = objetosBO;
         initComponents();
         iniciarCronometro();
     }
@@ -51,6 +48,7 @@ public class CobrarRetiroSinCuentaFORM extends javax.swing.JFrame {
         lblContrasenia = new javax.swing.JLabel();
         btnRetirar = new javax.swing.JButton();
         lblCronometro = new javax.swing.JLabel();
+        btnVolverAtras = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -88,6 +86,13 @@ public class CobrarRetiroSinCuentaFORM extends javax.swing.JFrame {
         lblCronometro.setText("TIEMPO");
         lblCronometro.setToolTipText("");
 
+        btnVolverAtras.setBackground(new java.awt.Color(153, 153, 153));
+        btnVolverAtras.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        btnVolverAtras.setForeground(new java.awt.Color(0, 0, 0));
+        btnVolverAtras.setText(">");
+        btnVolverAtras.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        btnVolverAtras.addActionListener(this::btnVolverAtrasActionPerformed);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -95,9 +100,6 @@ public class CobrarRetiroSinCuentaFORM extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(268, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(lblTitulo)
-                        .addGap(269, 269, 269))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(lblContrasenia)
                         .addGap(283, 283, 283))
@@ -116,13 +118,21 @@ public class CobrarRetiroSinCuentaFORM extends javax.swing.JFrame {
                         .addGap(91, 91, 91)
                         .addComponent(lblCronometro, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addComponent(btnVolverAtras)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblTitulo)
+                .addGap(269, 269, 269))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lblTitulo))
+                    .addComponent(btnVolverAtras))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                 .addComponent(lblFolioOperacion)
                 .addGap(18, 18, 18)
                 .addComponent(txtFolioOperacion, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -134,7 +144,7 @@ public class CobrarRetiroSinCuentaFORM extends javax.swing.JFrame {
                 .addComponent(btnRetirar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(lblCronometro, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(65, Short.MAX_VALUE))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -156,6 +166,10 @@ public class CobrarRetiroSinCuentaFORM extends javax.swing.JFrame {
         vaciarForm();
     }//GEN-LAST:event_btnRetirarActionPerformed
 
+    private void btnVolverAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverAtrasActionPerformed
+        volverAtras();
+    }//GEN-LAST:event_btnVolverAtrasActionPerformed
+
     private void cobrarRetiro(){
         try {
             if (segundosRestantes > 0) {
@@ -170,7 +184,7 @@ public class CobrarRetiroSinCuentaFORM extends javax.swing.JFrame {
             
             
             CobrarRetiroDTO retiroDTO = new CobrarRetiroDTO(folioOperacion,contrasenia,estado);
-            retiroBO.cobrarRetiroSinCuenta(retiroDTO);
+            objetosBO.getRetiroBO().cobrarRetiroSinCuenta(retiroDTO);
             
             JOptionPane.showMessageDialog(this, "Retiro cobrado exitosamente.", 
                 "Cobro realizado correctamente.", 
@@ -209,8 +223,15 @@ public class CobrarRetiroSinCuentaFORM extends javax.swing.JFrame {
         timer.start();
     }
     
+    private void volverAtras(){
+        vaciarForm();
+        this.dispose();
+        new InicioSesionFORM(objetosBO).setVisible(true);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRetirar;
+    private javax.swing.JButton btnVolverAtras;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblContrasenia;
     private javax.swing.JLabel lblCronometro;

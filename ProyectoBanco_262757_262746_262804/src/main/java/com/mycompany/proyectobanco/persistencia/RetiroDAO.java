@@ -27,7 +27,7 @@ public class RetiroDAO implements IRetiroDAO{
         try {
             int idFolioRetiro = 0;
             String codigoSQL = """
-                                           INSERT INTO RetiroSinCuenta(idOperacion, contrasenia, estado)
+                                           INSERT INTO RetiroSinCuentas(idOperacion, contrasenia, estado)
                                            VALUES (?, ?, ?);
                                            """;
             Connection conexion = ConexionBD.crearConexion();
@@ -60,7 +60,7 @@ public class RetiroDAO implements IRetiroDAO{
             Retiro retiro = null;
             String codigoSQL = """
                                            SELECT idOperacion, contrasenia, folio, estado
-                                           FROM retiroSinCuenta
+                                           FROM retiroSinCuentas
                                            WHERE folio = ? AND contrasenia = ?;
                                                   """;
             
