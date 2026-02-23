@@ -4,7 +4,9 @@
 
 package com.mycompany.proyectobanco_262757_262746_262804;
 
+import com.mycompany.proyectobanco.negocio.ClientesBO;
 import com.mycompany.proyectobanco.negocio.CuentasBO;
+import com.mycompany.proyectobanco.negocio.IClientesBO;
 import com.mycompany.proyectobanco.negocio.ICuentasBO;
 import com.mycompany.proyectobanco.negocio.IOperacionBO;
 import com.mycompany.proyectobanco.negocio.IRetiroBO;
@@ -13,7 +15,9 @@ import com.mycompany.proyectobanco.negocio.NegocioException;
 import com.mycompany.proyectobanco.negocio.OperacionBO;
 import com.mycompany.proyectobanco.negocio.RetiroBO;
 import com.mycompany.proyectobanco.negocio.TransferenciaBO;
+import com.mycompany.proyectobanco.persistencia.ClientesDAO;
 import com.mycompany.proyectobanco.persistencia.CuentasDAO;
+import com.mycompany.proyectobanco.persistencia.IClientesDAO;
 import com.mycompany.proyectobanco.persistencia.ICuentasDAO;
 import com.mycompany.proyectobanco.persistencia.IOperacionDAO;
 import com.mycompany.proyectobanco.persistencia.IRetiroDAO;
@@ -25,6 +29,7 @@ import com.mycompany.proyectobanco.presentacion.CambiarEstadoCuentaFORM;
 import com.mycompany.proyectobanco.presentacion.CobrarRetiroSinCuentaFORM;
 import com.mycompany.proyectobanco.presentacion.ConsultarHistorialOperacionesFORM;
 import com.mycompany.proyectobanco.presentacion.GenerarRetiroSinCuentaFORM;
+import com.mycompany.proyectobanco.presentacion.InicioSesionFORM;
 import com.mycompany.proyectobanco.presentacion.SeleccionarCuentaOrigenTransferenciaFORM;
 
 /**
@@ -43,6 +48,9 @@ public class ProyectoBanco_262757_262746_262804 {
         ICuentasDAO cuentasDAO = new CuentasDAO();
         ICuentasBO cuentasBO = new CuentasBO(cuentasDAO);
         
+        IClientesDAO clientesDAO = new ClientesDAO();
+        IClientesBO clientesBO = new ClientesBO(clientesDAO);
+        
 //        GenerarRetiroSinCuentaFORM retiroSinCuenta = new GenerarRetiroSinCuentaFORM(cuentasBO,retiroBO);
 //        retiroSinCuenta.setVisible(true);
         
@@ -50,8 +58,11 @@ public class ProyectoBanco_262757_262746_262804 {
 //        cambiarEstado.setVisible(true);
 //        CobrarRetiroSinCuentaFORM cobrarRetiro = new CobrarRetiroSinCuentaFORM(retiroBO);
 //        cobrarRetiro.setVisible(true);
+//
+//        ConsultarHistorialOperacionesFORM historialOperaciones = new ConsultarHistorialOperacionesFORM();
+//        historialOperaciones.setVisible(true);
 
-        ConsultarHistorialOperacionesFORM historialOperaciones = new ConsultarHistorialOperacionesFORM();
-        historialOperaciones.setVisible(true);
+        InicioSesionFORM iniciarSesion = new InicioSesionFORM(clientesBO);
+        iniciarSesion.setVisible(true);
     }
 }

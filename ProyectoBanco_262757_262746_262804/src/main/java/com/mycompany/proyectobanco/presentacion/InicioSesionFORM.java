@@ -4,6 +4,11 @@
  */
 package com.mycompany.proyectobanco.presentacion;
 
+import com.mycompany.proyectobanco.dtos.ValidarUsuarioClienteDTO;
+import com.mycompany.proyectobanco.negocio.IClientesBO;
+import com.mycompany.proyectobanco.negocio.NegocioException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Julian
@@ -11,11 +16,16 @@ package com.mycompany.proyectobanco.presentacion;
 public class InicioSesionFORM extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(InicioSesionFORM.class.getName());
-
+    private IClientesBO clientesBO;
+    
+    
+    
     /**
      * Creates new form InicioSesionFORM
+     * @param clientesBO
      */
-    public InicioSesionFORM() {
+    public InicioSesionFORM(IClientesBO clientesBO) {
+        this.clientesBO = clientesBO;
         initComponents();
     }
 
@@ -28,6 +38,7 @@ public class InicioSesionFORM extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         lblTitulo = new javax.swing.JLabel();
         lblUsuario = new javax.swing.JLabel();
@@ -35,8 +46,9 @@ public class InicioSesionFORM extends javax.swing.JFrame {
         lblContrasenia = new javax.swing.JLabel();
         txtContrasenia = new javax.swing.JTextField();
         btnIniciarSesion = new javax.swing.JButton();
-        btnCrearCuenta = new javax.swing.JButton();
-        btnCobrarRetiro = new javax.swing.JButton();
+        btnRetiroSinCuenta = new javax.swing.JButton();
+
+        jLabel1.setText("jLabel1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -67,68 +79,57 @@ public class InicioSesionFORM extends javax.swing.JFrame {
         btnIniciarSesion.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         btnIniciarSesion.setForeground(new java.awt.Color(0, 0, 0));
         btnIniciarSesion.setText("Iniciar Sesion");
+        btnIniciarSesion.addActionListener(this::btnIniciarSesionActionPerformed);
 
-        btnCrearCuenta.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        btnCrearCuenta.setForeground(new java.awt.Color(0, 0, 0));
-        btnCrearCuenta.setText("Crear Cuenta");
-
-        btnCobrarRetiro.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        btnCobrarRetiro.setForeground(new java.awt.Color(0, 0, 0));
-        btnCobrarRetiro.setText("Cobrar  Retiro Sin Cuenta");
+        btnRetiroSinCuenta.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        btnRetiroSinCuenta.setForeground(new java.awt.Color(0, 0, 0));
+        btnRetiroSinCuenta.setText("Retiro Sin Cuenta");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(lblTitulo)
-                .addGap(285, 285, 285))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(256, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(lblUsuario)
-                        .addGap(354, 354, 354))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txtContrasenia, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(btnCrearCuenta)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnIniciarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(264, 264, 264))))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(342, 342, 342)
-                        .addComponent(lblContrasenia))
+                        .addGap(299, 299, 299)
+                        .addComponent(lblTitulo))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(289, 289, 289)
-                        .addComponent(btnCobrarRetiro)))
-                .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(358, 358, 358)
+                        .addComponent(lblUsuario))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(341, 341, 341)
+                        .addComponent(lblContrasenia)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(128, 262, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnIniciarSesion)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnRetiroSinCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtContrasenia)
+                    .addComponent(txtUsuario))
+                .addGap(246, 246, 246))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
+                .addContainerGap()
                 .addComponent(lblTitulo)
-                .addGap(56, 56, 56)
+                .addGap(43, 43, 43)
                 .addComponent(lblUsuario)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(54, 54, 54)
-                .addComponent(lblContrasenia)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtContrasenia, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnIniciarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnCrearCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnCobrarRetiro, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(84, Short.MAX_VALUE))
+                .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(45, 45, 45)
+                .addComponent(lblContrasenia)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtContrasenia, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(38, 38, 38)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnIniciarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRetiroSinCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(148, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -145,12 +146,34 @@ public class InicioSesionFORM extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-   
+    private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
+        try {
+            String usuario = txtUsuario.getText();
+            String contrasenia = txtContrasenia.getText();
+            
+            ValidarUsuarioClienteDTO usuarioCliente = new ValidarUsuarioClienteDTO(usuario,contrasenia);
+            boolean acceso = clientesBO.validarClienteEstaRegistrado(usuarioCliente);
+            if(acceso){
+                new MenuPrincipalFORM().setVisible(true);
+                vaciarForm();
+                this.dispose();
+            }else{
+                JOptionPane.showMessageDialog(this, "Verifique que haya ingresado los datos correctamente.","ERROR",JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (NegocioException ex) {
+            JOptionPane.showMessageDialog(this, "Error al iniciar sesion: " + ex.getMessage(),"ERROR",JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnIniciarSesionActionPerformed
+    
+    private void vaciarForm(){
+        txtContrasenia.setText("");
+        txtUsuario.setText("");
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCobrarRetiro;
-    private javax.swing.JButton btnCrearCuenta;
     private javax.swing.JButton btnIniciarSesion;
+    private javax.swing.JButton btnRetiroSinCuenta;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblContrasenia;
     private javax.swing.JLabel lblTitulo;
