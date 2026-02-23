@@ -2,6 +2,7 @@
 package com.mycompany.proyectobanco.negocio;
 
 import com.mycompany.proyectobanco.dtos.ValidarUsuarioClienteDTO;
+import com.mycompany.proyectobanco.entidades.Cliente;
 import com.mycompany.proyectobanco.persistencia.IClientesDAO;
 import com.mycompany.proyectobanco.persistencia.PersistenciaException;
 
@@ -20,7 +21,7 @@ public class ClientesBO implements IClientesBO{
     
 
     @Override
-    public boolean validarClienteEstaRegistrado(ValidarUsuarioClienteDTO usuarioCliente) throws NegocioException {
+    public Cliente validarClienteEstaRegistrado(ValidarUsuarioClienteDTO usuarioCliente) throws NegocioException {
         if(usuarioCliente.getContrasenia() == null){
             throw new NegocioException("La contrasenia no debe estar vacia.",null);
         }
@@ -31,8 +32,11 @@ public class ClientesBO implements IClientesBO{
             throw new NegocioException("El usuario no debe estar vacio.",null);
         }
         try {
-            boolean acceso = clientesDAO.validarClienteEstaRegistrado(usuarioCliente);
-            return acceso;
+            Cliente cliente = clientesDAO.validarClienteEstaRegistrado(usuarioCliente);
+            if(cliente == null){
+                throw new NegocioException("Usuario no encontrado.",null);
+            }
+            return cliente;
         } catch (PersistenciaException ex) {
             throw new NegocioException("Error al intentar validar el usuario.",ex);
         }

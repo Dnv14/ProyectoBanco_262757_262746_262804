@@ -5,6 +5,7 @@
 package com.mycompany.proyectobanco.presentacion;
 
 import com.mycompany.proyectobanco.dtos.ObjetosBoDTO;
+import com.mycompany.proyectobanco.entidades.Cliente;
 
 /**
  *
@@ -15,12 +16,14 @@ public class MenuPrincipalFORM extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MenuPrincipalFORM.class.getName());
     
     private  ObjetosBoDTO objetosBO ;
+    private Cliente clienteLogeado;
     /**
      * Creates new form MenuPrincipalFORM
      * @param objetosBO
      */
-    public MenuPrincipalFORM(ObjetosBoDTO objetosBO) {
+    public MenuPrincipalFORM(ObjetosBoDTO objetosBO,Cliente clienteLogeado) {
         this.objetosBO = objetosBO;
+        this.clienteLogeado = clienteLogeado;
         initComponents();
     }
 
@@ -129,12 +132,12 @@ public class MenuPrincipalFORM extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnTransferenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTransferenciaActionPerformed
-        new SeleccionarCuentaOrigenTransferenciaFORM(objetosBO).setVisible(true);
+        new SeleccionarCuentaOrigenTransferenciaFORM(objetosBO,clienteLogeado).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnTransferenciaActionPerformed
 
     private void btnRetiroSinCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRetiroSinCuentaActionPerformed
-        new GenerarRetiroSinCuentaFORM(objetosBO).setVisible(true);
+        new GenerarRetiroSinCuentaFORM(objetosBO,clienteLogeado).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnRetiroSinCuentaActionPerformed
 

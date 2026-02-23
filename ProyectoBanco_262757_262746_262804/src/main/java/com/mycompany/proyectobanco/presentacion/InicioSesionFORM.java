@@ -6,6 +6,7 @@ package com.mycompany.proyectobanco.presentacion;
 
 import com.mycompany.proyectobanco.dtos.ObjetosBoDTO;
 import com.mycompany.proyectobanco.dtos.ValidarUsuarioClienteDTO;
+import com.mycompany.proyectobanco.entidades.Cliente;
 import com.mycompany.proyectobanco.negocio.NegocioException;
 import javax.swing.JOptionPane;
 
@@ -18,6 +19,7 @@ public class InicioSesionFORM extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(InicioSesionFORM.class.getName());
     
     private ObjetosBoDTO objetosBO;
+    private Cliente clienteLogeado;
     
     
     /**
@@ -153,9 +155,9 @@ public class InicioSesionFORM extends javax.swing.JFrame {
             String contrasenia = txtContrasenia.getText();
             
             ValidarUsuarioClienteDTO usuarioCliente = new ValidarUsuarioClienteDTO(usuario,contrasenia);
-            boolean acceso = objetosBO.getClientesBO().validarClienteEstaRegistrado(usuarioCliente);
-            if(acceso){
-                new MenuPrincipalFORM(objetosBO).setVisible(true);
+            this.clienteLogeado = objetosBO.getClientesBO().validarClienteEstaRegistrado(usuarioCliente);
+            if(this.clienteLogeado != null){
+                new MenuPrincipalFORM(objetosBO,this.clienteLogeado).setVisible(true);
                 vaciarForm();
                 this.dispose();
             }else{

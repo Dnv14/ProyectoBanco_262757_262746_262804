@@ -5,10 +5,8 @@
 package com.mycompany.proyectobanco.presentacion;
 
 import com.mycompany.proyectobanco.dtos.ObjetosBoDTO;
+import com.mycompany.proyectobanco.entidades.Cliente;
 import com.mycompany.proyectobanco.entidades.Cuenta;
-import com.mycompany.proyectobanco.negocio.ICuentasBO;
-import com.mycompany.proyectobanco.negocio.IOperacionBO;
-import com.mycompany.proyectobanco.negocio.ITransferenciaBO;
 import com.mycompany.proyectobanco.negocio.NegocioException;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -21,13 +19,15 @@ public class CambiarEstadoCuentaFORM extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(CambiarEstadoCuentaFORM.class.getName());
     private final ObjetosBoDTO objetosBO;
+    private Cliente clienteLogeado;
 
     /**
      * Creates new form CambiarEstadoCuentaFORM
      * @param objetosBO
      */
-    public CambiarEstadoCuentaFORM(ObjetosBoDTO objetosBO) {
+    public CambiarEstadoCuentaFORM(ObjetosBoDTO objetosBO,Cliente clienteLogeado) {
         this.objetosBO = objetosBO;
+        this.clienteLogeado = clienteLogeado;
         initComponents();
         this.llenarCuentasCliente();
 
@@ -167,8 +167,7 @@ public class CambiarEstadoCuentaFORM extends javax.swing.JFrame {
 
     private void llenarCuentasCliente() {
         try {
-            List<Cuenta> cuentasClientes = objetosBO.getCuentasBO().consultarCuentasCliente(1l); //Aqui se cambiara a que sea el id del usuario que inicio sesion,
-            // esta para poder probar el CU transferencia
+            List<Cuenta> cuentasClientes = objetosBO.getCuentasBO().consultarCuentasCliente(Long.valueOf(clienteLogeado.getIdCliente())); 
             comboCuentasCliente.removeAllItems();
 
             for (Cuenta cuenta : cuentasClientes) {
@@ -217,7 +216,7 @@ public class CambiarEstadoCuentaFORM extends javax.swing.JFrame {
     }
     private void volverAtras(){
         this.dispose();
-        new MenuPrincipalFORM(objetosBO).setVisible(true);
+        new MenuPrincipalFORM(objetosBO,clienteLogeado).setVisible(true);
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCambiarEstado;

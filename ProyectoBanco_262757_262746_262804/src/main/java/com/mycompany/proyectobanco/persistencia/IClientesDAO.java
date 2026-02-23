@@ -10,5 +10,5 @@ import com.mycompany.proyectobanco.entidades.Cliente;
  */
 public interface IClientesDAO {
     public abstract Cliente crearCliente(NuevoClienteDTO nuevoCliente) throws PersistenciaException;
-    public abstract boolean validarClienteEstaRegistrado(ValidarUsuarioClienteDTO usuarioCliente) throws PersistenciaException;
+    public abstract Cliente validarClienteEstaRegistrado(ValidarUsuarioClienteDTO usuarioCliente) throws PersistenciaException;
 }
