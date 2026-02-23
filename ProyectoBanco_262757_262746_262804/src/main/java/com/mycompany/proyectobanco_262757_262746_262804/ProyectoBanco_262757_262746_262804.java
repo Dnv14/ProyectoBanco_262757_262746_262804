@@ -40,29 +40,29 @@ import com.mycompany.proyectobanco.presentacion.InicioSesionFORM;
 public class ProyectoBanco_262757_262746_262804 {
 
     public static void main(String[] args) throws NegocioException {
+        IOperacionDAO operacionDAO = new OperacionDAO();
+        IOperacionBO operacionBO = new OperacionBO(operacionDAO);
         
+        IRetiroDAO retiroDAO = new RetiroDAO();
+        IRetiroBO retiroBO = new RetiroBO(operacionBO,retiroDAO);
+        
+        ICuentasDAO cuentasDAO = new CuentasDAO();
+        ICuentasBO cuentasBO = new CuentasBO(cuentasDAO);
+        
+        IClientesDAO clientesDAO = new ClientesDAO();
+        IClientesBO clientesBO = new ClientesBO(clientesDAO);
     }
-//        IOperacionDAO operacionDAO = new OperacionDAO();
-//        IOperacionBO operacionBO = new OperacionBO(operacionDAO);
-//        
-//        IRetiroDAO retiroDAO = new RetiroDAO();
-//        IRetiroBO retiroBO = new RetiroBO(operacionBO,retiroDAO);
-//        
-//        ICuentasDAO cuentasDAO = new CuentasDAO();
-//        ICuentasBO cuentasBO = new CuentasBO(cuentasDAO);
-//        
-//        IClientesDAO clientesDAO = new ClientesDAO();
-//        IClientesBO clientesBO = new ClientesBO(clientesDAO);
-//        
-//<<<<<<< HEAD
-////        CambiarEstadoCuentaFORM cambiarEstado = new CambiarEstadoCuentaFORM(cuentasBO);
-////        cambiarEstado.setVisible(true);
-////        CobrarRetiroSinCuentaFORM cobrarRetiro = new CobrarRetiroSinCuentaFORM(retiroBO);
-////        cobrarRetiro.setVisible(true);
-//
+        
+        
+
+//        CambiarEstadoCuentaFORM cambiarEstado = new CambiarEstadoCuentaFORM(cuentasBO);
+//        cambiarEstado.setVisible(true);
+//        CobrarRetiroSinCuentaFORM cobrarRetiro = new CobrarRetiroSinCuentaFORM(retiroBO);
+//        cobrarRetiro.setVisible(true);
+
 //        ConsultarHIstorialOPeracionFORM historialOperaciones = new ConsultarHIstorialOPeracionFORM();
 //        historialOperaciones.setVisible(true);
-//=======
+//
 //        ITransferenciaDAO transferenciaDAO = new TransferenciaDAO();
 //        ITransferenciaBO transferenciaBO = new TransferenciaBO(transferenciaDAO,operacionBO);
 //        
@@ -72,6 +72,5 @@ public class ProyectoBanco_262757_262746_262804 {
 //        
 //        InicioSesionFORM iniciarSesion = new InicioSesionFORM(objetosBO);
 //        iniciarSesion.setVisible(true);
-//>>>>>>> e118c6c69554e3730eb37f1e2b58b1667c89deb7
-//    }
+    
 }
