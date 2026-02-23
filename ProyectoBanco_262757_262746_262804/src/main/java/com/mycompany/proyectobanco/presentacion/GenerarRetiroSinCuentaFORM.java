@@ -198,6 +198,10 @@ public class GenerarRetiroSinCuentaFORM extends javax.swing.JFrame {
         txtMonto.setText("");
     }
     
+    private void btnGenerarRetiroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarRetiroActionPerformed
+        this.generarRetiroSinCuenta();
+    }//GEN-LAST:event_btnGenerarRetiroActionPerformed
+
     private void cambioSaldoDisponibleCuenta(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cambioSaldoDisponibleCuenta
         if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
             Cuenta cuenta = (Cuenta) comboCuentasCliente.getSelectedItem();
@@ -207,6 +211,7 @@ public class GenerarRetiroSinCuentaFORM extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_cambioSaldoDisponibleCuenta
 
+<<<<<<< Updated upstream
     private void btnGenerarRetiroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarRetiroActionPerformed
         this.generarRetiroSinCuenta();
     }//GEN-LAST:event_btnGenerarRetiroActionPerformed
@@ -215,6 +220,8 @@ public class GenerarRetiroSinCuentaFORM extends javax.swing.JFrame {
         volverAtras();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+=======
+>>>>>>> Stashed changes
     private void llenarCuentasCliente() {
         try {
             List<Cuenta> cuentasClientes = objetosBO.getCuentasBO().consultarCuentasCliente(1l); //Aqui se cambiara a que sea el id del usuario que inicio sesion,
