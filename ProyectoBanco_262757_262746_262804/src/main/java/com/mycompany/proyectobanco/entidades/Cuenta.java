@@ -11,6 +11,10 @@ public class Cuenta {
     public enum Estado {
         ACTIVO, INACTIVO;
 
+        @Override
+        public String toString() {
+            return name();
+        }
     }
 
     private String numeroCuenta;

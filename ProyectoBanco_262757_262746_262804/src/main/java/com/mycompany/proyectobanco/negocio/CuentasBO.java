@@ -1,11 +1,13 @@
 package com.mycompany.proyectobanco.negocio;
 
+import com.mycompany.proyectobanco.dtos.NuevaCuentaDTO;
 import com.mycompany.proyectobanco.entidades.Cuenta;
 import com.mycompany.proyectobanco.entidades.Cuenta.Estado;
 import com.mycompany.proyectobanco.persistencia.ICuentasDAO;
 import com.mycompany.proyectobanco.persistencia.PersistenciaException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 /**
  *
@@ -34,24 +36,42 @@ public class CuentasBO implements ICuentasBO {
 
     @Override
     public void cambiarEstadoCuenta(String numeroCuenta) throws NegocioException {
-        if(numeroCuenta == null){
+        if (numeroCuenta == null) {
             throw new NegocioException("La cuenta no puede estar vacia", null);
         }
         try {
             String estadoActual = cuentasDAO.consultarEstadoCuenta(numeroCuenta);
             String nuevoEstado = null;
-            
-            if(estadoActual.equals("ACTIVO")){
+
+            if (estadoActual.equals("ACTIVO")) {
                 nuevoEstado = "INACTIVO";
             }
-            if(estadoActual.equals("INACTIVO")){
+            if (estadoActual.equals("INACTIVO")) {
                 nuevoEstado = "ACTIVO";
             }
-            
+
             cuentasDAO.actualizarEstadoCuenta(nuevoEstado, numeroCuenta);
-            
+
         } catch (PersistenciaException ex) {
             throw new NegocioException("no se pudo cambiar el estado de las cuentas", ex);
+        }
+
+    }
+
+    @Override
+    public Cuenta crearCuenta(NuevaCuentaDTO cuentaDTO) throws NegocioException {
+        Random random = new Random();
+        String numeroCuenta = "";
+        numeroCuenta += (random.nextInt(9) + 1);
+
+        for (int i = 1; i < 16; i++) {
+            numeroCuenta += (random.nextInt(10));
+        }
+        String numeroCuentaFinal = numeroCuenta.toString();
+        try {
+
+        } catch (PersistenciaException ex) {
+            throw new NegocioException("No se pudo crear la cuenta ", ex);
         }
 
     }
