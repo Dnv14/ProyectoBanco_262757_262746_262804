@@ -67,13 +67,19 @@ public class CuentasBO implements ICuentasBO {
         for (int i = 1; i < 16; i++) {
             numeroCuenta += (random.nextInt(10));
         }
-        String numeroCuentaFinal = numeroCuenta.toString();
-        return null;
-//        try {
-//            return null;
-//        } catch (PersistenciaException ex) {
-//            throw new NegocioException("No se pudo crear la cuenta ", ex);
-//        }
+        boolean repetido = false;
+        try {
+            List<String> cuentas = cuentasDAO.consultarCuentaNumero(numeroCuenta);
+            for (String cuentasNumero : cuentas) {
+                if (cuentasNumero.equals(numeroCuenta)) {
+                    repetido = true;
+                    break;
+                }
+            }
+            return this.crearCuenta(cuentaDTO);
+        } catch (PersistenciaException ex) {
+            throw new NegocioException("No se pudo crear la cuenta ", ex);
+        }
 
     }
 

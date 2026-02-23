@@ -16,5 +16,5 @@ public interface ICuentasDAO {
     public abstract void actualizarEstadoCuenta(String estado,  String numeroCuenta) throws PersistenciaException;
     public abstract String consultarEstadoCuenta(String numeroCuenta)throws PersistenciaException;
     public abstract Cuenta crearCuenta(NuevaCuentaDTO cuentaDTO) throws PersistenciaException;
-    public abstract List<Cuenta> consultarCuentas() throws PersistenciaException;
+    public abstract List<String> consultarCuentaNumero(String numeroCuenta) throws PersistenciaException;
 }

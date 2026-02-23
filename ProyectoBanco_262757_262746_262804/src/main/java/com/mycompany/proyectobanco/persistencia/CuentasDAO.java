@@ -179,11 +179,11 @@ public class CuentasDAO implements ICuentasDAO {
     }
 
     @Override
-    public List<Cuenta> consultarCuentas() throws PersistenciaException {
+    public List<String> consultarCuentaNumero(String numeroCuenta) throws PersistenciaException {
         try {
-            List<Cuenta> cuentasCliente = new LinkedList<>();
+            List<String> cuentasCliente = new LinkedList<>();
             String codigoSQL = """
-                               SELECT numeroCuenta, estado, fechaApertura, saldo, idCliente                                                      
+                               SELECT numeroCuenta                                                     
                                FROM Cuentas
                                """;
 
@@ -192,16 +192,9 @@ public class CuentasDAO implements ICuentasDAO {
             ResultSet resultadoConsulta = comando.executeQuery();
 
             while (resultadoConsulta.next()) {
-                String numeroCuenta = resultadoConsulta.getString("numeroCuenta");
-                Estado estado = Estado.valueOf(resultadoConsulta.getString("estado"));
-                long saldo = resultadoConsulta.getLong("saldo");
-                long idCliente = resultadoConsulta.getLong("idCliente");
-
-                GregorianCalendar fechaApertura = new GregorianCalendar();
-                fechaApertura.setTimeInMillis(resultadoConsulta.getDate("fechaApertura").getTime());
-
-                Cuenta cuenta = new Cuenta(numeroCuenta, estado, fechaApertura, saldo, idCliente);
-                cuentasCliente.add(cuenta);
+                String numeroCuentaConsulta = resultadoConsulta.getString("numeroCuenta");
+                cuentasCliente.add(numeroCuentaConsulta);
+                return cuentasCliente;
             }
             comando.close();
             conexion.close();
