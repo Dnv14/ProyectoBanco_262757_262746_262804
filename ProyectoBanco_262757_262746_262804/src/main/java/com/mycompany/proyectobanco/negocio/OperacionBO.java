@@ -75,6 +75,22 @@ public class OperacionBO implements IOperacionBO {
         }
     }
 
+    @Override
+    public Operacion consultarOperacionPorId(Integer idOperacion) throws NegocioException {
+        if(idOperacion == null){
+            throw new NegocioException("No debe estar  vacio el ID de la operacion.",null);
+        }
+        if(idOperacion <= 0 ){
+            throw new NegocioException("No debe ser un ID negativo.",null);
+        }
+        try {
+            Operacion operacion = operacionDAO.consultarOperacionPorId(idOperacion);
+            return operacion;
+        } catch (PersistenciaException ex) {
+            throw new NegocioException("No fue posible consultar la operacion con ese ID.",ex);
+        }
+    }
+
     
     
 }

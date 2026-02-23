@@ -11,6 +11,7 @@ import com.mycompany.proyectobanco.entidades.Retiro.Estado;
 import com.mycompany.proyectobanco.persistencia.IRetiroDAO;
 import com.mycompany.proyectobanco.persistencia.PersistenciaException;
 import java.security.SecureRandom;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -57,9 +58,26 @@ public class RetiroBO implements IRetiroBO{
             throw new NegocioException("La contrasenia debe tener maximo 8 caracteres.",null);
         }
         try {
-            Retiro retiro = retiroDAO.cobrarRetiroSinCuenta(cobroRetiro);
+            Retiro retiro = retiroDAO.verificarRetiroSinCuenta(cobroRetiro);
             if(retiro == null){
                 throw new NegocioException("No se encontro ningun retiro sin cuenta con ese folio.",null);
+            }
+            if(retiro.getEstado() == Estado.COBRADO){
+                throw new NegocioException("El retiro ya ha sido cobrado.",null);
+            }
+            Operacion operacion = operacionBO.consultarOperacionPorId(retiro.getIdOperacion());
+            LocalDateTime ahora = LocalDateTime.now();
+            if (ahora.isAfter(operacion.getFechaHora().plusMinutes(10))) {
+                retiro.setEstado(Estado.NO_COBRADO);
+                retiroDAO.cobrarRetiroSinCuenta(retiro);
+                throw new NegocioException("El retiro ha expirado.", null);
+            }
+            retiro.setEstado(Estado.COBRADO);
+            
+            boolean retiroCobrado = retiroDAO.cobrarRetiroSinCuenta(retiro);
+            
+            if(!retiroCobrado){
+                throw new NegocioException("El retiro no se pudo cobrar correctamente.",null);
             }
             return retiro;
         } catch (PersistenciaException ex) {
