@@ -17,12 +17,25 @@ public class CuentasBO implements ICuentasBO {
 
     private final ICuentasDAO cuentasDAO;
     private final IClientesDAO clientesDAO;
-
+    
+    /**
+     * constructor el cual requiere tanto de las cuentasDAO como la de los clientes
+     * esto, por su union en la base de datos
+     * @param cuentasDAO
+     * @param clientesDAO 
+     */
     public CuentasBO(ICuentasDAO cuentasDAO, IClientesDAO clientesDAO) {
         this.cuentasDAO = cuentasDAO;
         this.clientesDAO = clientesDAO;
     }
-
+    
+    /**
+     * consultamos las cuentas, validando que el id exista en la base de datos usando
+     * el metodo de consultar cuentas clientes para poder retornar las listas.
+     * @param idCliente
+     * @return
+     * @throws NegocioException 
+     */
     @Override
     public List<Cuenta> consultarCuentasCliente(Long idCliente) throws NegocioException {
         if (idCliente == null) {
@@ -35,7 +48,15 @@ public class CuentasBO implements ICuentasBO {
             throw new NegocioException("Error al consultar las cuentas del cliente.", ex);
         }
     }
-
+    
+    /**
+     * vañodamos que la cuenta exista, usando este metodo para poder cambiar 
+     * el estado de la cuenta, usando el metodo de la DAO consultando el estado 
+     * actual de la cuenta, para poder tomar una decision si deberia ser
+     * activo o inactivo
+     * @param numeroCuenta
+     * @throws NegocioException 
+     */
     @Override
     public void cambiarEstadoCuenta(String numeroCuenta) throws NegocioException {
         if (numeroCuenta == null) {
@@ -59,7 +80,17 @@ public class CuentasBO implements ICuentasBO {
         }
 
     }
-
+    
+    /**
+     * Se crea la cuenta usando if's que validan que la contraseña puesta en el 
+     * form sea correcta y llamando el metodo DAO obtener las contrasenias
+     * para poder hacer esta comparacion y que la creacion de la cuenta sea
+     * exitosa
+     * @param cuentaDTO
+     * @param contrasenia
+     * @return
+     * @throws NegocioException 
+     */
     @Override
     public Cuenta crearCuenta(NuevaCuentaDTO cuentaDTO, String contrasenia) throws NegocioException {
         try {
@@ -84,7 +115,14 @@ public class CuentasBO implements ICuentasBO {
         }
 
     }
-
+    
+    /**
+     * Metodo el cual genera un numero aleatorio de 16 digitos para poder
+     * asignarlo a la cuenta que el usuario quiera crear, retornando un
+     * String el cual es el numero generado, para poder asignarse en el form
+     * @return
+     * @throws NegocioException 
+     */
     @Override
     public String generarNumeroCuenta() throws NegocioException {
         Random random = new Random();

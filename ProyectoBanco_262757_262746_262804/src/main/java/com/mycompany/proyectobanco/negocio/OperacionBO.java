@@ -20,11 +20,25 @@ import java.util.List;
 public class OperacionBO implements IOperacionBO {
     
     private final IOperacionDAO operacionDAO;
-
+    /**
+     * constructor la cual solo requiere operacionDAO por que al ser la padre
+     * no requiere de otras DAOS
+     * @param operacionDAO 
+     */
     public OperacionBO(IOperacionDAO operacionDAO) {
         this.operacionDAO = operacionDAO ;
     }
     
+    /**
+     * Realiza la operacion haciendo multiples validaciones, como si 
+     * el numero de cuenta no puede ser nullo, un monto maximo, el numero de 
+     * cuenta sea 16. Con esto asegurarnos que la operacion sea satisfactoria
+     * para cumplir los requerimientos del proyecto, asi usando la DAO
+     * realziar ooperacion el cual espera una DTO de esta misma entidad.
+     * @param nuevaOperacionDTO
+     * @return
+     * @throws NegocioException 
+     */
     @Override
     public Operacion realizarOperacion(NuevaOperacionDTO nuevaOperacionDTO) throws NegocioException {
         if (nuevaOperacionDTO.getNumeroCuenta()== null) {
@@ -50,7 +64,16 @@ public class OperacionBO implements IOperacionBO {
             throw new NegocioException("Error al crear la operacion", ex);
         }
     }
-
+    
+    /**
+     * Actualiza el saldo de la cuenta verificando que la cuenta este activa para
+     * poder asignarle el saldo, usando la validacion que la cuenta de origen
+     * no puede ser null, asi mismo el nuevo saldo no puede ser igual a 0
+     * evitando que existan parametros invalidos
+     * como el 0 o valores negativos
+     * @param operacionDTO
+     * @throws NegocioException 
+     */
     @Override
     public void actualizarSaldoCuentaOrigen(NuevaOperacionDTO operacionDTO) throws NegocioException {
         try {
@@ -74,7 +97,14 @@ public class OperacionBO implements IOperacionBO {
             throw new NegocioException("No fue posible actualizar el saldo de la cuenta origen.",ex);
         }
     }
-
+    
+    /**
+     * Consultamos la operacion por id, util para apoyo de los metodos anteriores, 
+     * ayudando a validar que el id no pueda estar vacio.
+     * @param idOperacion
+     * @return
+     * @throws NegocioException 
+     */
     @Override
     public Operacion consultarOperacionPorId(Integer idOperacion) throws NegocioException {
         if(idOperacion == null){

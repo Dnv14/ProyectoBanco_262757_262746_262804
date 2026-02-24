@@ -21,10 +21,25 @@ public class RetiroBO implements IRetiroBO{
     private IOperacionBO operacionBO;
     private IRetiroDAO retiroDAO;
     
+    /**
+     * al extendert de operacion retiro ocupa tanto su misma DAO como 
+     * la DAO de operacion
+     * @param operacionBO
+     * @param retiroDAO 
+     */
     public RetiroBO(IOperacionBO operacionBO,IRetiroDAO retiroDAO ){
         this.retiroDAO = retiroDAO;
         this.operacionBO = operacionBO;
     }
+    
+    /**
+     * genera el retiro de la cuenta, validando que no sea null, y el saldo
+     * no tenga paraemtros invalidos, creando la nueva operacion
+     * y asi llamando a la BO para realizarla
+     * @param nuevoRetiro
+     * @return
+     * @throws NegocioException 
+     */
     @Override
     public Retiro generarRetiroSinCuenta(NuevoRetiroFormDTO nuevoRetiro) throws NegocioException {
         if(nuevoRetiro.getCuentaOrigen() == null){
@@ -46,6 +61,16 @@ public class RetiroBO implements IRetiroBO{
         }
     }
     
+    /**
+     * Se cobra el retiro el cual se realizo, utilizando validadores
+     * para corroborar que el folio no este vacio, la constraseña sea valida
+     * y con esto pasamos verificar el retiro sin cuenta, validando que 
+     * el retiro no haya sido cobrado anteriormente o directamente no exista ningun
+     * retiro sin cuenta.
+     * @param cobroRetiro
+     * @return
+     * @throws NegocioException 
+     */
     @Override
     public Retiro cobrarRetiroSinCuenta(CobrarRetiroDTO cobroRetiro) throws NegocioException {
         if(cobroRetiro.getFolioOperacion() == null){
@@ -85,6 +110,10 @@ public class RetiroBO implements IRetiroBO{
         }
     }
     
+    /**
+     * Caracteres los cuales son los posibles candidatos
+     * para la contraseña generada
+     */
     private static final String CARACTERES =
             "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
             "abcdefghijklmnopqrstuvwxyz" +
@@ -92,6 +121,11 @@ public class RetiroBO implements IRetiroBO{
 
     private static final SecureRandom random = new SecureRandom();
     
+    /**
+     * se genera la contraseña con los caracteres posibles
+     * mencionados anteriormente
+     * @return 
+     */
     private String generarContraseniaRetiro(){
         StringBuilder contrasenia = new StringBuilder(8);
         for (int i = 0; i < 8; i++) {

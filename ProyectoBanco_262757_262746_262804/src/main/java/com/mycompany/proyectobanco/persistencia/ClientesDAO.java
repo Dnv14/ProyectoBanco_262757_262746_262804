@@ -20,7 +20,14 @@ import java.util.logging.Logger;
 public class ClientesDAO implements IClientesDAO {
 
     private static final Logger LOGGER = Logger.getLogger(ClientesDAO.class.getName());
-
+    
+    /**
+     * Se crea el cliente mandando un insert con los parametros de la base de datos, usando la dto 
+     * para transferir todos los datos de un cliente
+     * @param nuevoCliente: datos del cliente el cual se registrara el cliente
+     * @return
+     * @throws PersistenciaException 
+     */
     @Override
     public Cliente crearCliente(NuevoClienteDTO nuevoCliente) throws PersistenciaException {
         try {
@@ -36,6 +43,14 @@ public class ClientesDAO implements IClientesDAO {
         return null;
     }
 
+    /**
+     * Usamos un select a los clientes trayendolos por su usario y contrasenia
+     * para verificar que el usuario exista en la base de datos
+     * usando la dto para usar los getters obteniendo estos dos parametros
+     * @param usuarioCliente: retorna los clientes que concuerden con ambos parametros
+     * @return
+     * @throws PersistenciaException 
+     */
     @Override
     public Cliente validarClienteEstaRegistrado(ValidarUsuarioClienteDTO usuarioCliente) throws PersistenciaException {
         Cliente cliente = null;
@@ -79,7 +94,14 @@ public class ClientesDAO implements IClientesDAO {
         }
 
     }
-
+    
+    /**
+     * obtenemos todas las contrasenias de los clientes con un select, 
+     * usado para verificar que la contrasenia este correcta para 
+     * compararlos con la cuenta al momento de querer crear otra cuenta.
+     * @return
+     * @throws PersistenciaException 
+     */
     @Override
     public List<String> obtenerTodasLasContrasenias() throws PersistenciaException {
         List<String> contrasenias = new LinkedList<>();

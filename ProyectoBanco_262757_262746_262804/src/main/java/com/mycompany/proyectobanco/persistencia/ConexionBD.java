@@ -16,7 +16,16 @@ public class ConexionBD {
     private static final String CADENA_CONEXION = "jdbc:mysql://localhost:3306/Proyecto_262757_262746_262804";
     private static final String USUARIO = "root";
     private static final String CONTRASENIA = "eug57.BS79";
+
     
+    
+    /**
+     * Constructor de la conexion, la cual requiere la conexion, usando local host
+     * el usuario, usando root,
+     * y por ulitmo la contrasenia para poder acceder a la base de datos
+     * @return
+     * @throws SQLException 
+     */
     public static Connection crearConexion() throws SQLException{
          Connection conexion = DriverManager.getConnection(
             ConexionBD.CADENA_CONEXION, 
