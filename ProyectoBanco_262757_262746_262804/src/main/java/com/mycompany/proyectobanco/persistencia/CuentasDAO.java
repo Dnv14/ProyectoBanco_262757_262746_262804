@@ -20,7 +20,14 @@ import java.util.logging.Logger;
 public class CuentasDAO implements ICuentasDAO {
 
     private static final Logger LOGGER = Logger.getLogger(CuentasDAO.class.getName());
-
+    
+    /**
+     * Consultamos las cuentas de un cliente por su id, asi trayendo todas las cuentas asociadas 
+     * a este
+     * @param idCliente: cliente el cual se requiere saber sus cuentas asociadas.
+     * @return
+     * @throws PersistenciaException 
+     */
     @Override
     public List<Cuenta> consultarCuentasCliente(Long idCliente) throws PersistenciaException {
         try {
@@ -54,13 +61,26 @@ public class CuentasDAO implements ICuentasDAO {
             throw new PersistenciaException("No fue posible consultar las cuentas del cliente.", ex);
         }
     }
-
+    
+    /**
+     * Convierte la fecha de sql a un gregorianCalendar
+     * seteando el tiempo y retornandolo.
+     * @param fechaSQL
+     * @return 
+     */
     private GregorianCalendar convertirFecha(java.sql.Date fechaSQL) {
         GregorianCalendar calendario = new GregorianCalendar();
         calendario.setTime(fechaSQL);
         return calendario;
     }
 
+    /**
+     * Consultamos las cuentas activas registradas en las bases de datos
+     * devolviendo una lista para para poder manipular estas mismas y
+     * validar que puedan hacer movimientos.
+     * @return
+     * @throws PersistenciaException 
+     */
     @Override
     public List<Cuenta> consultarCuentasActivas() throws PersistenciaException {
         try {
@@ -92,7 +112,13 @@ public class CuentasDAO implements ICuentasDAO {
             throw new PersistenciaException("No fue posible consultar las cuentas activas del banco.", ex);
         }
     }
-
+    
+    /**
+     * Actualiza el estado de una cuenta, de Activo a Inactivo y viceversa, recibiendo el estado actual y el numero de cuuenta
+     * @param estado: estado actual para poder ser canbiado
+     * @param numeroCuenta: numero de la cuenta, para poder saber que cuenta mover su estado
+     * @throws PersistenciaException 
+     */
     @Override
     public void actualizarEstadoCuenta(String estado, String numeroCuenta) throws PersistenciaException {
         try {
@@ -116,7 +142,15 @@ public class CuentasDAO implements ICuentasDAO {
         }
 
     }
-
+    
+    /**
+     * Consultamos el estado de cuenta para poder asi validar
+     * y confirmar como se cambiara el estado de cuenta con ayuda del metodo
+     * anterior
+     * @param numeroCuenta
+     * @return
+     * @throws PersistenciaException 
+     */
     @Override
     public String consultarEstadoCuenta(String numeroCuenta) throws PersistenciaException {
         try {
@@ -146,6 +180,13 @@ public class CuentasDAO implements ICuentasDAO {
 
     }
 
+    /**
+     * Crea una cuenta, utilizando una cuentaDTO para poder llenar todos los datos del insert, 
+     * validando antes que el cliente este en la base de datos
+     * @param cuentaDTO: cuenta la cual se agarran los datos para crear la nueva cuenta
+     * @return
+     * @throws PersistenciaException 
+     */
     @Override
     public Cuenta crearCuenta(NuevaCuentaDTO cuentaDTO) throws PersistenciaException {
         try {
@@ -176,7 +217,15 @@ public class CuentasDAO implements ICuentasDAO {
             throw new PersistenciaException("no se pudo crear la cuenta", ex);
         }
     }
-
+    
+    /**
+     * Devuelve una lista de todos los numeros de cuenta existentes en la base de datos
+     * usado principalmente para poder crear la cuenta y generar el numero aleatorio
+     * ayudando a validar que el numero de cuenta no exista previamente.
+     * @param numeroCuenta: recibe el parametros del numero de cuenta que se origino para poder comparar si existe o no.
+     * @return
+     * @throws PersistenciaException 
+     */
     @Override
     public List<String> consultarCuentaNumero(String numeroCuenta) throws PersistenciaException {
         try {

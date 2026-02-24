@@ -17,7 +17,14 @@ import java.util.logging.Logger;
 public class TransferenciaDAO implements ITransferenciaDAO {
 
     private static final Logger LOGGER = Logger.getLogger(TransferenciaDAO.class.getName());
-
+    
+    /**
+     * Crea una nuefva transferencia, usandoi un insert la cual solo tiene idOperacion y cuenta destino
+     * ya que los otros parametros son de la clase operacion
+     * @param nuevaTransferencia
+     * @return
+     * @throws PersistenciaException 
+     */
     @Override
     public Transferencia crearTransferencia(NuevaTransferenciaDTO nuevaTransferencia) throws PersistenciaException {
         try {
@@ -42,7 +49,13 @@ public class TransferenciaDAO implements ITransferenciaDAO {
             throw new PersistenciaException("N se pudo realizar la transferencia", ex);
         }
     }
-
+    
+    /**
+     * Actualizamos la cuenta afectada por la transferencia, sumando el monto
+     * que se envio a traves de la cuenta origen y mandado a la cuenta destino
+     * @param transferenciaDTO
+     * @throws PersistenciaException 
+     */
     @Override
     public void actualizarSaldoCuentaDestino(NuevaTransferenciaDTO transferenciaDTO) throws PersistenciaException {
         try {

@@ -48,11 +48,11 @@ public class ProyectoBanco_262757_262746_262804 {
         IRetiroDAO retiroDAO = new RetiroDAO();
         IRetiroBO retiroBO = new RetiroBO(operacionBO,retiroDAO);
         
-        ICuentasDAO cuentasDAO = new CuentasDAO();
-        ICuentasBO cuentasBO = new CuentasBO(cuentasDAO);
-        
         IClientesDAO clientesDAO = new ClientesDAO();
         IClientesBO clientesBO = new ClientesBO(clientesDAO);
+        
+        ICuentasDAO cuentasDAO = new CuentasDAO();
+        ICuentasBO cuentasBO = new CuentasBO(cuentasDAO,clientesDAO);
         
         ITransferenciaDAO transferenciaDAO = new TransferenciaDAO();
         ITransferenciaBO transferenciaBO = new TransferenciaBO(transferenciaDAO,operacionBO);

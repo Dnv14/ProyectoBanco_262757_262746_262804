@@ -25,7 +25,13 @@ import java.util.logging.Logger;
 public class OperacionDAO implements IOperacionDAO {
 
     private static final Logger LOGGER = Logger.getLogger(OperacionDAO.class.getName());
-
+    
+    /**
+     * Crea una nuvea operacion, cotando al momento de realizar tanto una transferencia como un retiro sin cuenta
+     * @param nuevaOpreacionDTO: DTO donde se agarran todos los datos para poder llenar el insert
+     * @return
+     * @throws PersistenciaException 
+     */
     @Override
     public Operacion realizarOperacion(NuevaOperacionDTO nuevaOpreacionDTO) throws PersistenciaException {
         try {
@@ -62,7 +68,14 @@ public class OperacionDAO implements IOperacionDAO {
             throw new PersistenciaException("No fue posible registrar la operación", ex);
         }
     }
-
+    
+    /**
+     * Un update el cual selecciona el saldo de la cuenta segun si es transferencia
+     * para poder restar a la cuenta origen, o si es retiro sin cuenta, y se usa la cuenta
+     * retirar el saldo del dinero que se retiro
+     * @param operacionDTO
+     * @throws PersistenciaException 
+     */
     @Override
     public void actualizarSaldoCuentaOrigen(NuevaOperacionDTO operacionDTO) throws PersistenciaException {
         try {
@@ -98,7 +111,14 @@ public class OperacionDAO implements IOperacionDAO {
             throw new PersistenciaException("No fue posible actualizar el saldo de la cuenta origen.", ex);
         }
     }
-
+    
+    /**
+     * Consultamos todas las operaciones para devolviendo una lista en el proceso
+     * usado para validar con sus clases relacionadas que la operacion existe y puedan
+     * funcionar simultaneamente.
+     * @return
+     * @throws PersistenciaException 
+     */
     @Override
     public List<Operacion> consultarOperaciones() throws PersistenciaException {
         try {
@@ -129,6 +149,15 @@ public class OperacionDAO implements IOperacionDAO {
             throw new PersistenciaException("No fue posible consultar las operaciones", ex);
         }
     }
+    
+    /**
+     * Usado para validar tambien que la operacion y su subClases como puede ser
+     * transferencia o retiro sin cuenta, puedan validar que ambos movimientos cuentan
+     * con el mismo id y asi poder hacer valida la operacion
+     * @param idOperacion
+     * @return
+     * @throws PersistenciaException 
+     */
     @Override
     public Operacion consultarOperacionPorId(Integer idOperacion) throws PersistenciaException {
         Operacion operacion = new Operacion();

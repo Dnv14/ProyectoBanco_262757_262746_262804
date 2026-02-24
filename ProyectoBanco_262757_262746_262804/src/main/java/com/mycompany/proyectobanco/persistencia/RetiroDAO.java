@@ -21,7 +21,12 @@ public class RetiroDAO implements IRetiroDAO{
     private static final Logger LOGGER = Logger.getLogger(RetiroDAO.class.getName());
     
     
-
+    /**
+     * genera un retiro sin cuenta el cual se llena con la dto de nuevo retiro
+     * @param nuevoRetiro: DTO donde sacaremos los datos para rellenar la nueva transferencia
+     * @return
+     * @throws PersistenciaException 
+     */
     @Override
     public Retiro generarRetiroSinCuenta(NuevoRetiroDTO nuevoRetiro) throws PersistenciaException {
         try {
@@ -54,6 +59,14 @@ public class RetiroDAO implements IRetiroDAO{
         }
     }
 
+    /**
+     * Devuelve un booleano para verificar que el cobro fue exitoso o no, utilizando
+     * un update para poder actualizar la informacion hecha en el movimiento
+     * pudiendo validar el tiempo
+     * @param cobroRetiro
+     * @return
+     * @throws PersistenciaException 
+     */
     @Override
     public boolean cobrarRetiroSinCuenta(Retiro cobroRetiro) throws PersistenciaException {
         try {
@@ -79,7 +92,15 @@ public class RetiroDAO implements IRetiroDAO{
             throw new PersistenciaException("No fue posible cobrar el retiro.",ex);
         }
     }
-
+    
+    /**
+     * Selecciona el retiro sin cuenta para poder verificar si fue exitoso, contando
+     * con el folio y la contrasenia, parametros utilizados para validar
+     * el estado del retiro y si realemtne se retiro el monto solicitado
+     * @param cobroRetiro
+     * @return
+     * @throws PersistenciaException 
+     */
     @Override
     public Retiro verificarRetiroSinCuenta(CobrarRetiroDTO cobroRetiro) throws PersistenciaException {
         try {
