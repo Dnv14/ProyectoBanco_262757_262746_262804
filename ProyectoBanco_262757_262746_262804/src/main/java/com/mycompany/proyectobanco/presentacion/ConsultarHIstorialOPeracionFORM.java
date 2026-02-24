@@ -11,8 +11,14 @@ import com.mycompany.proyectobanco.entidades.Operacion;
 import com.mycompany.proyectobanco.negocio.ICuentasBO;
 import com.mycompany.proyectobanco.negocio.IHistorialOperacionesBO;
 import com.mycompany.proyectobanco.negocio.NegocioException;
+import com.mycompany.proyectobanco.persistencia.HistorialOperacioneDAO;
+import com.mycompany.proyectobanco.persistencia.IHistorialOperacionesDAO;
+import com.mycompany.proyectobanco.persistencia.IOperacionDAO;
+import com.mycompany.proyectobanco.persistencia.OperacionDAO;
 import com.mycompany.proyectobanco.persistencia.PersistenciaException;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import javax.print.attribute.standard.DateTimeAtCompleted;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -51,45 +57,31 @@ public class ConsultarHIstorialOPeracionFORM extends javax.swing.JFrame {
     
     private void cargarTipoOperacion(){
         comboTipoOperacion.removeAllItems();
-        comboTipoOperacion.addItem("Todas");
         comboTipoOperacion.addItem("Transferencia");
         comboTipoOperacion.addItem("Retiro sin cuenta");
     }
     
-    private void actualizarTabla() throws NegocioException{
-        String numeroCuenta = (String) comboCuentas.getSelectedItem();
-        String tipoSeleccionado = (String) comboTipoOperacion.getSelectedItem();
-        if(numeroCuenta == null || tipoSeleccionado == null){
-            return;
-        }
+    private void actualizarTabla(List<Operacion> operacion) {
+        String[] columnas = {"ID Operacion", "Numero de Cuentas", "Monto", "Fecha Hora"
+            
+        };
+        DefaultTableModel modelo = new DefaultTableModel(columnas, 0){
+            public boolean isCellEditable(int row, int column){
+                return false;
+            }
+        };
         
-        try{
-            List<Operacion> operaciones;
-            
-            switch(tipoSeleccionado){
-                case "Transferencia"  -> operaciones = objetosBO.getHistorialBO().consultarTransferenciaCuenta(numeroCuenta);
-                case "Retiro sin cuenta" -> operaciones = objetosBO.getHistorialBO().consultarRetirosPorCuenta(numeroCuenta);
-                default -> operaciones = objetosBO.getHistorialBO().consultarOperacionesCuenta(numeroCuenta);
-            }
-            
-            DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
-            modelo.setRowCount(0);
-            
-            for(Operacion op: operaciones){
-                modelo.addRow(new Object[]{
-                    op.getIdOperacion(),
-                    op.getMonto(),
-                    op.getFechaHora(),
-                    op.getNumeroCuenta()
-                });
-            }
-            
-            if(operaciones.isEmpty()){
-                JOptionPane.showMessageDialog(this,"No existen operaciones para los filtros seleccionados.","Sin resultados", JOptionPane.INFORMATION_MESSAGE);
-            }
-            }catch(NegocioException ex){
-                JOptionPane.showMessageDialog(this,"Error al consultar el historial: " + ex.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
-            }
+        DateTimeFormatter formatoFechaHora = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        
+        for(Operacion op: operacion){
+            modelo.addRow(new Object[]{
+                op.getIdOperacion(),
+                op.getNumeroCuenta(),
+                op.getMonto(),
+                op.getFechaHora().format(formatoFechaHora)
+            });
+        }
+        jTable1.setModel(modelo);
     }
 
     /**
@@ -107,19 +99,19 @@ public class ConsultarHIstorialOPeracionFORM extends javax.swing.JFrame {
         comboTipoOperacion = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        mostrarDatosButton = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(153, 153, 153));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "ID", "Monto", "FechaHora", "Num. Cuenta"
+                "ID Operacion", "Numero de Cuenta", "Monto", "Fecha Hora"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -133,22 +125,58 @@ public class ConsultarHIstorialOPeracionFORM extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Numero Cuenta");
 
+        jLabel2.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Tipo Operacion");
+
+        jButton1.setBackground(new java.awt.Color(153, 153, 153));
+        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(0, 0, 0));
+        jButton1.setText(">");
+        jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        mostrarDatosButton.setText("Mostrar");
+        mostrarDatosButton.setAutoscrolls(true);
+        mostrarDatosButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mostrarDatosButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel3.setText("Historial Operaciones");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(comboCuentas, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
-                    .addComponent(comboTipoOperacion, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(comboCuentas, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(comboTipoOperacion, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel3))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(56, 56, 56)
+                        .addComponent(mostrarDatosButton)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(33, 33, 33))
         );
@@ -159,7 +187,12 @@ public class ConsultarHIstorialOPeracionFORM extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE)
                 .addGap(29, 29, 29))
             .addGroup(layout.createSequentialGroup()
-                .addGap(98, 98, 98)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton1)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(jLabel3)))
+                .addGap(64, 64, 64)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(comboCuentas, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -167,6 +200,8 @@ public class ConsultarHIstorialOPeracionFORM extends javax.swing.JFrame {
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(comboTipoOperacion, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(54, 54, 54)
+                .addComponent(mostrarDatosButton)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -174,18 +209,49 @@ public class ConsultarHIstorialOPeracionFORM extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void comboTipoOperacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboTipoOperacionActionPerformed
-//        actualizarTabla();
+
     }//GEN-LAST:event_comboTipoOperacionActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        new MenuPrincipalFORM(objetosBO, cliente).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void mostrarDatosButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mostrarDatosButtonActionPerformed
+        try{
+            String cuentaSeleccionada = (String) comboCuentas.getSelectedItem();
+            String tipoSeleccionado = (String) comboTipoOperacion.getSelectedItem();
+            
+            IHistorialOperacionesDAO historialDAO = new HistorialOperacioneDAO();
+            List<Operacion> lista;
+            
+            if(tipoSeleccionado.equalsIgnoreCase("Transferencia")){
+                lista = historialDAO.consultarTrasnferenciaCuenta(cuentaSeleccionada);
+            }else if(tipoSeleccionado.equalsIgnoreCase("Retiro sin cuenta")){
+                lista = historialDAO.consultarRetirosCuenta(cuentaSeleccionada);
+            }else{
+                lista = historialDAO.consultarOperacionesCuenta(cuentaSeleccionada);
+            }
+
+            actualizarTabla(lista);
+        }catch(PersistenciaException ex){
+            JOptionPane.showMessageDialog(this, "Existe un error al querer consultar"+ex.getMessage());
+        }        
+        
+        
+    }//GEN-LAST:event_mostrarDatosButtonActionPerformed
     private void comboCuentaActioPerormed(java.awt.event.ActionEvent evt) {                                                   
-//        actualizarTabla();
     }   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> comboCuentas;
     private javax.swing.JComboBox<String> comboTipoOperacion;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JButton mostrarDatosButton;
     // End of variables declaration//GEN-END:variables
 }

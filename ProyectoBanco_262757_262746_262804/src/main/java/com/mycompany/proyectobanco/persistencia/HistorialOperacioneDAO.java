@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,7 +31,7 @@ public class HistorialOperacioneDAO implements IHistorialOperacionesDAO{
             List<Operacion> operaciones = new LinkedList<>();
             String comandoSQL = """
                                 SELECT idOperacion, monto, fechaHora, numeroCuenta
-                                FROM Operacion
+                                FROM operaciones
                                 WHERE numeroCuenta = ?;
                                 """;
             Connection conexion = ConexionBD.crearConexion();
@@ -39,7 +40,7 @@ public class HistorialOperacioneDAO implements IHistorialOperacionesDAO{
             ResultSet rs = comando.executeQuery();
             
             while(rs.next()){
-                LocalDateTime fechaHora = rs.getTimestamp("fechaHora").toLocalDateTime();
+                LocalDateTime fechaHora = LocalDateTime.parse(rs.getString("fechaHora"), DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
                 Operacion op = new Operacion(
                         rs.getInt("idOperacion"),
                         rs.getLong("monto"),
@@ -63,8 +64,8 @@ public class HistorialOperacioneDAO implements IHistorialOperacionesDAO{
             List<Operacion> operaciones = new LinkedList<>();
             String comandoSQL = """
                                 SELECT o.idOperacion, o.monto, o.fechaHora, o.numeroCuenta
-                                FROM Operacion o
-                                INNER JOIN Transferencia t ON o.idOperacion = t.idOperacion
+                                FROM operaciones o
+                                INNER JOIN Transferencias t ON o.idOperacion = t.idOperacion
                                 WHERE o.numeroCuenta = ?;
                                 """;
             Connection conexion = ConexionBD.crearConexion();
@@ -73,7 +74,7 @@ public class HistorialOperacioneDAO implements IHistorialOperacionesDAO{
             ResultSet rs = comando.executeQuery();
             
             while(rs.next()){
-                LocalDateTime fechaHora = rs.getTimestamp("fechaHora").toLocalDateTime();
+                LocalDateTime fechaHora = LocalDateTime.parse(rs.getString("fechaHora"), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
                 Operacion op = new Operacion(
                         rs.getInt("idOperacion"),
                         rs.getLong("monto"),
@@ -97,8 +98,8 @@ public class HistorialOperacioneDAO implements IHistorialOperacionesDAO{
             List<Operacion> operaciones = new LinkedList<>();
             String comandoSQL = """
                                 SELECT o.idOperacion, o.monto, o.fechaHora, o.numeroCuenta
-                                FROM Operacion o
-                                INNER JOIN RetiroSinCuenta r ON o.idOperacion = r.idOperacion
+                                FROM operaciones o
+                                INNER JOIN RetiroSinCuentas r ON o.idOperacion = r.idOperacion
                                 WHERE o.numeroCuenta = ?;
                                 """;
             Connection conexion = ConexionBD.crearConexion();
@@ -107,7 +108,7 @@ public class HistorialOperacioneDAO implements IHistorialOperacionesDAO{
             ResultSet rs = comando.executeQuery();
             
             while(rs.next()){
-                LocalDateTime fechaHora = rs.getTimestamp("fechaHora").toLocalDateTime();
+                LocalDateTime fechaHora = LocalDateTime.parse(rs.getString("fechaHora"), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
                 Operacion op = new Operacion(
                         rs.getInt("idOperacion"),
                         rs.getLong("monto"),

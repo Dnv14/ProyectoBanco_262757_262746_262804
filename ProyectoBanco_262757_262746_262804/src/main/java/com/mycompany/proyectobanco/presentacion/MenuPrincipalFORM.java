@@ -180,7 +180,8 @@ public class MenuPrincipalFORM extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAltaCuentaActionPerformed
 
     private void btnHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHistorialActionPerformed
-      //TODO
+        new ConsultarHIstorialOPeracionFORM(objetosBO, clienteLogeado).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btnHistorialActionPerformed
 
 
