@@ -55,23 +55,42 @@ public class RetiroDAO implements IRetiroDAO{
     }
 
     @Override
-    public Retiro cobrarRetiroSinCuenta(CobrarRetiroDTO cobroRetiro) throws PersistenciaException {
+    public boolean cobrarRetiroSinCuenta(Retiro cobroRetiro) throws PersistenciaException {
+        try {
+            String codigoSQL = """
+                                           UPDATE retiroSinCuentas
+                                           SET estado = ?
+                                           WHERE idOperacion = ? AND estado = 'ACTIVO';
+                                                  """;
+            Connection conexion = ConexionBD.crearConexion();
+            
+            PreparedStatement comando = conexion.prepareStatement(codigoSQL);
+            
+            comando.setString(1, cobroRetiro.getEstado().name());
+            comando.setInt(2, cobroRetiro.getIdOperacion());
+            
+            int cambios = comando.executeUpdate();
+            
+            comando.close();
+            conexion.close();
+            return cambios > 0;
+        } catch (SQLException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new PersistenciaException("No fue posible cobrar el retiro.",ex);
+        }
+    }
+
+    @Override
+    public Retiro verificarRetiroSinCuenta(CobrarRetiroDTO cobroRetiro) throws PersistenciaException {
         try {
             Retiro retiro = null;
             String codigoSQL = """
-                                           SELECT idOperacion, contrasenia, folio, estado
-                                           FROM retiroSinCuentas
-                                           WHERE folio = ? AND contrasenia = ?;
-                                                  """;
-            
-            String codigoActualizarEstadoSQL = """
-                                           UPDATE retiroSinCuenta
-                                           SET estado = ?
-                                           WHERE folio = ? AND contrasenia = ? ;
-                                                  """;
+                                        SELECT idOperacion, contrasenia, folio, estado
+                                        FROM retiroSinCuentas
+                                        WHERE folio = ? AND contrasenia = ?;
+                                       """;
             Connection conexion = ConexionBD.crearConexion();
             PreparedStatement comando = conexion.prepareStatement(codigoSQL);
-            PreparedStatement comando2 = conexion.prepareStatement(codigoActualizarEstadoSQL);
             
             comando.setString(1, cobroRetiro.getFolioOperacion());
             comando.setString(2, cobroRetiro.getContrasenia());
@@ -88,22 +107,13 @@ public class RetiroDAO implements IRetiroDAO{
                  estado
                 );
             }
-            
-            comando2.setString(1, cobroRetiro.getEstado().name());
-            comando2.setString(2, cobroRetiro.getFolioOperacion());
-            comando2.setString(3, cobroRetiro.getContrasenia());
-            
-            comando2.executeUpdate();
-            
             comando.close();
-            comando2.close();
-            
             conexion.close();
             
             return retiro;
         } catch (SQLException ex) {
             LOGGER.severe(ex.getMessage());
-            throw new PersistenciaException("No fue posible cobrar el retiro.",ex);
+            throw new PersistenciaException("No se encontro ningun retiro sin cuenta con esas credenciales.",ex);
         }
     }
     

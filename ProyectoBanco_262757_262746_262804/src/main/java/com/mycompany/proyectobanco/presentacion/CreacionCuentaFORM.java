@@ -1,7 +1,12 @@
 package com.mycompany.proyectobanco.presentacion;
 
+import com.mycompany.proyectobanco.dtos.NuevaCuentaDTO;
 import com.mycompany.proyectobanco.dtos.ObjetosBoDTO;
 import com.mycompany.proyectobanco.entidades.Cliente;
+import com.mycompany.proyectobanco.entidades.Cuenta;
+import com.mycompany.proyectobanco.negocio.NegocioException;
+import java.util.GregorianCalendar;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -18,6 +23,16 @@ public class CreacionCuentaFORM extends javax.swing.JFrame {
         this.objetosBO = objetosBO;
         this.clienteLogeado = clienteLogeado;
         initComponents();
+        txtNumCuenta.setEditable(false);
+        try {
+            String numCuenta = objetosBO.getCuentasBO().generarNumeroCuenta();
+            txtNumCuenta.setText(numCuenta);
+        } catch (NegocioException ex) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al crear el numero de cuenta: " + ex.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
 
     }
 
@@ -150,15 +165,49 @@ public class CreacionCuentaFORM extends javax.swing.JFrame {
         volverAtras();
     }//GEN-LAST:event_btnVolverAtrasActionPerformed
 
-    private void crearCuenta(){
-        
-    }
-    
-    private void volverAtras(){
-        this.dispose();
-        new MenuPrincipalFORM(objetosBO,clienteLogeado).setVisible(true);
+    private void crearCuenta() {
+        try {
+            String numCuenta = txtNumCuenta.getText();
+            long idCliente = Long.parseLong(clienteLogeado.getIdCliente());
+            long saldo = 0;
+            GregorianCalendar fechaApertura = new GregorianCalendar();
+            String contrasenia = txtContrasenia.getText();
+
+            NuevaCuentaDTO cuentaDTO = new NuevaCuentaDTO(numCuenta, Cuenta.Estado.ACTIVO, fechaApertura, saldo, idCliente);
+            objetosBO.getCuentasBO().crearCuenta(cuentaDTO, contrasenia);
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Se ha creado la cuenta correctamente",
+                    "Información",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+            vaciarForm();
+        } catch (NegocioException ex) {
+            JOptionPane.showMessageDialog(this,
+                    "Error al crear cuenta: " + ex.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+
     }
 
+    private void volverAtras() {
+        this.dispose();
+        new MenuPrincipalFORM(objetosBO, clienteLogeado).setVisible(true);
+    }
+
+    private void vaciarForm() {
+        txtContrasenia.setText("");
+        try {
+            String numCuenta = objetosBO.getCuentasBO().generarNumeroCuenta();
+            txtNumCuenta.setText(numCuenta);
+        }catch(NegocioException ex){
+            JOptionPane.showMessageDialog(this,
+                    "Error al crear numero aleatorio: " + ex.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCrearCuenta;
     private javax.swing.JButton btnVolverAtras;

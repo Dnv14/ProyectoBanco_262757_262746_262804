@@ -157,14 +157,13 @@ public class CuentasDAO implements ICuentasDAO {
             Connection conexion = ConexionBD.crearConexion();
             PreparedStatement comando = conexion.prepareStatement(comandoSQL);
 
-            SimpleDateFormat formateadorFecha = new SimpleDateFormat("dd-MM-yyyy");
-            String fechaString = formateadorFecha.format(cuentaDTO.getFechaApertura().getTime());
+            //SimpleDateFormat formateadorFecha = new SimpleDateFormat("dd-MM-yyyy");
+            //String fechaString = formateadorFecha.format(cuentaDTO.getFechaApertura().getTime());
 
             comando.setString(1, cuentaDTO.getNumeroCuenta());
             comando.setString(2, cuentaDTO.getEstado().name());
-            comando.setString(3, fechaString);
-            comando.setLong(4, cuentaDTO.getSaldo());
-            comando.setLong(5, cuentaDTO.getIdCliente());
+            comando.setLong(3, cuentaDTO.getSaldo());
+            comando.setLong(4, cuentaDTO.getIdCliente());
 
             comando.execute();
             conexion.close();

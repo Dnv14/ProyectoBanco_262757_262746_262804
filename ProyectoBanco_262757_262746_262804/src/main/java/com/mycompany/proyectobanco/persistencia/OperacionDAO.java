@@ -129,5 +129,34 @@ public class OperacionDAO implements IOperacionDAO {
             throw new PersistenciaException("No fue posible consultar las operaciones", ex);
         }
     }
+    @Override
+    public Operacion consultarOperacionPorId(Integer idOperacion) throws PersistenciaException {
+        Operacion operacion = new Operacion();
+        try {
+            String codigoSQL = """
+                                           SELECT idOperacion, monto, fechaHora, numeroCuenta
+                                           FROM Operaciones
+                                           WHERE idOperacion = ?;
+                                                          """;
+            Connection conexion = ConexionBD.crearConexion();
+            PreparedStatement comando = conexion.prepareStatement(codigoSQL);
+            comando.setInt(1, idOperacion);
+            ResultSet rs = comando.executeQuery();
 
+            while (rs.next()) {
+                LocalDateTime fechaHora = rs.getTimestamp("fechaHora").toLocalDateTime();
+                        operacion.setIdOperacion(rs.getInt("idOperacion"));
+                        operacion.setFechaHora(fechaHora);
+                        operacion.setMonto(rs.getLong("monto"));
+                        operacion.setNumeroCuenta(rs.getString("numeroCuenta"));
+            }
+            comando.close();
+            conexion.close();
+
+            return operacion;
+        } catch (SQLException ex) {
+            LOGGER.severe(ex.getMessage());
+            throw new PersistenciaException("No fue posible consultar las operaciones", ex);
+        }
+    }
 }
