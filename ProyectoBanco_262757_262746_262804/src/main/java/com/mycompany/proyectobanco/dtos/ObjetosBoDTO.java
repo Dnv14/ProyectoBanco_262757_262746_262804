@@ -34,7 +34,7 @@ public class ObjetosBoDTO {
         this.historialBO = historialBO;
     }
 
-    public IHistorialOperacionesBO getHistorialDAO() {
+    public IHistorialOperacionesBO getHistorialBO() {
         return historialBO;
     }
 

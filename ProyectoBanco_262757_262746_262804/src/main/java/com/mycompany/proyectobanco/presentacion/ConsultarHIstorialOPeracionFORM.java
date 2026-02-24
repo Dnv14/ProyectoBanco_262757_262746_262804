@@ -4,6 +4,8 @@
  */
 package com.mycompany.proyectobanco.presentacion;
 
+import com.mycompany.proyectobanco.dtos.ObjetosBoDTO;
+import com.mycompany.proyectobanco.entidades.Cliente;
 import com.mycompany.proyectobanco.entidades.Cuenta;
 import com.mycompany.proyectobanco.entidades.Operacion;
 import com.mycompany.proyectobanco.negocio.ICuentasBO;
@@ -20,16 +22,16 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ConsultarHIstorialOPeracionFORM extends javax.swing.JFrame {
     
-    private final ICuentasBO cuentasBO;
-    private final IHistorialOperacionesBO historialOperacionesBO;
+    private ObjetosBoDTO objetosBO;
+    private Cliente cliente;
     
 
     /**
      * Creates new form ConsultarHIstorialOPeracionFORM
      */
-    public ConsultarHIstorialOPeracionFORM(IHistorialOperacionesBO historialOperacionesBO, ICuentasBO cuentasBO) {
-        this.historialOperacionesBO = historialOperacionesBO;
-        this.cuentasBO = cuentasBO;
+    public ConsultarHIstorialOPeracionFORM(ObjetosBoDTO objetosBO, Cliente cliente) {
+        this.objetosBO = objetosBO;
+        this.cliente = cliente;
         initComponents();
         cargarCuentas();
         cargarTipoOperacion();
@@ -37,7 +39,7 @@ public class ConsultarHIstorialOPeracionFORM extends javax.swing.JFrame {
     
     private void cargarCuentas(){
         try{
-            List<Cuenta> cuentas = cuentasBO.consultarCuentasCliente(1L);
+            List<Cuenta> cuentas = objetosBO.getCuentasBO().consultarCuentasCliente(Long.valueOf(cliente.getIdCliente()));
             comboCuentas.removeAllItems();
             for(Cuenta cuenta: cuentas){
                 comboCuentas.addItem(cuenta.getNumeroCuenta());
@@ -65,9 +67,9 @@ public class ConsultarHIstorialOPeracionFORM extends javax.swing.JFrame {
             List<Operacion> operaciones;
             
             switch(tipoSeleccionado){
-                case "Transferencia"  -> operaciones = historialOperacionesBO.consultarTransferenciaCuenta(numeroCuenta);
-                case "Retiro sin cuenta" -> operaciones = historialOperacionesBO.consultarRetirosPorCuenta(numeroCuenta);
-                default -> operaciones = historialOperacionesBO.consultarOperacionesCuenta(numeroCuenta);
+                case "Transferencia"  -> operaciones = objetosBO.getHistorialBO().consultarTransferenciaCuenta(numeroCuenta);
+                case "Retiro sin cuenta" -> operaciones = objetosBO.getHistorialBO().consultarRetirosPorCuenta(numeroCuenta);
+                default -> operaciones = objetosBO.getHistorialBO().consultarOperacionesCuenta(numeroCuenta);
             }
             
             DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();

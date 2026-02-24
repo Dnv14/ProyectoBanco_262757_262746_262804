@@ -20,8 +20,8 @@ public class HistorialOperacionesBO implements IHistorialOperacionesBO{
     
     private IHistorialOperacionesDAO historialOperacionesDAO;
 
-    public HistorialOperacionesBO(HistorialOperacioneDAO historialOperacionesDAO) {
-        
+    public HistorialOperacionesBO(IHistorialOperacionesDAO historialOperacionesDAO) {
+        this.historialOperacionesDAO = historialOperacionesDAO;
     }
 
     @Override
