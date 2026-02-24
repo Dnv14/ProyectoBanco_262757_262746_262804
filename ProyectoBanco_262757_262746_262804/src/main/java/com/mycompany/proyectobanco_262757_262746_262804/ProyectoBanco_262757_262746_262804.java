@@ -50,12 +50,13 @@ public class ProyectoBanco_262757_262746_262804 {
         
         IClientesDAO clientesDAO = new ClientesDAO();
         
-        ICuentasBO cuentasBO = new CuentasBO(cuentasDAO, clientesDAO);      
+        ICuentasDAO cuentasDAO = new CuentasDAO();
+        ICuentasBO cuentasBO = new CuentasBO(cuentasDAO,clientesDAO);
+              
         
         IClientesBO clientesBO = new ClientesBO(clientesDAO);
         
-        ICuentasDAO cuentasDAO = new CuentasDAO();
-        ICuentasBO cuentasBO = new CuentasBO(cuentasDAO,clientesDAO);
+        
         
         ITransferenciaDAO transferenciaDAO = new TransferenciaDAO();
         ITransferenciaBO transferenciaBO = new TransferenciaBO(transferenciaDAO,operacionBO);
