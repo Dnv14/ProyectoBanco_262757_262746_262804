@@ -23,12 +23,26 @@ public class TransferenciaBO implements ITransferenciaBO {
 
     private final ITransferenciaDAO transferenciaDAO;
     private final IOperacionBO operacionBO;
-
+    
+    /**
+     * Al ser hija de operacion ocupa tanto su misma DAO como la BO de operacion
+     * @param transferenciaDAO
+     * @param operacionBO 
+     */
     public TransferenciaBO(ITransferenciaDAO transferenciaDAO, IOperacionBO operacionBO) {
         this.transferenciaDAO = transferenciaDAO;
         this.operacionBO = operacionBO;
     }
-
+    
+    /**
+     * se crea la transferencia, validando que la cuenta de origen no sea nulla ni la de destino
+     * que esta sea de 16 digitos y que el monto no tenga parametros invalidos, asi usando 
+     * el DTO para poder crear la nueva operacion, usando la BO para realizar la operacion, y cuando 
+     * se haga poder crear y realizar la transferencia
+     * @param nuevaTransferencia
+     * @return
+     * @throws NegocioException 
+     */
     @Override
     public Transferencia crearTransferencia(NuevaTransferenciaFormDTO nuevaTransferencia) throws NegocioException {
         
@@ -63,23 +77,16 @@ public class TransferenciaBO implements ITransferenciaBO {
 
         }
     }
-
+    
+    /**
+     * Actualizamos el saldo de la cuenta destino, usando las cuentas destinos
+     * para poder recorrer y comparar cual tiene el mismo numero de cuenta
+     * @param transferenciaDTO
+     * @throws NegocioException 
+     */
     @Override
     public void actualizarSaldoCuentaDestino(NuevaTransferenciaDTO transferenciaDTO) throws NegocioException {
         try {
-//            IOperacionDAO cuentasDAO = new OperacionDAO();
-//            Operacion cuentaDestino = null;
-//            List<Operacion> cuentasDestino = cuentasDAO.consultarOperaciones();
-//            
-//            for(Operacion operaciones: cuentasDestino){
-//                if(operaciones.getNumeroCuenta().equalsIgnoreCase(transferenciaDTO.getCuentaDestino())){
-//                    cuentaDestino = operaciones;
-//                }
-//            }
-//            if(cuentaDestino == null){
-//                throw new NegocioException("No se encontro ninguna cuenta destinada a la operacion.",null);
-//            }
-
             ICuentasDAO cuentasDAO = new CuentasDAO();
             Cuenta cuentaDestino = null;
             List<Cuenta> cuentasDestino = cuentasDAO.consultarCuentasActivas();

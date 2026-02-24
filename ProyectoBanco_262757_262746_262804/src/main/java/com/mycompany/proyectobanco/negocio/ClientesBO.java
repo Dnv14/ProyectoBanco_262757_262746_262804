@@ -13,13 +13,24 @@ import com.mycompany.proyectobanco.persistencia.PersistenciaException;
 public class ClientesBO implements IClientesBO{
     
     private final IClientesDAO clientesDAO;
-
+    
+    /**
+     * constructor para poder inicializar la BO usando los clientes DAO para 
+     * acceder a metodos
+     * @param clientesDAO 
+     */
     public ClientesBO(IClientesDAO clientesDAO) {
         this.clientesDAO = clientesDAO;
     }
     
     
-
+    /**
+     * validamos que el cliente este dentro del registro de la base de datis
+     * usando los getters de la DTO para poder acceder a estos datos
+     * @param usuarioCliente
+     * @return
+     * @throws NegocioException 
+     */
     @Override
     public Cliente validarClienteEstaRegistrado(ValidarUsuarioClienteDTO usuarioCliente) throws NegocioException {
         if(usuarioCliente.getContrasenia() == null){
