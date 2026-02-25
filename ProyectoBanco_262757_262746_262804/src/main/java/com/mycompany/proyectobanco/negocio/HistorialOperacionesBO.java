@@ -20,10 +20,21 @@ public class HistorialOperacionesBO implements IHistorialOperacionesBO{
     
     private IHistorialOperacionesDAO historialOperacionesDAO;
 
+    /**
+     * Constructor que ocupa historialOperacionesDAO para poder conectarse a la BO
+     * @param historialOperacionesDAO 
+     */
     public HistorialOperacionesBO(IHistorialOperacionesDAO historialOperacionesDAO) {
         this.historialOperacionesDAO = historialOperacionesDAO;
     }
 
+ 
+    /**
+     * Recupera el historial de operaciones que se han realizado.
+     * @param numeroCuenta
+     * @return
+     * @throws NegocioException 
+     */
     @Override
     public List<Operacion> consultarOperacionesCuenta(String numeroCuenta) throws NegocioException {
         try{
@@ -33,6 +44,13 @@ public class HistorialOperacionesBO implements IHistorialOperacionesBO{
         }
     }
 
+ 
+    /**
+     * Recupera el historial de transferencia que se han realizado.
+     * @param numeroCuenta
+     * @return
+     * @throws NegocioException 
+     */
     @Override
     public List<Operacion> consultarTransferenciaCuenta(String numeroCuenta) throws NegocioException {
         try{
@@ -42,6 +60,13 @@ public class HistorialOperacionesBO implements IHistorialOperacionesBO{
         }
     }
 
+
+    /**
+     * Recupera el historial de retiros que se han realizado.
+     * @param numeroCuenta
+     * @return
+     * @throws NegocioException 
+     */
     @Override
     public List<Operacion> consultarRetirosPorCuenta(String numeroCuenta) throws NegocioException {
         try{

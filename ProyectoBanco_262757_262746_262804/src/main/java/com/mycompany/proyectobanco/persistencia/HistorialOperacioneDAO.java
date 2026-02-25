@@ -25,6 +25,12 @@ public class HistorialOperacioneDAO implements IHistorialOperacionesDAO{
 
     private static final Logger LOGGER = Logger.getLogger(HistorialOperacioneDAO.class.getName());
 
+    /**
+     * Consuulta y obtiene las operaciones registradas por una cuenta en específico
+     * @param numeroCuenta
+     * @return
+     * @throws PersistenciaException 
+     */
     @Override
     public List<Operacion> consultarOperacionesCuenta(String numeroCuenta) throws PersistenciaException {
         try{
@@ -58,6 +64,13 @@ public class HistorialOperacioneDAO implements IHistorialOperacionesDAO{
         }
     }
 
+    /**
+     * Obtiene el historial de transferencias que se realizan por las cuentas
+     * Se utiliza un INNER JOIN con la tabla Transferencia
+     * @param numeroCuenta
+     * @return
+     * @throws PersistenciaException 
+     */
     @Override
     public List<Operacion> consultarTrasnferenciaCuenta(String numeroCuenta) throws PersistenciaException {
         try{
@@ -92,6 +105,13 @@ public class HistorialOperacioneDAO implements IHistorialOperacionesDAO{
         }
     }
 
+    /**
+     * Obtiene el historial de retiros que se realizan por las cuentas
+     * Se utiliza un INNER JOIN con la tabla RetiroSinCuemta
+     * @param numeroCuenta
+     * @return
+     * @throws PersistenciaException 
+     */
     @Override
     public List<Operacion> consultarRetirosCuenta(String numeroCuenta) throws PersistenciaException {
         try{
